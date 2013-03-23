@@ -2195,8 +2195,8 @@ private void jMenu14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void mnFlujoEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnFlujoEfectivoActionPerformed
     /*permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmCerrarCaja_");
     if(permitido)
-    {  */
-        /*frmFactHisto formulario = new frmFactHisto(this, true);
+    {  
+        frmFactHisto formulario = new frmFactHisto(this, true);
         formulario.setLocationRelativeTo(null);
         formulario.setVisible(true);*/
         frmCerrarCaja_ formulario = new frmCerrarCaja_();

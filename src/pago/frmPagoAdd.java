@@ -544,7 +544,7 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
         else
         {*/
             //INSERTAR PAGO
-            objPago.insertarRegistroReciboCobro(main.idUser, factRef, ""+objUtils.redondear(valor), idCajaAbierta, txtReciboDePago.getText(), codigoCliente);
+            objPago.insertarRegistroReciboCobro(main.idUser, factRef, ""+objUtils.redondear(valor), idCajaAbierta, txtReciboDePago.getText(), codigoCliente, "N");
             //ACTUALIZAR RECIBO ACTUAL
             objCaja.actualizarReciboPago();
             JOptionPane.showMessageDialog(this, "Pago ingresado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);

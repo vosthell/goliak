@@ -107,6 +107,7 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         lblFechaActual = new javax.swing.JLabel();
         btnBuscarCliente = new javax.swing.JButton();
+        chkCuotaInicial = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         txtValor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -167,6 +168,9 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
             }
         });
 
+        chkCuotaInicial.setText(resourceMap.getString("chkCuotaInicial.text")); // NOI18N
+        chkCuotaInicial.setName("chkCuotaInicial"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -186,10 +190,15 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                         .addComponent(btnBuscarCliente))
                     .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(lblFechaActual, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                .addGap(79, 79, 79))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblFechaActual, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addGap(79, 79, 79))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(chkCuotaInicial)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +214,8 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkCuotaInicial)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
@@ -328,7 +338,7 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                     .addComponent(jLabel10)
                     .addComponent(lblCajero)
                     .addComponent(btnGuardarPago))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -365,8 +375,14 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
         }
         else
         {*/
+            String cuotaIni = "";
+            if(chkCuotaInicial.isSelected())
+                cuotaIni = "S";
+            else
+                cuotaIni = "N";
             //INSERTAR PAGO
-            objPago.insertarRegistroReciboCobro(main.idUser, factRef, ""+objUtils.redondear(valor), idCajaAbierta, txtReciboDePago.getText(), codigoCliente);
+            objPago.insertarRegistroReciboCobro(main.idUser, factRef, ""+objUtils.redondear(valor), 
+                    idCajaAbierta, txtReciboDePago.getText(), codigoCliente, cuotaIni);
             //ACTUALIZAR RECIBO ACTUAL
             objCaja.actualizarReciboPago();
             JOptionPane.showMessageDialog(this, "Pago ingresado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
@@ -464,6 +480,7 @@ private void txtReferenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnGuardarPago;
+    private javax.swing.JCheckBox chkCuotaInicial;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

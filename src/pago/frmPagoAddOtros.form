@@ -54,7 +54,7 @@
                   <Component id="lblCajero" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnGuardarPago" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -93,10 +93,18 @@
                       <Component id="txtNombreCliente" min="-2" pref="309" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="lblFechaActual" pref="120" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="lblFechaActual" pref="120" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="chkCuotaInicial" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -116,6 +124,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtNombreCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="chkCuotaInicial" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -188,6 +197,12 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkCuotaInicial">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="chkCuotaInicial.text"/>
+            <Property name="name" type="java.lang.String" value="chkCuotaInicial" noResource="true"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
