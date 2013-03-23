@@ -10,6 +10,7 @@
  */
 package index;
 
+import clases.clsConexion;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import javax.swing.JOptionPane;
 public class frmIngreso extends javax.swing.JFrame {
     clsUsuario objUsuario = new clsUsuario();
     clsUtils objUtils = new clsUtils();
+    clsConexion objConexion = new clsConexion();
     /** Creates new form frmIngreso */
     public frmIngreso() {
         initComponents();
@@ -32,8 +34,7 @@ public class frmIngreso extends javax.swing.JFrame {
         lblMensaje.setText("");
         btnAceptar.addKeyListener(new PresionarTecla());
         this.rootPane.setDefaultButton(btnAceptar);
-        lblVersion.setText(objUtils.version);
-        
+        lblVersion.setText(objUtils.version);        
         
         Double cantidad = 7.358958;
         Double cantidad2 = 1.15;
@@ -45,6 +46,8 @@ public class frmIngreso extends javax.swing.JFrame {
         System.out.println(cantidad2);
         System.out.println(objUtils.redondear(cantidad2));
         System.out.println(objUtils.redondearCincoDec(cantidad2));
+        
+        lblServer.setText(objConexion.obtenerServer());         
     }
 
     /** This method is called from within the constructor to
@@ -63,6 +66,7 @@ public class frmIngreso extends javax.swing.JFrame {
         btnAceptar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblVersion = new javax.swing.JLabel();
+        lblServer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -88,7 +92,7 @@ public class frmIngreso extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -120,6 +124,8 @@ public class frmIngreso extends javax.swing.JFrame {
         lblVersion.setForeground(new java.awt.Color(0, 153, 51));
         lblVersion.setText("lblVersion");
 
+        lblServer.setText("lblServer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,10 +134,13 @@ public class frmIngreso extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblVersion)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblServer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblVersion)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                         .addComponent(btnAceptar)))
                 .addContainerGap())
@@ -146,7 +155,9 @@ public class frmIngreso extends javax.swing.JFrame {
                     .addComponent(btnAceptar)
                     .addComponent(jLabel2)
                     .addComponent(lblVersion))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblServer)
+                .addContainerGap())
         );
 
         pack();
@@ -238,6 +249,7 @@ private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblMensaje;
+    private javax.swing.JLabel lblServer;
     private javax.swing.JLabel lblVersion;
     private javax.swing.JPasswordField txtClave;
     // End of variables declaration//GEN-END:variables

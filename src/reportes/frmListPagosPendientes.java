@@ -229,9 +229,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     dispose();
 }//GEN-LAST:event_tblDataMouseClicked
     public void llenarData(ArrayList<clsPago> dataPago, String documento)
-    {
-            
-        
+    {        
         DecimalFormat df1 = new DecimalFormat("##0.00"); 
        
         int maxData = dataPago.size();  

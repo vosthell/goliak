@@ -997,7 +997,7 @@ public class clsCabecera {
         ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo, b.name_completo, "
+            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo codigo, b.name_completo, "
                         + " b.cedula, a.id_usuario, c.name,  "
                         + " a.estado, total, saldo, efectivo,  "
                         + " fecha, fact_referencia, comentario,  "
@@ -1006,7 +1006,7 @@ public class clsCabecera {
                         + " base_tarifa_0, base_tarifa_iva, descuento, iva, "
                         + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
                         + " f.descripcion descripcion_plazo, fecha_cancelacion_sistema, "
-                    + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor"
+                        + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor"
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
                     + " inner join ck_rel_cabecera_cuota AS d on a.id_cabecera_movi = d.id_cabecera_movi"
@@ -1044,6 +1044,8 @@ public class clsCabecera {
                 oListaTemporal.setIVA1(bd.resultado.getDouble("iva_interes"));
                 oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
                 oListaTemporal.setFechaCancelacionSistema(bd.resultado.getString("fecha_cancelacion_sistema"));
+                
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                  
                 data.add(oListaTemporal);
             }
@@ -1357,7 +1359,7 @@ public class clsCabecera {
         ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo, b.name_completo, "
+            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo codigo, b.name_completo, "
                             + " b.cedula, a.id_usuario, c.name,  "
                             + " a.estado, total, saldo, efectivo,  "
                             + " fecha, fact_referencia, comentario,  "
@@ -1382,7 +1384,8 @@ public class clsCabecera {
                 oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
                 oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
                 oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
-                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));            
+                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));      
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));                
                 
                 data.add(oListaTemporal);
             }
