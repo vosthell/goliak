@@ -51,7 +51,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cmbUsuarios" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -405,15 +405,16 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="chkRetirar" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="chkRecibir" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="chkModificarProductos" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkEliminarProductos" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkKardex" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="chkRecibir" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="chkRecibirCompras" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkInventario" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkChequear" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkListProductosDel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -443,7 +444,10 @@
                           <Component id="chkInventario" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="chkRecibir" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="chkRecibir" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkRecibirCompras" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkRetirar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="24" max="32767" attributes="0"/>
@@ -501,6 +505,12 @@
               <Properties>
                 <Property name="text" type="java.lang.String" resourceKey="chkInventario.text"/>
                 <Property name="name" type="java.lang.String" value="chkInventario" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkRecibirCompras">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="chkRecibirCompras.text"/>
+                <Property name="name" type="java.lang.String" value="chkRecibirCompras" noResource="true"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -14,6 +14,7 @@ import pos.*;
 import clases.clsCaja;
 import clases.clsCompras;
 import clases.clsPago;
+import clases.clsPermisos;
 import clases.clsProveedor;
 import clases.clsReporte;
 import clases.clsUtils;
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -48,7 +50,7 @@ public class frmListCompras extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsCompras objCompras = new clsCompras();
     clsProveedor objProveedor = new clsProveedor();
-    
+    clsPermisos objPermisos = new clsPermisos();
     String idCajaAbierta = "";
     
     /** Creates new form frmPagosRealizados */
@@ -468,8 +470,16 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     {
         if (columna == 6)
         {
-            frmComprasRecibir formulario = new frmComprasRecibir(idCabecera);
-            mostrarJInternalCentrado(formulario);  
+            boolean permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmComprasRecibir");
+            if(permitido)
+            {           
+                frmComprasRecibir formulario = new frmComprasRecibir(idCabecera);
+                mostrarJInternalCentrado(formulario);                 
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para recibir compras", "Atención!", JOptionPane.ERROR_MESSAGE);
+            }
             dispose();
         }
         

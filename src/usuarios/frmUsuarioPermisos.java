@@ -75,6 +75,7 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkPagoRecibo.setSelected(false);
         chkAddCliente.setSelected(false);
         chkReimpresion.setSelected(false);
+        chkRecibirCompras.setSelected(false);
     }
     /** This method fis called from within the constructor to
      * initialize the form.
@@ -118,6 +119,7 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkListProductosDel = new javax.swing.JCheckBox();
         chkChequear = new javax.swing.JCheckBox();
         chkInventario = new javax.swing.JCheckBox();
+        chkRecibirCompras = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         chkMantenimientoGrupo = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
@@ -368,6 +370,9 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkInventario.setText(resourceMap.getString("chkInventario.text")); // NOI18N
         chkInventario.setName("chkInventario"); // NOI18N
 
+        chkRecibirCompras.setText(resourceMap.getString("chkRecibirCompras.text")); // NOI18N
+        chkRecibirCompras.setName("chkRecibirCompras"); // NOI18N
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -376,14 +381,15 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkRetirar)
-                    .addComponent(chkRecibir)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkModificarProductos)
                             .addComponent(chkEliminarProductos)
-                            .addComponent(chkKardex))
-                        .addGap(93, 93, 93)
+                            .addComponent(chkKardex)
+                            .addComponent(chkRecibir))
+                        .addGap(55, 55, 55)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkRecibirCompras)
                             .addComponent(chkInventario)
                             .addComponent(chkChequear)
                             .addComponent(chkListProductosDel))))
@@ -405,7 +411,9 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
                     .addComponent(chkKardex)
                     .addComponent(chkInventario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chkRecibir)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkRecibir)
+                    .addComponent(chkRecibirCompras))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkRetirar)
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -580,7 +588,7 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
@@ -812,7 +820,12 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
             idFormulario = "36";
             objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
         }
-        
+        if(this.chkRecibirCompras.isSelected())
+        {
+            idModulo = "1";
+            idFormulario = "37";
+            objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
+        }
         
         
         objAuditoria.insertarAuditoria("frmUsuarioPermisos", "CAMBIO DE PERMISOS AL USUARIO:" + objUsuarioSelect.getDescripcion(), "4");
@@ -977,6 +990,10 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
             {
                 chkReimpresion.setSelected(true);
             } 
+            if(nombreFormulario.equals("frmComprasRecibir"))
+            {
+                chkRecibirCompras.setSelected(true);
+            } 
         }
         this.btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnMostrarActionPerformed
@@ -1036,6 +1053,7 @@ public void reinicio()
     private javax.swing.JCheckBox chkProveedorDel;
     private javax.swing.JCheckBox chkProveedorMod;
     private javax.swing.JCheckBox chkRecibir;
+    private javax.swing.JCheckBox chkRecibirCompras;
     private javax.swing.JCheckBox chkReimpresion;
     private javax.swing.JCheckBox chkRepPagos;
     private javax.swing.JCheckBox chkRetirar;
