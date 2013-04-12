@@ -37,7 +37,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="24" max="32767" attributes="0"/>
+              <EmptySpace pref="28" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -112,7 +112,6 @@
         <Component class="javax.swing.JButton" name="btnImprimir">
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="btnImprimir.text"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="btnImprimir" noResource="true"/>
           </Properties>
           <Events>

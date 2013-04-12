@@ -277,7 +277,7 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
                         .addComponent(chkAnularFacturas)
                         .addGap(108, 108, 108)
                         .addComponent(chkReimpresion)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

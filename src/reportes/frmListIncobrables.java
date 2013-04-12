@@ -12,6 +12,7 @@ package reportes;
 
 import clases.clsCabecera;
 import clases.clsCliente;
+import clases.clsReporte;
 import clases.clsUtils;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -30,6 +31,7 @@ public final class frmListIncobrables extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsCabecera objCabecera = new clsCabecera();
     clsCliente objCliente = new clsCliente();
+    clsReporte objReporte = new clsReporte();
     MiModelo dtmData = new MiModelo();
     /** Creates new form frmReporteVentas */
     public frmListIncobrables() {
@@ -86,7 +88,6 @@ public final class frmListIncobrables extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tblData);
 
         btnImprimir.setText(resourceMap.getString("btnImprimir.text")); // NOI18N
-        btnImprimir.setEnabled(false);
         btnImprimir.setName("btnImprimir"); // NOI18N
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +146,7 @@ public final class frmListIncobrables extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,7 +201,7 @@ public final class frmListIncobrables extends javax.swing.JInternalFrame {
     } 
 
 private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-   
+    objReporte.ejecutarReporte("rptClienteIncobrable");
 }//GEN-LAST:event_btnImprimirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
