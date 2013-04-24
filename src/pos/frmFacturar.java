@@ -356,6 +356,11 @@ public class frmFacturar extends javax.swing.JDialog {
                 chkSinRegistrarItemStateChanged(evt);
             }
         });
+        chkSinRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkSinRegistrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -377,7 +382,7 @@ public class frmFacturar extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)))
+                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11)
@@ -774,7 +779,7 @@ public class frmFacturar extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMostrarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -812,7 +817,7 @@ public class frmFacturar extends javax.swing.JDialog {
                             .addComponent(txtDescuentoUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -823,7 +828,7 @@ public class frmFacturar extends javax.swing.JDialog {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(lblCredito, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+                                .addComponent(lblCredito, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -833,7 +838,7 @@ public class frmFacturar extends javax.swing.JDialog {
                                     .addComponent(jLabel17)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel18)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                                         .addComponent(btnDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel21)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -841,11 +846,11 @@ public class frmFacturar extends javax.swing.JDialog {
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(txtTarifaIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(txtTarifaCero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(txtDescuento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))))
+                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(txtTarifaIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(txtTarifaCero, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(txtIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(txtDescuento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -972,7 +977,7 @@ public class frmFacturar extends javax.swing.JDialog {
                         .addComponent(lblUsuario)
                         .addGap(39, 39, 39)
                         .addComponent(lblDescuento)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 180, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnImprimir)))
@@ -1956,14 +1961,19 @@ private void chkSinRegistrarItemStateChanged(java.awt.event.ItemEvent evt) {//GE
     
     if(chkSinRegistrar.isSelected())
     {
-        chkCredito.setEnabled(false);
+        /**chkCredito.setEnabled(false);
         btnDescuento.setEnabled(true);
+        txtNombreCliente.setEditable(true);*/
+        chkCredito.setEnabled(false);
+        btnDescuento.setEnabled(false);
         txtNombreCliente.setEditable(true);
+        
     }
     else
     {
         btnDescuento.setEnabled(false);
         txtNombreCliente.setEditable(false);
+        chkCredito.setEnabled(false);
     }
 }//GEN-LAST:event_chkSinRegistrarItemStateChanged
 
@@ -1986,6 +1996,10 @@ private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     else
     JOptionPane.showMessageDialog(this, "No existe\n" + rutaActual, "ERROR", JOptionPane.ERROR_MESSAGE);
 }//GEN-LAST:event_btnImagenActionPerformed
+
+private void chkSinRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSinRegistrarActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_chkSinRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
