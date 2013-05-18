@@ -123,7 +123,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         }   
         btnCajaAntes.setVisible(false);
         
-        Timer timer = new Timer (1000, new ActionListener ()
+        //con esto si le quito eprmiso se actualiza de una
+        /*Timer timer = new Timer (1000, new ActionListener ()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -154,9 +155,104 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
 
 
-        timer.start();
+        timer.start();*/
         
-        permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmListVentas");
+        //consultar todos los permisos
+        String nombreFormulario = "";
+        ArrayList<clsPermisos> dataPermisos = objPermisos.consultarPermisosUsuario(Integer.parseInt(main.idUser));        
+        
+        //dejar todas invisibles
+        mnFrmListVentas.setVisible(false);
+        mnFrmListVentasNE.setVisible(false);
+        mnFrmListVentasNEVendedor.setVisible(false); 
+        mnFrmListDescuentos.setVisible(false);
+        btnAbrir.setVisible(false);
+        btnFacturar.setVisible(false);
+        btnCerrar.setVisible(false);
+        btnPagoNuevo.setVisible(false);
+        btnIngreso.setVisible(false);
+        btnPagos.setVisible(false);
+        btnEgreso.setVisible(false);
+        btnNE.setVisible(false);
+        btnFacturarHistorico.setVisible(false);
+        btnPagosHistoricos.setVisible(false);
+        btnKardex.setVisible(false);
+        prodMod.setVisible(false);
+        mnProdMod.setVisible(false);
+        prodDel.setVisible(false);
+        mnProdDel.setVisible(false); 
+        mnInventario.setVisible(false); 
+        mnPermisos.setVisible(false);
+        mnUsuario.setVisible(false);
+        mnGrupoProductoAdd.setVisible(false);
+        mnFlujoEfectivo.setVisible(false);
+        mnEliminarProductos.setVisible(false);
+        mnBuscarFacturasEliminar.setVisible(false);
+        clienteMod.setVisible(false);
+        mnCliMod.setVisible(false);
+        clienteAdd.setVisible(false);
+        mnClienteAdd.setVisible(false);
+        clienteDel.setVisible(false);
+        mnCliDel.setVisible(false);
+        provMod.setVisible(false);
+        mnProvMod.setVisible(false);
+        provDel.setVisible(false);
+        mnProvDel.setVisible(false);
+        mnListadoProductos.setVisible(false);
+        mnListPagos.setVisible(false);
+        btnRecibo.setVisible(false);
+        mnReimpresion.setVisible(false);
+            
+        //colocar visibles las q  tiene permisos
+        for(int i=0;i<dataPermisos.size();i=i+1)
+        {
+            nombreFormulario = dataPermisos.get(i).getFormDescripcion();
+            
+            if(nombreFormulario.equals("frmListVentas"))            mnFrmListVentas.setVisible(true);                 
+            if(nombreFormulario.equals("frmListVentasNE"))          mnFrmListVentasNE.setVisible(true);
+            if(nombreFormulario.equals("frmListVentasNEVendedor"))  mnFrmListVentasNEVendedor.setVisible(true);
+            if(nombreFormulario.equals("frmListDescuentos"))        mnFrmListDescuentos.setVisible(true);
+            if(nombreFormulario.equals("frmAbrirCaja"))             btnAbrir.setVisible(true);
+            if(nombreFormulario.equals("frmFacturar"))              btnFacturar.setVisible(true);
+            if(nombreFormulario.equals("frmCerrarCaja"))            btnCerrar.setVisible(true);
+            if(nombreFormulario.equals("frmPagoNuevoAdd"))          btnPagoNuevo.setVisible(true); 
+            if(nombreFormulario.equals("frmCerrarCaja"))            btnIngreso.setVisible(true);
+            if(nombreFormulario.equals("frmPagoAdd"))               btnPagos.setVisible(true);
+            if(nombreFormulario.equals("frmCerrarCaja"))            btnEgreso.setVisible(true);
+            if(nombreFormulario.equals("frmNotasEntrega"))          btnNE.setVisible(true);
+            if(nombreFormulario.equals("frmFactHisto"))             btnFacturarHistorico.setVisible(true);
+            if(nombreFormulario.equals("frmPagoHistoricoAdd"))      btnPagosHistoricos.setVisible(true);      
+            if(nombreFormulario.equals("frmKardex"))                btnKardex.setVisible(true);
+            if(nombreFormulario.equals("frmProductosMod")) {        prodMod.setVisible(true);
+                                                                    mnProdMod.setVisible(true);}
+            if(nombreFormulario.equals("frmProductosDel")) {        prodDel.setVisible(true);
+                                                                    mnProdDel.setVisible(true);}
+            if(nombreFormulario.equals("frmInventario"))            mnInventario.setVisible(true);
+            if(nombreFormulario.equals("frmUsuarioPermisos"))       mnPermisos.setVisible(true);
+            if(nombreFormulario.equals("frmNuevoUsuario"))          mnUsuario.setVisible(true);  
+            if(nombreFormulario.equals("frmGrupoAdd"))              mnGrupoProductoAdd.setVisible(true);
+            if(nombreFormulario.equals("frmCerrarCaja_"))           mnFlujoEfectivo.setVisible(true);
+            if(nombreFormulario.equals("frmListProductosDel"))      mnEliminarProductos.setVisible(true);
+            if(nombreFormulario.equals("frmFacturaSeek"))           mnBuscarFacturasEliminar.setVisible(true);
+            if(nombreFormulario.equals("frmClienteMod"))       {    clienteMod.setVisible(true);
+                                                                    mnCliMod.setVisible(true);}
+            if(nombreFormulario.equals("frmClienteAdd"))       {    clienteAdd.setVisible(true);
+                                                                    mnClienteAdd.setVisible(true);}
+            if(nombreFormulario.equals("frmClienteDel"))       {    clienteDel.setVisible(true);
+                                                                    mnCliDel.setVisible(true);}
+            if(nombreFormulario.equals("frmProveedorMod"))       {  provMod.setVisible(true);
+                                                                    mnProvMod.setVisible(true);}
+            if(nombreFormulario.equals("frmProveedorDel")) {        provDel.setVisible(true);
+                                                                    mnProvDel.setVisible(true);}
+            if(nombreFormulario.equals("frmListProductosInventario"))mnListadoProductos.setVisible(true);
+            if(nombreFormulario.equals("frmListPagos"))             mnListPagos.setVisible(true);
+            if(nombreFormulario.equals("frmPagoAddOtros"))          btnRecibo.setVisible(true);
+            if(nombreFormulario.equals("frmReimpresionReciboPago")) mnReimpresion.setVisible(true);         
+     
+        
+        }
+        
+        /*permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmListVentas");
         if(permitido)
             mnFrmListVentas.setVisible(true);        
         else 
@@ -416,7 +512,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         else
         {
             mnReimpresion.setVisible(false);
-        }
+        }*/
     }
 
     /** This method is called from within the constructor to

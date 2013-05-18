@@ -70,7 +70,7 @@ public class clsPermisos {
         return exito;
     } 
      
-     public ArrayList<clsPermisos>  consultarPermisosUsuario(String idUsuario){            
+     public ArrayList<clsPermisos>  consultarPermisosUsuario(int idUsuario){            
         ArrayList<clsPermisos> data = new ArrayList<clsPermisos>();  
         try{
             bd.conectarBaseDeDatos();

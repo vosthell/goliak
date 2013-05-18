@@ -20,6 +20,7 @@ import clases.clsDetalle;
 import clases.clsFacturero;
 import clases.clsImpuestos;
 import clases.clsKardex;
+import clases.clsParametros;
 import clases.clsPersonal;
 import clases.clsPlazo;
 import clases.clsPrecio;
@@ -29,6 +30,7 @@ import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import stinventario.frmPrincipal;
 
 /**
  *
@@ -64,13 +67,14 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     clsPlazo objPlazo = new clsPlazo();
     clsKardex objKardex = new clsKardex();
     clsReporte objReporte = new clsReporte();
+    clsParametros objParametros = new clsParametros();
     
-    Double valorInteresCuotaInicial = 30.00; //el 30 % del valor es  la cuota iniciañ
+    Double valorInteresCuotaInicial = objParametros.consultaPorcentajeCuotaInicial(); //el 30 % del valor es  la cuota iniciañ
     //Double valorInteresTresMeses = 9.00;
-    Double valorInteresTresMeses = 9.00;
-    Double valorInteresSeisMeses = 15.00;
-    Double valorInteresNueveMeses = 21.00;
-    Double valorInteresDoceMeses = 28.00;
+    Double valorInteresTresMeses = objParametros.consultaInteres3Meses();
+    Double valorInteresSeisMeses = objParametros.consultaInteres6Meses();
+    Double valorInteresNueveMeses = objParametros.consultaInteres9Meses();
+    Double valorInteresDoceMeses = objParametros.consultaInteres12Meses();
     
     MiModelo dtmData = new MiModelo();
     String idCajero="";
@@ -297,6 +301,12 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         txtFechaCancelacion = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         cmbPlazo = new javax.swing.JComboBox();
+        jLabel28 = new javax.swing.JLabel();
+        txtInteres = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        txtSaldoDeuda = new javax.swing.JTextField();
+        txtInteresValor = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtTarifaCero = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
@@ -322,6 +332,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         lblUsuario = new javax.swing.JLabel();
         chkAnulada = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -422,21 +433,21 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addComponent(btnBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel23))
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
-                    .addComponent(cmbVendedor, 0, 362, Short.MAX_VALUE))
+                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(cmbVendedor, 0, 363, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(cmbFacturero, 0, 69, Short.MAX_VALUE))
+                    .addComponent(cmbFacturero, 0, 61, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtNotaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+                        .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -466,12 +477,14 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
+                                .addGap(14, 14, 14)
                                 .addComponent(jLabel11)
-                                .addGap(6, 6, 6))))
-                    .addComponent(btnMostrarArturo, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))))
+                    .addComponent(btnMostrarArturo, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -602,6 +615,11 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 chkCreditoItemStateChanged(evt);
             }
         });
+        chkCredito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkCreditoActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
         jLabel12.setName("jLabel12"); // NOI18N
@@ -668,77 +686,113 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
+        jLabel28.setName("jLabel28"); // NOI18N
+
+        txtInteres.setEditable(false);
+        txtInteres.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtInteres.setText(resourceMap.getString("txtInteres.text")); // NOI18N
+        txtInteres.setName("txtInteres"); // NOI18N
+
+        jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
+        jLabel29.setName("jLabel29"); // NOI18N
+
+        jLabel30.setText(resourceMap.getString("jLabel30.text")); // NOI18N
+        jLabel30.setName("jLabel30"); // NOI18N
+
+        txtSaldoDeuda.setEditable(false);
+        txtSaldoDeuda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtSaldoDeuda.setText(resourceMap.getString("txtSaldoDeuda.text")); // NOI18N
+        txtSaldoDeuda.setName("txtSaldoDeuda"); // NOI18N
+
+        txtInteresValor.setEditable(false);
+        txtInteresValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtInteresValor.setText(resourceMap.getString("txtInteresValor.text")); // NOI18N
+        txtInteresValor.setName("txtInteresValor"); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkCredito)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jLabel25)
-                        .addGap(5, 5, 5)
-                        .addComponent(cmbPlazo, 0, 158, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(46, 46, 46)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addGap(5, 5, 5))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel13)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cmbCuota, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel25)
+                            .addGap(18, 18, 18)
+                            .addComponent(cmbPlazo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(chkCredito)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel24)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtFechaCancelacion))))
+                            .addComponent(jLabel12)
+                            .addGap(18, 18, 18)
+                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel14)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel28)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtInteres)
+                    .addComponent(txtEfectivo)
+                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel30)
+                    .addComponent(jLabel29))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel15))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtSaldo)
-                    .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtInteresValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                    .addComponent(txtSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                    .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(chkCredito)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
                             .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel13)
+                            .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel28)
+                            .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel25)
-                            .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel29)
+                            .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel30)
+                            .addComponent(txtInteresValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
                             .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24)))
-                    .addComponent(chkCredito))
+                            .addComponent(jLabel15)
+                            .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -847,7 +901,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMostrarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -885,13 +939,13 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(txtDescuentoUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtCosto)
                             .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18)
                             .addComponent(jLabel16)
@@ -899,19 +953,20 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(jLabel21)
                             .addComponent(jLabel8))
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIVA)
-                            .addComponent(txtDescuento)
-                            .addComponent(txtTarifaCero)
-                            .addComponent(txtTarifaIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtIVA)
+                                .addComponent(txtDescuento)
+                                .addComponent(txtTarifaCero)
+                                .addComponent(txtTarifaIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(txtIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(txtDescuento1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))))
+                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(txtIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(txtDescuento1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -973,11 +1028,11 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTotal, 0, 0, Short.MAX_VALUE)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(txtTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(27, 27, 27))
+                .addGap(8, 8, 8))
         );
 
         btnImprimir.setIcon(resourceMap.getIcon("btnImprimir.icon")); // NOI18N
@@ -1026,6 +1081,14 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1042,21 +1105,23 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(jLabel22)
                             .addGap(18, 18, 18)
                             .addComponent(lblUsuario)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                             .addComponent(chkAnulada)
                             .addGap(18, 18, 18)
                             .addComponent(btnGuardar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btnImprimir))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1065,9 +1130,11 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
@@ -1952,31 +2019,40 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     if(idPlazo.equals("1"))
     {
         interes = valorInteresTresMeses;
+        txtInteres.setText("" + interes);
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
+        txtInteres.setText("" + interes);
         meses = 6;
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
+        txtInteres.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
         interes = valorInteresDoceMeses;
+        txtInteres.setText("" + interes);
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
         interes = 0.00;
+        txtInteres.setText("" + interes);
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
+    txtSaldoDeuda.setText("" + cantidadAdeudada);
     
     double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
+    double valorInteres = cantidadAdeudada * interes / 100;
+    txtInteresValor.setText("" + valorInteres);
+    
     txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
     //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
     //MENSUAL QUINCENAL SEMANAL
@@ -1984,36 +2060,36 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     String idCuota = objCuotaSelect.getCodigo();
     Double cuotaIndividual= 0.00;
     //2 semanal, 3 quincenal, 4 mensual
-    if(idCuota.equals("2"))
+    if(idCuota.equals("2"))//semanal
     {
-         if(idPlazo.equals("1"))
+         if(idPlazo.equals("1"))//3 meses tiene 12 semanas, pero le ponen 13
         {
             cuotaIndividual = cantidadInteres/13;
         }
-        else if(idPlazo.equals("2"))
+        else if(idPlazo.equals("2"))//6 meses son 24 semanas, pero le ponen 26
         {
             cuotaIndividual = cantidadInteres/26;
         }
-        else if(idPlazo.equals("3"))
+        else if(idPlazo.equals("3"))//9 meses son 36 semanas, pero le ponen 39
         {
             cuotaIndividual = cantidadInteres/39;
         }
-        else if(idPlazo.equals("4"))
+        else if(idPlazo.equals("4"))//12 meses son 48 semanas, pero le ponen 52
         {           
             cuotaIndividual = cantidadInteres/52;
         }
-        else if(idPlazo.equals("9"))
+        else if(idPlazo.equals("9"))//2 MESES son 8 semanas
         {
             cuotaIndividual = cantidadInteres/8;
         }
     }
-    else if(idCuota.equals("3"))
+    else if(idCuota.equals("3"))//quincenal
     {
-         cuotaIndividual = cantidadInteres/(meses*2);
+         cuotaIndividual = cantidadInteres/(meses*2); // los meses q son lo multiplico por 2 para que me de en quincenas, un mes tiene 2 quincenas
     }
-    else if(idCuota.equals("4"))
+    else if(idCuota.equals("4"))//mensual
     {
-        cuotaIndividual = cantidadInteres/meses;
+        cuotaIndividual = cantidadInteres/meses; // mes normal
     }
     txtCuota.setText(""+objUtils.redondear(cuotaIndividual));
     txtFechaCancelacion.setText(calcular_fecha_cancelacion());
@@ -2026,11 +2102,14 @@ public String calcular_fecha_cancelacion()
 {
     //CALCULAR FECHA DE CANCELACION
     Date date1= new Date();
+    //DIARIO; SEMANAL; QUINCENAL;MENSUAL
     clsComboBox objetoPagoSeleccionado = (clsComboBox)cmbCuota.getSelectedItem();
     String tipoPago = objetoPagoSeleccionado.getCodigo();
+    
     Calendar fechaCarta2 = Calendar.getInstance();
     fechaCarta2.setTime(date1); 
     double numeroPagos =0;
+    //???porque hice que el numero de pagos sean = saldo/cuotas
     numeroPagos = Double.parseDouble(txtSaldo.getText())/Double.parseDouble(txtCuota.getText());
     Locale.setDefault(Locale.ENGLISH);       
     DecimalFormat formateador = new DecimalFormat("####");
@@ -2071,6 +2150,7 @@ private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIR
         txtCuota.setText("");
         txtEfectivo.setText("0");
         txtSaldo.setText("");
+        
         calcularCuotas();
         //txtEfectivo.setText(""+cuotaInicial);
        // controlCmbCredito = 1;
@@ -2108,31 +2188,41 @@ void calcularCuotas()
     if(idPlazo.equals("1"))
     {
         interes = valorInteresTresMeses;
+        txtInteres.setText("" + interes);
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
+        txtInteres.setText("" + interes);
         meses = 6;
+        
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
+        txtInteres.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
         interes = valorInteresDoceMeses;
+        txtInteres.setText("" + interes);
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
         interes = 0.00;
+        txtInteres.setText("" + interes);
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
+    txtSaldoDeuda.setText("" + cantidadAdeudada);
     
     double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
+    double valorInteres = cantidadAdeudada * interes / 100;
+    txtInteresValor.setText("" + valorInteres);
+    
     txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
     //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
     //MENSUAL QUINCENAL SEMANAL
@@ -2238,6 +2328,31 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     objReporte.ejecutarReporteParametroInt(codigoCliente, "solicitud_cliente");
 }//GEN-LAST:event_jButton1ActionPerformed
 
+private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+    String idPlazo = objPlazoSelect.getCodigo();
+    
+    clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+    String idCuota = objCuotaSelect.getCodigo();
+    
+    frmPagosDeuda formulario = new frmPagosDeuda(idPlazo, idCuota, txtCuota.getText(), txtSaldo.getText());
+    mostrarJInternalCentrado(formulario); 
+}//GEN-LAST:event_jButton2ActionPerformed
+
+private void chkCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditoActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_chkCreditoActionPerformed
+
+public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+    {
+        Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
+        Dimension jInternalFrameSize = formulario.getSize();
+        formulario.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+        (desktopSize.height- jInternalFrameSize.height)/2);
+
+        frmPrincipal.jDesktopPane1.add(formulario);
+        formulario.show(); 
+    }   
     /**
      * @param args the command line arguments
      */
@@ -2257,6 +2372,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public static javax.swing.JComboBox cmbPrecio;
     private javax.swing.JComboBox cmbVendedor;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2277,7 +2393,10 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2306,11 +2425,14 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private com.toedter.calendar.JDateChooser txtFechaVenta;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtIVA1;
+    private javax.swing.JTextField txtInteres;
+    private javax.swing.JTextField txtInteresValor;
     public static javax.swing.JTextField txtNombreCliente;
     public static javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtNotaEntrega;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtSaldo;
+    private javax.swing.JTextField txtSaldoDeuda;
     public static javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTarifaCero;
     private javax.swing.JTextField txtTarifaCero1;

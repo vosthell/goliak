@@ -846,7 +846,7 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         
         String nombreFormulario = "";
         clsComboBox objUsuarioSelect = (clsComboBox)cmbUsuarios.getSelectedItem();
-        ArrayList<clsPermisos> dataPermisos = objPermisos.consultarPermisosUsuario(objUsuarioSelect.getCodigo());        
+        ArrayList<clsPermisos> dataPermisos = objPermisos.consultarPermisosUsuario(Integer.parseInt(objUsuarioSelect.getCodigo()));        
         for(int i=0;i<dataPermisos.size();i=i+1)
         {
             nombreFormulario = dataPermisos.get(i).getFormDescripcion();
