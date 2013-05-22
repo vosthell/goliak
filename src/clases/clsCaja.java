@@ -208,6 +208,13 @@ public class clsCaja {
                     + " WHERE id_usuario = " + idUser
                     + " AND cierre='N'"
                     + " AND apertura='S'";
+            /*sql = "SELECT id_caja_operacion, id_usuario, "
+                    + " apertura, fecha_apertura, cierre, "
+                    + " fecha_cierre, valor_apertura"
+                    + " FROM ck_caja_operacion"
+                    + " WHERE id_caja_operacion = 441";*/
+                    //+ " AND cierre='N'"
+                    //+ " AND apertura='S'";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
                
@@ -382,7 +389,44 @@ public class clsCaja {
         bd.desconectarBaseDeDatos();
         return exito;
     } 
-    
+    /*public boolean registrarCierreCaja2(String idUsuario, String facturado, String contado, String diferencia, 
+                                        Double pagos, Double pagosFactura, Double egresos, Double recibosPago, 
+                                        Double ingresos, String cajaAbierta)
+    {
+        boolean exito;
+        try
+        {
+            String sql;
+            bd.conectarBaseDeDatos();            
+             sql = "UPDATE ck_caja_operacion"
+                     + " SET cierre = 'S', "
+                     + " valor_contado = " + contado + ","
+                     + " valor_facturado = " + facturado + ","
+                     + " valor_pagos = "+ pagos +","
+                     + " valor_pagos_factura = "+ pagosFactura +","
+                     + " diferencia = " + diferencia + ","
+                     //+ " fecha_cierre = now(),"
+                     + " valor_egresos = " + egresos + ","
+                     + " valor_recibos = " + recibosPago + ","
+                     + " valor_ingreso = " + ingresos
+                     + " WHERE id_usuario = " + idUsuario
+                     //+ " AND cierre = 'N'"
+                     //+ " AND apertura = 'S'"
+                     + " AND id_caja_operacion = " + cajaAbierta;
+            
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }*/
+      
     public ArrayList<clsComboBox>  consultarCajero(){            
         ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
         try{

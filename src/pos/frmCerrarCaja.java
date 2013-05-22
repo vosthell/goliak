@@ -54,14 +54,18 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
     String txtDiferencia = "";
     /** Creates new form frmCerrarCaja */
     
-    public frmCerrarCaja() {
-        
+    public frmCerrarCaja() {       
+        //paar reimprimir
+        //main.idUser = "14";
+        //idCajaAbierta = "441";     
         
         initComponents();
        
-        txtUsuario.setText(main.nameUser);
-        ArrayList<clases.clsCaja> dataCaja = objCaja.consultarDataCajaAbierta(main.idUser);
+        txtUsuario.setText(main.nameUser);    
         
+        /*Esta cambie para reimprimir*/
+        ArrayList<clases.clsCaja> dataCaja = objCaja.consultarDataCajaAbierta(main.idUser);
+               
         txtValorApertura.setText(""+dataCaja.get(0).getValorApertura());
         idCajaAbierta = dataCaja.get(0).getIdCajaOperacion();        
         
@@ -310,6 +314,8 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
     else
     {
+        /*BORRO ESTA PORQUE SOLOE STA VALIDANDO LA CAJA ABIERTA POR EL USUARIO, 
+         PERO MEJOR SERIA YA ENVIARLE EL ID DE CAJA BIERTA O LA Q SE ESTA UTILIZANDO*/
         boolean exito = objCaja.registrarCierreCaja(index.main.idUser, 
                                                         ""+(Double.parseDouble(txtFacturado) - Double.parseDouble(txtDevoluciones)), 
                                                         this.txtValorContado.getText().toString(), 
@@ -319,6 +325,16 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                                         Double.parseDouble(txtEgresos),
                                                         Double.parseDouble(txtRecibosPago),
                                                         Double.parseDouble(txtIngresos));
+        /*boolean exito = objCaja.registrarCierreCaja2(index.main.idUser, 
+                                                        ""+(Double.parseDouble(txtFacturado) - Double.parseDouble(txtDevoluciones)), 
+                                                        this.txtValorContado.getText().toString(), 
+                                                        this.txtDiferencia, 
+                                                        Double.parseDouble(this.txtPagos),
+                                                        Double.parseDouble(this.txtPagosFactura),
+                                                        Double.parseDouble(txtEgresos),
+                                                        Double.parseDouble(txtRecibosPago),
+                                                        Double.parseDouble(txtIngresos),
+                                                        this.idCajaAbierta);*/
         if(exito)
         {
             //OBTENER IDCAJERO
