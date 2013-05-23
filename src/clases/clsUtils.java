@@ -10,13 +10,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author CKaiser
  */
 public class clsUtils {
-    
     public String versionID = "1.17";
     public String versionFecha = " (2013.05.18.15.39)";
     public String version = versionID + versionFecha;
@@ -85,8 +83,7 @@ public class clsUtils {
     {
         /*numero = numero*100;
         numero = (int) numero;
-        numero = (numero/100);*/
-        
+        numero = (numero/100);*/        
         Locale.setDefault(Locale.ENGLISH);       
         DecimalFormat formateador = new DecimalFormat("####.##");
         

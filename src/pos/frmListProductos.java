@@ -22,6 +22,7 @@ import javax.swing.table.TableColumn;
 import producto.frmCompras;
 import producto.frmComprasModificar;
 import pos.frmInventario;
+import producto.frmGuiaRemision;
 import producto.frmKardex;
 import producto.frmProductosDel;
 import producto.frmProductosMod;
@@ -316,6 +317,16 @@ public class frmListProductos extends javax.swing.JDialog {
                 frmInventario.controlExistencia = control_existencia;
                 frmInventario.txtCosto.setText(costo);
             }
+            else if(p_tipo.equals("13"))
+            {
+                frmGuiaRemision.codigoProducto = Integer.parseInt(codigo);
+                frmGuiaRemision.txtCodigoProducto.setText(codProducto);
+                frmGuiaRemision.txtNombreProducto.setText(descripcion);
+                frmGuiaRemision.txtStock.setText(stock);
+                //frmGuiaRemision.txtDescuentoUnidad.setText(descuento);
+                frmGuiaRemision.controlExistencia = control_existencia;
+                frmGuiaRemision.txtCosto.setText(costo);
+            }
             //CARGAR PRECIOS DEL PRODUCTO
            
             ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(codigo);        
@@ -349,6 +360,10 @@ public class frmListProductos extends javax.swing.JDialog {
                 {
                     frmInventario.cmbPrecio.removeAllItems();
                 }
+                else if(p_tipo.equals("13"))
+                {
+                    frmGuiaRemision.cmbPrecio.removeAllItems();
+                }
                 
                 for(int i=0; i<dataPrecios.size(); i++)
                 {
@@ -381,6 +396,10 @@ public class frmListProductos extends javax.swing.JDialog {
                     {
                         frmInventario.cmbPrecio.addItem(oItem);
                     }
+                    else if(p_tipo.equals("13"))
+                    {
+                        frmGuiaRemision.cmbPrecio.addItem(oItem);
+                    }
                 }
             }
             catch(NullPointerException e)
@@ -412,6 +431,11 @@ public class frmListProductos extends javax.swing.JDialog {
             {                
                 frmInventario.txtCantidad.setEditable(true);
                 frmInventario.txtCantidad.requestFocus();
+            }
+             else if(p_tipo.equals("13"))
+            {                
+                frmGuiaRemision.txtCantidad.setEditable(true);
+                frmGuiaRemision.txtCantidad.requestFocus();
             }
                 
             dispose();

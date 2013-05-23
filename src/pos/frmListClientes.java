@@ -23,6 +23,7 @@ import pago.frmPagoAdd;
 import pago.frmPagoAddOtros;
 import pago.frmPagoHistoricoAdd;
 import pago.frmPagoNuevoAdd;
+import producto.frmGuiaRemision;
 
 /**
  *
@@ -249,6 +250,18 @@ public class frmListClientes extends javax.swing.JDialog {
                 frmPagoNuevoAdd.codigoCliente = codigo;
                 frmPagoNuevoAdd.txtCedula.setText(cedula);
                 frmPagoNuevoAdd.txtNombreCliente.setText(nombre);                 
+           }
+           else if(p_tipo.equals("15"))
+           {
+                frmGuiaRemision.codigoDestinatario = Integer.parseInt(codigo);
+                frmGuiaRemision.txtCedulaDestinatario.setText(cedula);
+                frmGuiaRemision.txtDestinatario.setText(nombre);
+           }
+           else if(p_tipo.equals("16"))
+           {
+                frmGuiaRemision.codigoTransporte = Integer.parseInt(codigo);
+                frmGuiaRemision.txtCedulaTransporte.setText(cedula);
+                frmGuiaRemision.txtNombreTransporte.setText(nombre);
            }
            dispose();
         }
