@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public class frmPagosDeuda extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
     /** Creates new form frmPagosDeuda */
-    public frmPagosDeuda(String va1, String va2, String valor, String saldo) {
+    public frmPagosDeuda(String va1, String va2, String valor, String saldo, String fecha_compra) {
         initComponents();
         
         Double totalDeuda = 0.00;

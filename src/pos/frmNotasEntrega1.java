@@ -10,6 +10,7 @@
  */
 package pos;
 
+import clases.clsAbono;
 import clases.clsAuditoria;
 import clases.clsCabecera;
 import clases.clsCaja;
@@ -68,6 +69,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     clsKardex objKardex = new clsKardex();
     clsReporte objReporte = new clsReporte();
     clsParametros objParametros = new clsParametros();
+    clsAbono objAbono = new clsAbono();
     
     Double valorInteresCuotaInicial = objParametros.consultaPorcentajeCuotaInicial(); //el 30 % del valor es  la cuota iniciañ
     //Double valorInteresTresMeses = 9.00;
@@ -1375,6 +1377,12 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             {
                 try
                 {                          
+                    Double saldoIntereses = 0.00;
+                    Double cuota = 0.00;
+                    saldoIntereses = Double.parseDouble(txtSaldo.getText());
+                    cuota = Double.parseDouble(txtCuota.getText());
+                    
+                    
                     int maxData = dtmData.getRowCount();
                    
                     //System.out.println("S: " + ultmFactura);
@@ -1384,7 +1392,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
-                                    txtSaldo.getText(), txtEfectivo.getText(), 
+                                    saldoIntereses, txtEfectivo.getText(), 
                                     descuentoF, ivaF, txtNotaEntrega.getText(), 
                                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                                     txtTarifaIVA1.getText(),
@@ -1398,11 +1406,69 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
 
                         objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
-                                                    txtSaldo.getText(), txtFechaCancelacion.getText(),
+                                                    saldoIntereses, txtFechaCancelacion.getText(),
                                                     objPlazoSelect.getCodigo());
                         
                         objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
-                                                    txtCuota.getText());
+                                                    cuota);
+                        
+                        
+                        ////*AQUI VA EL REGISTRO DE LOS PAGOS**////
+                        Double numeroPagos = saldoIntereses / cuota;
+                        DecimalFormat formateador = new DecimalFormat("####");
+                        Integer numeroPagosRedondeado = Integer.parseInt(formateador.format(numeroPagos)); 
+                        
+                        /*DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date1= txtFechaVenta.getDate();
+                        String fechaVenta = df2.format(date1);*/
+                        
+                       /* Date date1= new Date();
+                        Calendar fecha = Calendar.getInstance();
+                        fecha.setTime(date1); */
+                        
+                        //Date date1= new Date();
+                        Calendar fecha = Calendar.getInstance();
+                        fecha.setTime(date1);
+                        //clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+                        String idCuota = objCuotaSelect.getCodigo();
+    
+    
+                        for(int i=0; i<numeroPagosRedondeado; i++)
+                        {           
+                            if(idCuota.equals("1"))       
+                            {
+                                //DIARIO
+                                fecha.add(Calendar.DAY_OF_MONTH, 1); 
+                            }
+                            else if(idCuota.equals("2"))  
+                            {
+                                //SEMANAL
+                                fecha.add(Calendar.DAY_OF_MONTH, 7);
+                            }
+                            else if(idCuota.equals("3"))  
+                            {
+                                //QUINCENAL
+                                fecha.add(Calendar.DAY_OF_MONTH, 15); 
+                            }
+                            else if(idCuota.equals("4"))  
+                            {
+                                //MENSUAL
+                                fecha.add(Calendar.MONTH, 1);
+                            }
+
+                            Date fecSegCarta = fecha.getTime();
+                            date1 = fecSegCarta;
+                            //DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                            String fecha2 = df2.format(fecSegCarta);
+
+                            //Object[] nuevaFila = {i, fecha2, valor};
+                            
+                            objAbono.insertarAbono(i+1, fecha2, cuota, ultmFactura);
+                            
+                            
+                            //dtmData.addRow(nuevaFila);
+                            //totalDeuda = totalDeuda + Double.parseDouble(valor);
+                        }
                         
                     }
                     else
@@ -1411,7 +1477,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
-                                    txtSaldo.getText(), txtTotal.getText(), 
+                                    saldoIntereses, txtTotal.getText(), 
                                     descuentoF, ivaF, txtNotaEntrega.getText(), 
                                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                                     txtTarifaIVA1.getText(),
@@ -2333,9 +2399,13 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     String idPlazo = objPlazoSelect.getCodigo();
     
     clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-    String idCuota = objCuotaSelect.getCodigo();
+    String idCuota = objCuotaSelect.getCodigo(); 
     
-    frmPagosDeuda formulario = new frmPagosDeuda(idPlazo, idCuota, txtCuota.getText(), txtSaldo.getText());
+    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+    Date date1= txtFechaVenta.getDate();
+    String fechaVenta = df2.format(date1);
+    
+    frmPagosDeuda formulario = new frmPagosDeuda(idPlazo, idCuota, txtCuota.getText(), txtSaldo.getText(), fechaVenta);
     mostrarJInternalCentrado(formulario); 
 }//GEN-LAST:event_jButton2ActionPerformed
 

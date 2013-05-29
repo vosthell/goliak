@@ -774,7 +774,7 @@ public class clsCabecera {
     
     public boolean insertarRegistroNotaDeEntrega(int idCliente, String idUser, String idCajero, 
             String total, String idEmpresa, String cajaAbierta, String comentario, 
-            String saldo, String efectivo, String descuento, String iva, String factura, 
+            Double saldo, String efectivo, String descuento, String iva, String factura, 
             String tarifaIva, String tarifaCero, 
             String tarifaIva2, String iva2, String total2, String codigo_vendedor,
             String fechaVenta, String tipo)
@@ -907,7 +907,7 @@ public class clsCabecera {
         return exito;
     } 
     
-    public boolean insertarCtaCobrarNotaEntrega(int ultFactura, String comentario, String saldo, String p_fecha_cancelacion, String idPlazo)
+    public boolean insertarCtaCobrarNotaEntrega(int ultFactura, String comentario, Double saldo, String p_fecha_cancelacion, String idPlazo)
     {       
         boolean exito = false;
         try
@@ -972,7 +972,7 @@ public class clsCabecera {
         return exito;
     }
     
-    public boolean insertarValorCuotaNotaEntrega(int ultFactura, String idCuota, String valor)
+    public boolean insertarValorCuotaNotaEntrega(int ultFactura, String idCuota, Double valor)
     {       
         boolean exito = false;
         try
