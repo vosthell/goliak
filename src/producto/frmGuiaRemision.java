@@ -994,7 +994,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     int maxData = dtmData.getRowCount();
                    
                    
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                        /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
                                     txtSaldo.getText(), txtTotal.getText(), 
@@ -1004,7 +1004,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "D");   
+                                    fechaVenta, "D");   */
                         /***********************************************/                    
                     
                     int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
@@ -1024,8 +1024,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         objKardex.insertarKardex(idProducto, 
                                 "GUIA DE REMISION, ID GUIA DE REMISION: " + ultmFactura, 
                                 "-" + cantidad,
-                                txtCedula.getText(),
-                                txtNombreCliente.getText(),
+                                "txtCedula.getText()",
+                                "txtNombreCliente.getText()",
                                 precio,
                                 costo,
                                 "EGRESO",
@@ -1038,7 +1038,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     p_exito = true;
                     //obtenerFacturaQueToca();
                     objAuditoria.insertarAuditoria("frmGuiaRemision", "INGRESO DE GUIA DE REMISION:"
-                             + txtNotaEntrega.getText(), "3");
+                             + "txtNotaEntrega.getText()", "3");
                 }
                 catch(Exception e)
                 {

@@ -1496,13 +1496,13 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String ivaF = txtIVA.getText().toString();
         clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
         
-        
+        double saldo = Double.parseDouble(txtSaldo.getText());
         /*if(!this.chkAnulada.isSelected())        
         {  */              
             exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                     txtTotal.getText(), main.idEmpresa, 
                     "0", txtComentario.getText(), 
-                    txtSaldo.getText(), txtEfectivo.getText(), 
+                    saldo, txtEfectivo.getText(), 
                     descuentoF, ivaF, txtNotaEntrega.getText(), 
                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                     txtTarifaIVA1.getText(),
@@ -1524,10 +1524,10 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
 
                         objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
-                                                    txtSaldo.getText(), txtFechaCancelacion.getText(),
+                                                    saldo, txtFechaCancelacion.getText(),
                                                     objPlazoSelect.getCodigo());
                         objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
-                                                    txtCuota.getText());
+                                                    Double.parseDouble(txtCuota.getText()));
                     }
                     for(int i=0; i<maxData; i++)
                     {                       

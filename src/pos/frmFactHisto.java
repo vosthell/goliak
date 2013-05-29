@@ -724,7 +724,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                                     calcular_fecha_cancelacion());
                     
                     objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
-                                                    txtCuota.getText().toString());
+                                                    Double.parseDouble(txtCuota.getText()));
                     //System.out.println("S: "+ultmFactura);
                     for(int i=0; i<maxData; i++)
                     {                       
