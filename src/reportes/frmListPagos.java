@@ -428,18 +428,42 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 {
                     llenarData(dataPago, "NE");
                 }*/
-                ArrayList<clsPago> dataPago = objPago.consultaDataPagosFecha(fechaInicio, fechaFin); 
-                llenarData(dataPago, "NE");
+                try{
+                    ArrayList<clsPago> dataPago = objPago.consultaDataPagosFecha(fechaInicio, fechaFin);
+                    if(!dataPago.isEmpty())
+                    {
+                        llenarData(dataPago, "NE");
+                    }
+                } 
+                catch(Exception ex)
+                {}
+                
             }       
             if(chkFacturas.isSelected())
             {  
-                ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFacturaFecha(fechaInicio, fechaFin);                    
-                llenarData(dataPago2, "FACTURA");    
+                try
+                {    
+                    ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFacturaFecha(fechaInicio, fechaFin);                    
+                    if(!dataPago2.isEmpty())
+                    {
+                        llenarData(dataPago2, "FACTURA");
+                    } 
+                } 
+                catch(Exception ex)
+                {}
             }     
             if(chkVarios.isSelected())
             {  
-                ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);                     
-                llenarData(dataPago3, "OTROS");    
+                try{
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);
+                                    
+                    if(!dataPago3.isEmpty())
+                    {
+                        llenarData(dataPago3, "OTROS");
+                    }   
+                } 
+                catch(Exception ex)
+                {}
             }   
             
             
@@ -454,18 +478,44 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             
             if(chkNE.isSelected())
             {  
-                ArrayList<clsPago> dataPago = objPago.consultaDataPagosRegistroFecha(fechaInicio, fechaFin); 
-                llenarData(dataPago, "NE");
+                try
+                {
+                    ArrayList<clsPago> dataPago = objPago.consultaDataPagosRegistroFecha(fechaInicio, fechaFin);
+                 
+                    if(!dataPago.isEmpty())
+                    {
+                        llenarData(dataPago, "NE");
+                    }
+                } 
+                catch(Exception ex)
+                {}
+                
             }       
             if(chkFacturas.isSelected())
             {  
-                ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFacturaRegistroFecha(fechaInicio, fechaFin);                    
-                llenarData(dataPago2, "FACTURA");    
+                try{
+                    ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFacturaRegistroFecha(fechaInicio, fechaFin);
+                                
+                    if(!dataPago2.isEmpty())
+                    {
+                        llenarData(dataPago2, "FACTURA");
+                    }    
+                } 
+                catch(Exception ex)
+                {}
             }     
             if(chkVarios.isSelected())
             {  
-                ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);                     
-                llenarData(dataPago3, "OTROS");    
+                try{
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);
+                                    
+                    if(!dataPago3.isEmpty())
+                    {
+                        llenarData(dataPago3, "OTROS");
+                    }   
+                } 
+                catch(Exception ex)
+                {}
             }   
             
         }
@@ -473,18 +523,41 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         {
             if(chkNE.isSelected())
             {  
-                ArrayList<clsPago> dataPago = objPago.consultaDataPagos();                      
-                llenarData(dataPago, "NE");    
+                try{
+                    ArrayList<clsPago> dataPago = objPago.consultaDataPagos();
+                                      
+                    if(!dataPago.isEmpty())
+                    {
+                        llenarData(dataPago, "NE");
+                    }  
+                } 
+                catch(Exception ex)
+                {}
             }       
             if(chkFacturas.isSelected())
             {  
-                ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFactura();                      
-                llenarData(dataPago2, "FACTURA");    
+                try{
+                    ArrayList<clsPago> dataPago2 = objPago.consultaDataPagosFactura();
+                                     
+                    if(!dataPago2.isEmpty())
+                    {
+                        llenarData(dataPago2, "FACTURA");
+                    }    
+                  } 
+                catch(Exception ex)
+                {}
             }     
             if(chkVarios.isSelected())
             {  
-                ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtros();                      
-                llenarData(dataPago3, "OTROS");    
+                try{
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtros();                      
+                if(!dataPago3.isEmpty())
+                {
+                    llenarData(dataPago3, "OTROS");
+                }  
+                 } 
+                catch(Exception ex)
+                {}
             }     
         }
     }  
