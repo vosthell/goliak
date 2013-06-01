@@ -46,6 +46,7 @@ public class clsCabecera {
     private String fecha_cancelacion_sistema;
     private int numero_total_notas_entrega;
     private int vendedor;
+    private double porcentaje_interes;
     
     public int getIdCabeceraMovi() {
         return idCabeceraMovi;
@@ -293,6 +294,14 @@ public class clsCabecera {
     
     public void setVendedor(int vendedor) {
         this.vendedor = vendedor;
+    }
+    
+    public Double getPorcentajeInteres() {
+        return porcentaje_interes;
+    }
+    
+    public void setPorcentajeInteres(Double porcentaje_interes) {
+        this.porcentaje_interes = porcentaje_interes;
     }
     
     
@@ -777,7 +786,7 @@ public class clsCabecera {
             Double saldo, String efectivo, String descuento, String iva, String factura, 
             String tarifaIva, String tarifaCero, 
             String tarifaIva2, String iva2, String total2, String codigo_vendedor,
-            String fechaVenta, String tipo)
+            String fechaVenta, String tipo, String porcentaje_interes)
     {       
         boolean exito = false;
         try
@@ -786,11 +795,11 @@ public class clsCabecera {
             sql = "INSERT INTO ck_notas_de_entrega(codigo, id_usuario, id_cajero, total, "
                     + " fecha, id_empresa, id_caja_operacion, "
                     + " comentario, saldo, efectivo, descuento, iva, fact_referencia, base_tarifa_0, base_tarifa_iva, "
-                    + " total_interes, iva_interes, base_tarifa_iva_interes, vendedor, tipo)"                   
+                    + " total_interes, iva_interes, base_tarifa_iva_interes, vendedor, tipo, porcentaje_interes)"                   
                     + " VALUES(" + idCliente + ", "+idUser+", "+idCajero+", "+total
                     + " , '" + fechaVenta + "', "+idEmpresa+", "+cajaAbierta+", "
                     + " '"+comentario+"', "+saldo+", "+efectivo+", "+descuento+", "+iva+", '"+factura+"', "+tarifaCero+", "+tarifaIva+","
-                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "')";           
+                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "', " + porcentaje_interes + ")";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -1364,7 +1373,7 @@ public class clsCabecera {
                             + " a.estado, total, saldo, efectivo,  "
                             + " fecha, fact_referencia, comentario,  "
                             + " id_cajero, id_empresa, id_caja_operacion, "
-                            + " descuento, iva, base_tarifa_0, base_tarifa_iva "              
+                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes "              
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
@@ -1385,7 +1394,8 @@ public class clsCabecera {
                 oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
                 oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
                 oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));      
-                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));                
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
                 
                 data.add(oListaTemporal);
             }

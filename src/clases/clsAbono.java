@@ -102,3 +102,19 @@ public class clsAbono {
         return exito;
     } 
 }
+
+
+/*select id_cabecera_movi, total_interes,efectivo, total-efectivo, round(CAST( ((total_interes-efectivo)-(total-efectivo))*100/(total-efectivo) AS NUMERIC ),2 )
+from ck_notas_de_entrega
+where tipo='C'
+and (total-efectivo)>0
+
+
+UPDATE ck_notas_de_entrega
+set porcentaje_interes = round(CAST( ((total_interes-efectivo)-(total-efectivo))*100/(total-efectivo) AS NUMERIC ),2 )
+where tipo='C'
+and (total-efectivo)>0
+
+UPDATE ck_notas_de_entrega
+set porcentaje_interes = 0.00
+where porcentaje_interes is null*/

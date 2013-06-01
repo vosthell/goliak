@@ -298,7 +298,7 @@ public class frmNotasEntrega extends javax.swing.JDialog {
         jLabel25 = new javax.swing.JLabel();
         cmbPlazo = new javax.swing.JComboBox();
         jLabel28 = new javax.swing.JLabel();
-        txtInteres = new javax.swing.JTextField();
+        txtInteresPorcentaje = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         txtInteresValor = new javax.swing.JTextField();
@@ -500,8 +500,8 @@ public class frmNotasEntrega extends javax.swing.JDialog {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
-        txtCantidad.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtCantidad.setEditable(false);
+        txtCantidad.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtCantidad.setFont(resourceMap.getFont("txtCodigoProducto.font")); // NOI18N
         txtCantidad.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtCantidad.setText(resourceMap.getString("txtCantidad.text")); // NOI18N
@@ -521,8 +521,8 @@ public class frmNotasEntrega extends javax.swing.JDialog {
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
-        txtPrecio.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtPrecio.setEditable(false);
+        txtPrecio.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtPrecio.setFont(resourceMap.getFont("txtCodigoProducto.font")); // NOI18N
         txtPrecio.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtPrecio.setText(resourceMap.getString("txtPrecio.text")); // NOI18N
@@ -681,10 +681,10 @@ public class frmNotasEntrega extends javax.swing.JDialog {
         jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
         jLabel28.setName("jLabel28"); // NOI18N
 
-        txtInteres.setEditable(false);
-        txtInteres.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteres.setText(resourceMap.getString("txtInteres.text")); // NOI18N
-        txtInteres.setName("txtInteres"); // NOI18N
+        txtInteresPorcentaje.setEditable(false);
+        txtInteresPorcentaje.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtInteresPorcentaje.setText(resourceMap.getString("txtInteresPorcentaje.text")); // NOI18N
+        txtInteresPorcentaje.setName("txtInteresPorcentaje"); // NOI18N
 
         jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
         jLabel29.setName("jLabel29"); // NOI18N
@@ -754,7 +754,7 @@ public class frmNotasEntrega extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel28)
                         .addGap(18, 18, 18)
-                        .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -794,7 +794,7 @@ public class frmNotasEntrega extends javax.swing.JDialog {
                     .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24)
                     .addComponent(jLabel28)
-                    .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
                     .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1342,7 +1342,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtIVA1.getText(),
                     txtTotalFinal.getText(),
                     objVendedorSelect.getCodigo(),
-                    fechaVenta, "PILA QUE NO VALE");      
+                    fechaVenta, "PILA QUE NO VALE", txtInteresPorcentaje.getText());      
 
             if(exito)
             {
@@ -2108,31 +2108,31 @@ void calcularCuotas()
     if(idPlazo.equals("1"))
     {
         interes = valorInteresTresMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 6;
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
         interes = valorInteresDoceMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
         interes = 0.00;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
@@ -2356,7 +2356,7 @@ private void txtCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private com.toedter.calendar.JDateChooser txtFechaVenta;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtIVA1;
-    private javax.swing.JTextField txtInteres;
+    private javax.swing.JTextField txtInteresPorcentaje;
     private javax.swing.JTextField txtInteresValor;
     public static javax.swing.JTextField txtNombreCliente;
     public static javax.swing.JTextField txtNombreProducto;

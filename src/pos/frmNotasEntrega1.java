@@ -304,7 +304,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel25 = new javax.swing.JLabel();
         cmbPlazo = new javax.swing.JComboBox();
         jLabel28 = new javax.swing.JLabel();
-        txtInteres = new javax.swing.JTextField();
+        txtInteresPorcentaje = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         txtSaldoDeuda = new javax.swing.JTextField();
@@ -483,9 +483,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                                 .addGap(14, 14, 14)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)))
                     .addComponent(btnMostrarArturo, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -691,10 +689,10 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
         jLabel28.setName("jLabel28"); // NOI18N
 
-        txtInteres.setEditable(false);
-        txtInteres.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteres.setText(resourceMap.getString("txtInteres.text")); // NOI18N
-        txtInteres.setName("txtInteres"); // NOI18N
+        txtInteresPorcentaje.setEditable(false);
+        txtInteresPorcentaje.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtInteresPorcentaje.setText(resourceMap.getString("txtInteresPorcentaje.text")); // NOI18N
+        txtInteresPorcentaje.setName("txtInteresPorcentaje"); // NOI18N
 
         jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
         jLabel29.setName("jLabel29"); // NOI18N
@@ -743,7 +741,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addComponent(jLabel28)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtInteres)
+                    .addComponent(txtInteresPorcentaje)
                     .addComponent(txtEfectivo)
                     .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -776,7 +774,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel28)
-                            .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel25)
@@ -795,7 +793,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15)
                             .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jLabel16.setFont(resourceMap.getFont("jLabel16.font")); // NOI18N
@@ -944,7 +942,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtCosto)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1030,7 +1028,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+                                .addComponent(txtTotal)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(txtTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1107,7 +1105,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(jLabel22)
                             .addGap(18, 18, 18)
                             .addComponent(lblUsuario)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chkAnulada)
                             .addGap(18, 18, 18)
                             .addComponent(btnGuardar)
@@ -1118,12 +1116,12 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1132,7 +1130,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -1399,7 +1397,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "C");   
+                                    fechaVenta, "C", txtInteresPorcentaje.getText());   
                         /***********************************************/
                          int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
@@ -1484,7 +1482,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "D");   
+                                    fechaVenta, "D", "0.00");   
                         /***********************************************/
                     
                     }
@@ -2085,31 +2083,31 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     if(idPlazo.equals("1"))
     {
         interes = valorInteresTresMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 6;
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
         interes = valorInteresDoceMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
         interes = 0.00;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
@@ -2254,32 +2252,32 @@ void calcularCuotas()
     if(idPlazo.equals("1"))
     {
         interes = valorInteresTresMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 6;
         
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
         interes = valorInteresDoceMeses;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
         interes = 0.00;
-        txtInteres.setText("" + interes);
+        txtInteresPorcentaje.setText("" + interes);
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
@@ -2495,7 +2493,7 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private com.toedter.calendar.JDateChooser txtFechaVenta;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtIVA1;
-    private javax.swing.JTextField txtInteres;
+    private javax.swing.JTextField txtInteresPorcentaje;
     private javax.swing.JTextField txtInteresValor;
     public static javax.swing.JTextField txtNombreCliente;
     public static javax.swing.JTextField txtNombreProducto;
