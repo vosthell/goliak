@@ -212,7 +212,7 @@ public class clsCaja {
                     + " apertura, fecha_apertura, cierre, "
                     + " fecha_cierre, valor_apertura"
                     + " FROM ck_caja_operacion"
-                    + " WHERE id_caja_operacion = 441";*/
+                    + " WHERE id_caja_operacion = 359";*/
                     //+ " AND cierre='N'"
                     //+ " AND apertura='S'";
             System.out.println(sql);

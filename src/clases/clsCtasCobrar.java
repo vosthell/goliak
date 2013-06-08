@@ -21,6 +21,7 @@ public class clsCtasCobrar {
     private String valor;
     private String valor_actual;
     private String id_cabecera_movi;
+    private Double porcentaje_interes;
     
     public String getIdCtaCobrar() {
         return id_cta_cobrar;
@@ -70,6 +71,14 @@ public class clsCtasCobrar {
         this.id_cabecera_movi = id_cabecera_movi;
     }
     
+    public Double getPorcentajeInteres() {
+        return porcentaje_interes;
+    }
+    
+    public void setPorcentajeInteres(Double porcentaje_interes) {
+        this.porcentaje_interes = porcentaje_interes;
+    }
+    
     public ArrayList<clsCtasCobrar> consultaCtasCobrarNotasEntrega(String idCliente)
     {
         ArrayList <clsCtasCobrar> data=new ArrayList<clsCtasCobrar>();  
@@ -77,7 +86,8 @@ public class clsCtasCobrar {
             bd.conectarBaseDeDatos();
             sql = "select ck_cta_cobrar.id_cta_cobrar, fact_referencia, ck_cta_cobrar.descripcion, "
                     + " ck_cta_cobrar.valor valor, ck_cta_cobrar.valor_actual valor_actual, "
-                    + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo"
+                    + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo, "
+                    + " ck_notas_de_entrega.porcentaje_interes porc"
                     + " FROM ck_cta_cobrar  "
                     + " INNER JOIN ck_notas_de_entrega ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
                     + " WHERE ck_notas_de_entrega.codigo = " + idCliente
@@ -97,7 +107,8 @@ public class clsCtasCobrar {
                 oListaTemporal.setValor(bd.resultado.getString("valor"));
                 oListaTemporal.setValorActual(bd.resultado.getString("valor_actual"));
                 oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
-                
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porc"));
+                        
                 data.add(oListaTemporal);
             }
             bd.resultado.close();
@@ -157,10 +168,9 @@ public class clsCtasCobrar {
             bd.conectarBaseDeDatos();
             sql = "select ck_cta_cobrar.id_cta_cobrar, fact_referencia, ck_cta_cobrar.descripcion, "
                     + " ck_cta_cobrar.valor valor, ck_cta_cobrar.valor_actual valor_actual, "
-                    + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo"
+                    + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo, ck_notas_de_entrega.porcentaje_interes porc"
                     + " FROM ck_cta_cobrar  "
-                    + " INNER JOIN ck_notas_de_entrega"
-                    + " ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
+                    + " INNER JOIN ck_notas_de_entrega ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
                     + " WHERE ck_notas_de_entrega.codigo = " + idCliente
                     + " AND id_caja_operacion=0"
                     + " AND ck_notas_de_entrega.estado = 'A'"
@@ -178,6 +188,7 @@ public class clsCtasCobrar {
                 oListaTemporal.setValor(bd.resultado.getString("valor"));
                 oListaTemporal.setValorActual(bd.resultado.getString("valor_actual"));
                 oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porc"));
                 
                 data.add(oListaTemporal);
             }
@@ -217,6 +228,7 @@ public class clsCtasCobrar {
                 oListaTemporal.setValor(bd.resultado.getString("valor"));
                 oListaTemporal.setValorActual(bd.resultado.getString("valor_actual"));
                 oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
+                oListaTemporal.setPorcentajeInteres(0.00);
                 
                 data.add(oListaTemporal);
             }
@@ -257,6 +269,7 @@ public class clsCtasCobrar {
                 oListaTemporal.setValor(bd.resultado.getString("valor"));
                 oListaTemporal.setValorActual(bd.resultado.getString("valor_actual"));
                 oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
+                oListaTemporal.setPorcentajeInteres(0.00);
                 
                 data.add(oListaTemporal);
             }

@@ -70,7 +70,7 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
         dtmData.addColumn("idCtaCobrar");
         dtmData.addColumn("idCabecera");
         dtmData.addColumn("TIPO DE DOCUMENTO");        
-        
+        dtmData.addColumn("INTERES");      
         List<String> dataCedula = objCliente.consultarCedulas(); 
         SelectAllUtils.install(txtCedula);
         ListDataIntelliHints intellihints = new ListDataIntelliHints(txtCedula, dataCedula);
@@ -681,10 +681,8 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      txtDescripcion.setText(""+tblData.getValueAt(fila,2));
      saldoActual = Double.parseDouble(""+tblData.getValueAt(fila,4));
      txtTipoDocumento.setText(""+tblData.getValueAt(fila,7));
-     /*OBTENER EL PRIMER PAGO PENDIENTE*/
-     
-     
-     
+          
+      /*OBTENER EL PRIMER PAGO PENDIENTE*/
      ArrayList<clsAbono> dataPagoPendiente = objAbono.obtenerDataPagoPendiente(Integer.parseInt(tblData.getValueAt(fila,6).toString()));
     
      String fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
@@ -696,10 +694,19 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     {
          txtFechaAcordada.setText(fecha_acordada);
     }
-    txtDias.setText("" + obtenerDias(fecha_acordada));
+    double semanas_atraso = obtenerDias(fecha_acordada)/7;
+    txtDias.setText("" + semanas_atraso);
+    
+    double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
+     
+     txtInteres.setText("" + objUtils.redondear(interes_semanal*semanas_atraso));
+    
+    
     txtValorAbono.setText("" + dataPagoPendiente.get(0).getValorAbono());
     
      txtValor.setEditable(true);
+     txtValor.setText("true");//BM-0435
+     
      txtReferencia.setEditable(true);
      txtValor.requestFocus();
 }//GEN-LAST:event_tblDataMouseClicked
@@ -844,7 +851,7 @@ public void llenarDataCliente()
     else
     {
         //objUtils.limpiarJTable(dtmData);
-        this.txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
+        txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
         txtDireccion.setText(dataCliente.get(0).getDireccion());
         txtTelefono.setText(dataCliente.get(0).getTlfCelular() + " - " + dataCliente.get(0).getTlfConvencional());
         if(dataCliente.get(0).getVerificadoDeudas().equals("N"))
@@ -909,7 +916,8 @@ public void llenarDataCliente()
                                         objUtils.redondear(valorActual),
                                         dataCtasCobrar.get(i).getIdCtaCobrar(),
                                         dataCtasCobrar.get(i).getIdCabeceraMovi(),
-                                        "NOTA DE ENTREGA"};
+                                        "NOTA DE ENTREGA",
+                                        dataCtasCobrar.get(i).getPorcentajeInteres()};
                  dtmData.addRow(nuevaFila);
                  totalDeudas = totalDeudas + valorActual;
             }   

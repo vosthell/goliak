@@ -57,7 +57,7 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
     public frmCerrarCaja() {       
         //paar reimprimir
         //main.idUser = "14";
-        //idCajaAbierta = "441";     
+        //idCajaAbierta = "359";     
         
         initComponents();
        
