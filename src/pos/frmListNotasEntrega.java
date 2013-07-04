@@ -491,9 +491,9 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         
         if (columna == 5)
         {
-            /*frmNotasEntregaModificar formulario = new frmNotasEntregaModificar(idCabecera);
+            frmNotasEntregaModificar formulario = new frmNotasEntregaModificar(idCabecera);
             mostrarJInternalCentrado(formulario);
-            dispose();*/
+            dispose();
         }
     }
 }//GEN-LAST:event_tblDataMouseClicked

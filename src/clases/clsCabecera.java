@@ -813,6 +813,53 @@ public class clsCabecera {
         return exito;
     } 
     
+    public boolean modificarRegistroNotaDeEntrega(int idCabecera, int idCliente, String idUser, String idCajero, 
+            String total, String idEmpresa, String cajaAbierta, String comentario, 
+            Double saldo, String efectivo, String descuento, String iva, String factura, 
+            String tarifaIva, String tarifaCero, 
+            String tarifaIva2, String iva2, String total2, String codigo_vendedor,
+            String fechaVenta, String tipo, String porcentaje_interes)
+    {       
+        boolean exito = false;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_notas_de_entrega"
+                    + " SET codigo = " + idCliente + ", "
+                        + " id_usuario = "+idUser+", "
+                        + " id_cajero = "+idCajero+", "
+                        + " total = "+total + ", "
+                        + " fecha = '" + fechaVenta + "', "
+                        + " id_empresa = "+idEmpresa+", "
+                        + " id_caja_operacion = "+cajaAbierta+", "
+                        + " comentario = '"+comentario+"',"
+                        + " saldo = "+saldo+", "
+                        + " efectivo = "+efectivo+", "
+                        + " descuento = "+descuento+", "
+                        + " iva = "+iva+", "
+                        + " fact_referencia = '"+factura+"', "
+                        + " base_tarifa_0 = "+tarifaCero+", "
+                        + " base_tarifa_iva = "+total2+", "
+                        + " total_interes = "+tarifaIva+", "
+                        + " iva_interes = " + iva2+ ", "
+                        + " base_tarifa_iva_interes = " + tarifaIva2+", "
+                        + " vendedor = " + codigo_vendedor + ", "
+                        + " tipo = '" + tipo + "',"
+                        + " porcentaje_interes = " + porcentaje_interes
+                    + " WHERE  id_cabecera_movi = " + idCabecera;
+            //System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+    
     public boolean insertarRegistroNotaEntregaAnulada(String idUser, 
             String idCajero, 
             String idEmpresa, 
@@ -821,6 +868,7 @@ public class clsCabecera {
             String factura,            
             String fechaVenta)
     {       
+        //EL ESTADO "N" ES DE ANULADA
         boolean exito = false;
         try
         {           
@@ -832,6 +880,43 @@ public class clsCabecera {
                     + " '" + fechaVenta + "', "+idEmpresa+", "+cajaAbierta+", "
                     + " '"+comentario+"', '"+factura+"', 'N')";           
             System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }
+    
+     public boolean modificarRegistroNotaEntregaAnulada(String idUser, 
+            String idCajero, 
+            String idEmpresa, 
+            String cajaAbierta, 
+            String comentario, 
+            String factura,            
+            String fechaVenta,
+            int idCabecera)
+    {       
+        //EL ESTADO "N" ES DE ANULADA
+        boolean exito = false;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_notas_de_entrega"
+                    + " SET id_usuario = " + idUser + ", "
+                        + " id_cajero = " + idCajero + ", "
+                        + " fecha = '" + fechaVenta + "', "
+                        + " id_empresa = " + idEmpresa + ", "
+                        + " id_caja_operacion = " + cajaAbierta + ", "
+                        + " comentario = '" + comentario + "', "
+                       // + " fact_referencia = '"+factura+"', "
+                        + " estado = 'N'"
+                    + " WHERE id_cabecera_movi = " + idCabecera;           
+            //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
         }
@@ -939,6 +1024,28 @@ public class clsCabecera {
         return exito;
     } 
     
+    public boolean borrarCtaCobrarNotaEntrega(int ultFactura)
+    {       
+        boolean exito = false;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_cta_cobrar "
+                    + "SET estado = 'A'"
+                    + " WHERE id_cabecera_movi = " + ultFactura;          
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+    
     public boolean insertarValorCuota(int ultFactura, String idCuota, String valor)
     {       
         boolean exito = false;
@@ -990,6 +1097,28 @@ public class clsCabecera {
             sql = "INSERT INTO ck_rel_cabecera_cuota(id_cabecera_movi , id_cuota, valor)"                   
                     + " VALUES("+ultFactura+", "+idCuota+", "+valor+")";           
             System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }
+    
+    public boolean borrarValorCuotaNotaEntrega(int ultFactura)
+    {       
+        boolean exito = false;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_rel_cabecera_cuota "
+                    + " SET estado = 'I'"
+                    + " WHERE id_cabecera_movi = " + ultFactura;
+            //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
         }

@@ -10,6 +10,7 @@
  */
 package pos;
 
+import clases.clsAbono;
 import clases.clsAuditoria;
 import clases.clsCabecera;
 import clases.clsCaja;
@@ -47,6 +48,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import static pos.frmNotasEntrega1.codigoCliente;
+
 
 /**
  *
@@ -68,6 +71,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
     clsPlazo objPlazo = new clsPlazo();
     clsKardex objKardex = new clsKardex();
     clsParametros objParametros = new clsParametros();
+    clsAbono objAbono = new clsAbono();
     
     Double valorInteresCuotaInicial = objParametros.consultaPorcentajeCuotaInicial(); //el 30 % del valor es  la cuota iniciañ
     //Double valorInteresTresMeses = 9.00;
@@ -84,19 +88,23 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
     Double baseTarifaCero = 0.00;
     int filas=0;
     int controlComboBox = 0;
+    //control del chkboxcredito para q no de error al aplicar changue item
+    int controlCmbCredito = 0;
+    
     //CODIGO DEL CLIENTE SELECCIONADO
     public static int codigoCliente;
     //CODIGO DEL PRODUCTO SELECCIONADO 
     public static int codigoProducto;
     public static String controlExistencia;
     public static Double valorContado;
+    int idCabecera;
     
     Double imp_iva = objImpuestos.obtenerPorcentajeIVA();
     //CONTRLAR EL CHECKBOX PORQUE SINO AL CARAR EL FORM DA ERROR DE NULO
     String banderaChkCredito = "PRIMERA_VEZ";
     /** Creates new form frmFacturar */
-    public frmNotasEntregaModificar(int idCabecera) {
-       
+    public frmNotasEntregaModificar(int idCabecera2) {
+        idCabecera = idCabecera2;
         initComponents();  
         this.setTitle(objUtils.nombreSistema + "NOTA DE  ENTREGA - MODIFICAR");
         
@@ -398,7 +406,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         calcularTotal();
     }
     
-    public void obtenerFacturaQueToca()
+    /*public void obtenerFacturaQueToca()
     {
         //obtener si es manual
         factManual = objCaja.comprobarFacturacionManual(idCajaAbierta); 
@@ -428,7 +436,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 txtNotaEntrega.setText(""+(ultmFact+1));
             }
         }
-    }
+    }*/
     
     public class MiModelo extends DefaultTableModel
     {
@@ -1343,21 +1351,42 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         txtPrecio.setEditable(false);
         codigoProducto=0;
         txtCedula.setText("");
-        txtNombreCliente.setText("");
         txtTarifaCero.setText("0.00");
+        txtTarifaCero1.setText("0.00");
         txtTarifaIVA.setText("0.00");
+        txtTarifaIVA1.setText("0.00");
         //txtFactura.setText("");
         txtDescuento.setText("0.00");
+        txtDescuento1.setText("0.00");
         txtIVA.setText("0.00");
+        txtIVA1.setText("0.00");
         txtTotal.setText("0.00");
+        txtTotalFinal.setText("0.00");
+        txtCuota.setText("0.00");
+        txtEfectivo.setText("0.00");
+        txtSaldo.setText("0.00");
+        txtFechaCancelacion.setText("0");
         txtComentario.setText("");
-        chkCredito.setSelected(false);   
+        txtCosto.setText("costo");
+        controlCmbCredito = 1;
+        chkCredito.setSelected(false);
+        controlCmbCredito = 0;
         chkAnulada.setSelected(false);   
         //CARGAR FACTURERO DE NOTAS DE ENTREGA
-        controlComboBox = 1;        
+        controlComboBox = 1;
+        ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFacturerosNotaEntrega();
+        //cmbFacturero.removeAllItems();
+        /*for(int i=0;i<dataFacturero.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataFacturero.get(i).getCodigo(), dataFacturero.get(i).getDescripcion());
+            cmbFacturero.addItem(oItem);            
+        }  */
+        //clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
+        //String factActual = objFacturero.seleccionarFacturaActual(Integer.parseInt(objFactureroSelect.getCodigo()));
+        //txtNotaEntrega.setText(factActual);
         controlComboBox = 0;
         
-        objUtils.vaciarTabla(dtmData);      
+        objUtils.vaciarTabla(dtmData);         
 }
 private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
     agregarProducto();
@@ -1475,7 +1504,244 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         return bandera;
     }
     
-    private boolean registrarVenta()
+     private boolean registrarVenta()
+    {
+        boolean p_exito = false;
+        boolean exito = true;
+        int idProducto = 0;
+        String cantidad = "";
+        String precio = "";   
+        String descuento = "";
+        String iva = "";
+        Double costo = 0.00;
+        
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1= txtFechaVenta.getDate();
+        String fechaVenta = df2.format(date1);
+        
+        String descuentoF = txtDescuento.getText().toString();
+        String ivaF = txtIVA.getText().toString();
+        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
+        
+        
+        /*if(!this.chkAnulada.isSelected())        
+        {  */              
+            /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                    txtTotal.getText(), main.idEmpresa, 
+                    "0", txtComentario.getText(), 
+                    txtSaldo.getText(), txtEfectivo.getText(), 
+                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                    txtTarifaIVA1.getText(),
+                    txtIVA1.getText(),
+                    txtTotalFinal.getText(),
+                    objVendedorSelect.getCodigo(),
+                    fechaVenta);  */    
+
+            if(exito)
+            {
+                try
+                {                          
+                    Double saldoIntereses = 0.00;
+                    Double cuota = 0.00;
+                    saldoIntereses = Double.parseDouble(txtSaldo.getText());
+                    cuota = Double.parseDouble(txtCuota.getText());
+                    
+                    
+                    int maxData = dtmData.getRowCount();
+                   
+                    //System.out.println("S: " + ultmFactura);
+                    if(this.chkCredito.isSelected())        
+                    {
+                        /**************CABECERA***************************/
+                        /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtEfectivo.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "C", txtInteresPorcentaje.getText());   */
+                        
+                        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                                    codigoCliente, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtEfectivo.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "C", txtInteresPorcentaje.getText());
+                        /***********************************************/
+                         int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+                        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+                        
+                        //BORRAR LA CUENTA POR COBRAR GENERADA
+                        objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+                        //INGRESAR LA NUEVA CUENTA POR COBRAR
+                        objCabecera.insertarCtaCobrarNotaEntrega(idCabecera, txtComentario.getText(), 
+                                                    saldoIntereses, txtFechaCancelacion.getText(),
+                                                    objPlazoSelect.getCodigo());
+                        //BORRAR LOS VALORES
+                        objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+                        //INGRESAR NUEVOS VALORES
+                        objCabecera.insertarValorCuotaNotaEntrega(idCabecera, objCuotaSelect.getCodigo(), 
+                                                    cuota);
+                        
+                        
+                        ////*AQUI VA EL REGISTRO DE LOS PAGOS**////
+                        Double numeroPagos = saldoIntereses / cuota;
+                        DecimalFormat formateador = new DecimalFormat("####");
+                        Integer numeroPagosRedondeado = Integer.parseInt(formateador.format(numeroPagos)); 
+                        
+                        /*DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date1= txtFechaVenta.getDate();
+                        String fechaVenta = df2.format(date1);*/
+                        
+                       /* Date date1= new Date();
+                        Calendar fecha = Calendar.getInstance();
+                        fecha.setTime(date1); */
+                        
+                        //Date date1= new Date();
+                        Calendar fecha = Calendar.getInstance();
+                        fecha.setTime(date1);
+                        //clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+                        String idCuota = objCuotaSelect.getCodigo();
+    
+    
+                        for(int i=0; i<numeroPagosRedondeado; i++)
+                        {           
+                            if(idCuota.equals("1"))       
+                            {
+                                //DIARIO
+                                fecha.add(Calendar.DAY_OF_MONTH, 1); 
+                            }
+                            else if(idCuota.equals("2"))  
+                            {
+                                //SEMANAL
+                                fecha.add(Calendar.DAY_OF_MONTH, 7);
+                            }
+                            else if(idCuota.equals("3"))  
+                            {
+                                //QUINCENAL
+                                fecha.add(Calendar.DAY_OF_MONTH, 15); 
+                            }
+                            else if(idCuota.equals("4"))  
+                            {
+                                //MENSUAL
+                                fecha.add(Calendar.MONTH, 1);
+                            }
+
+                            Date fecSegCarta = fecha.getTime();
+                            date1 = fecSegCarta;
+                            //DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                            String fecha2 = df2.format(fecSegCarta);
+
+                            //Object[] nuevaFila = {i, fecha2, valor};
+                            
+                            objAbono.insertarAbono(i+1, fecha2, cuota, ultmFactura);
+                            
+                            
+                            //dtmData.addRow(nuevaFila);
+                            //totalDeuda = totalDeuda + Double.parseDouble(valor);
+                        }
+                        
+                    }
+                    else
+                    {
+                         /**************CABECERA CONTADO******************/
+                        /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtTotal.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "D", "0.00");   */
+                        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                                    codigoCliente, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtTotal.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "D", "0.00");  
+                        /***********************************************/
+                    
+                    }
+                    //int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                    //BORRAR LOS PRODUCTOS QUE TIENE LA NOTA DE ENTREGA ACTUALMENTE
+                    exito = objDetalle.borrarProductosNotaEntrega(idCabecera);
+                    for(int i=0; i<maxData; i++)
+                    {                       
+                        //**************DETALLE*******************//
+                        //factura, idProducto
+                        idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
+                        cantidad = "" + dtmData.getValueAt(i, 4);
+                        precio = "" + dtmData.getValueAt(i, 5);                        
+                        iva = "" + dtmData.getValueAt(i, 7);
+                        descuento = "" + dtmData.getValueAt(i, 8);
+                        costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
+
+                        exito = objDetalle.insertarDetalleNotasEntrega(idCabecera, idProducto, cantidad, 
+                                precio, descuento, iva, costo);
+                        /*objKardex.insertarKardex(idProducto, 
+                                "NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + ultmFactura, 
+                                "-" + cantidad,
+                                txtCedula.getText(),
+                                txtNombreCliente.getText(),
+                                precio,
+                                costo,
+                                "EGRESO",
+                                ultmFactura);
+                        objProducto.disminuirStock(idProducto, cantidad);*/
+                    }  
+                    //clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
+                    //objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
+
+                    JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
+                    vaciarDatos();
+                    p_exito = true;
+                    //obtenerFacturaQueToca();
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "INGRESO DE NOTA DE ENTREGA:"
+                             + txtNotaEntrega.getText(), "3");
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e.getMessage());
+                    p_exito = false;
+                }
+                //Vaciar Datos para facturar de nuevo
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Error al ingresar la información", "Atención!", JOptionPane.ERROR_MESSAGE);      
+                p_exito = false;
+            }        
+        /*}
+        else
+        {*/
+           
+        /*}
+        dispose();*/
+        return p_exito;     
+    }
+   
+    private boolean registrarVenta2()
     {
         boolean p_exito = false;
         boolean exito = false;
@@ -1497,7 +1763,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         double saldo = Double.parseDouble(txtSaldo.getText());
         /*if(!this.chkAnulada.isSelected())        
         {  */              
-            exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+            /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                     txtTotal.getText(), main.idEmpresa, 
                     "0", txtComentario.getText(), 
                     saldo, txtEfectivo.getText(), 
@@ -1507,26 +1773,47 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtIVA1.getText(),
                     txtTotalFinal.getText(),
                     objVendedorSelect.getCodigo(),
-                    fechaVenta, "PITIADO", txtInteresPorcentaje.getText());      
+                    fechaVenta, "PITIADO", txtInteresPorcentaje.getText());  */    
+        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                    codigoCliente, main.idUser, "0", 
+                    txtTotal.getText(), main.idEmpresa, 
+                    "0", txtComentario.getText(), 
+                    saldo, txtEfectivo.getText(), 
+                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                    txtTarifaIVA1.getText(),
+                    txtIVA1.getText(),
+                    txtTotalFinal.getText(),
+                    objVendedorSelect.getCodigo(),
+                    fechaVenta, "C", txtInteresPorcentaje.getText());
 
             if(exito)
             {
                 try
                 {                          
                     int maxData = dtmData.getRowCount();
-                    int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                    //int ultmFactura = Integer.parseInt(txtNotaEntrega.getText());
                     //System.out.println("S: " + ultmFactura);
                     if(this.chkCredito.isSelected())        
                     {
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
 
-                        objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
+                        //BORRAR LA CUENTA POR COBRAR GENERADA
+                        objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+                        //INGRESAR LA NUEVA CUENTA POR COBRAR
+                        objCabecera.insertarCtaCobrarNotaEntrega(idCabecera, txtComentario.getText(), 
                                                     saldo, txtFechaCancelacion.getText(),
                                                     objPlazoSelect.getCodigo());
-                        objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
+                        //BORRAR LOS VALORES
+                        objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+                        //INGRESAR NUEVOS VALORES
+                        objCabecera.insertarValorCuotaNotaEntrega(idCabecera, objCuotaSelect.getCodigo(), 
                                                     Double.parseDouble(txtCuota.getText()));
                     }
+                    
+                    //BORRAR LOS PRODUCTOS QUE TIENE LA NOTA DE ENTREGA ACTUALMENTE
+                    exito = objDetalle.borrarProductosNotaEntrega(idCabecera);
                     for(int i=0; i<maxData; i++)
                     {                       
                         //factura, idProducto
@@ -1537,9 +1824,9 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         descuento = "" + dtmData.getValueAt(i, 8);
                         costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
 
-                        exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
+                        exito = objDetalle.insertarDetalleNotasEntrega(idCabecera, idProducto, cantidad, 
                                 precio, descuento, iva, costo);
-                        objKardex.insertarKardex(idProducto, 
+                        /*objKardex.insertarKardex(idProducto, 
                                 "NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + ultmFactura, 
                                 "-" + cantidad,
                                 txtCedula.getText(),
@@ -1547,16 +1834,16 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                 precio,
                                 costo,
                                 "EGRESO",
-                                ultmFactura);
-                        objProducto.disminuirStock(idProducto, cantidad);
+                                ultmFactura);*/
+                        //objProducto.disminuirStock(idProducto, cantidad);
                     }  
                    
 
-                    JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
+                    JOptionPane.showMessageDialog(this, "Nota de entrega modificada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
                     vaciarDatos();
                     p_exito = true;
                     //obtenerFacturaQueToca();
-                    objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE  ENTREGA:"
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "ACTUALIZACION DE NOTA DE  ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
                 }
                 catch(Exception e)
@@ -1789,21 +2076,33 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
             Date date1= txtFechaVenta.getDate();
             String fechaVenta = df2.format(date1);
-            exito = objCabecera.insertarRegistroNotaEntregaAnulada(
+            /*exito = objCabecera.insertarRegistroNotaEntregaAnulada(
                     main.idUser, 
                     "0", 
                     main.idEmpresa, 
                     "0", 
                     txtComentario.getText(),
                     txtNotaEntrega.getText(),                     
-                    fechaVenta);
+                    fechaVenta);*/
+            exito = objCabecera.modificarRegistroNotaEntregaAnulada(main.idUser, 
+                    "0", 
+                    main.idEmpresa, 
+                    "0", 
+                    txtComentario.getText(),
+                    txtNotaEntrega.getText(),                     
+                    fechaVenta,
+                    idCabecera);
+            //COMO LA VOY A ANULAR BORRO TODO LO QUE TENGA SI NO ERA ANULADA
+            objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+            objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+            objDetalle.borrarProductosNotaEntrega(idCabecera);
             if(exito)
             {
                 try
                 {          
                     JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
                     vaciarDatos();
-                    objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "INGRESO DE NOTA DE ENTREGA ANULADA:"
                              + txtNotaEntrega.getText(), "3");
                     exito = true;
                 }
@@ -2237,32 +2536,35 @@ public String calcular_fecha_cancelacion()
 
 
 private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
-    if(banderaChkCredito.equals("YA_INICIADO"))
+    if(controlCmbCredito==0)
     {
-        valorContado = Double.parseDouble(txtTotal.getText().toString());
-    
-        btnAgregar.setEnabled(false);
-        txtCuota.setText("");
-        txtEfectivo.setText("0");
-        txtSaldo.setText("");
-        calcularCuotas();
-        //txtEfectivo.setText(""+cuotaInicial);
-        if(chkCredito.isSelected())        
-        {
-            cmbCuota.setEnabled(true);
-            txtCuota.setEditable(true);
-            txtEfectivo.setEditable(true);
-            cmbPlazo.setEnabled(true);
-            //txtSaldo.setEditable(true);       
-        } 
-        else
-        {
-            cmbCuota.setEnabled(false);
-            txtCuota.setEditable(false);
-            txtEfectivo.setEditable(false);
-            cmbPlazo.setEnabled(false);
-            //txtSaldo.setEditable(false);     
-        }
+        //if(banderaChkCredito.equals("YA_INICIADO"))
+        //{
+            valorContado = Double.parseDouble(txtTotal.getText().toString());
+
+            btnAgregar.setEnabled(false);
+            txtCuota.setText("");
+            txtEfectivo.setText("0");
+            txtSaldo.setText("");
+            calcularCuotas();
+            //txtEfectivo.setText(""+cuotaInicial);
+            if(chkCredito.isSelected())        
+            {
+                cmbCuota.setEnabled(true);
+                txtCuota.setEditable(true);
+                txtEfectivo.setEditable(true);
+                cmbPlazo.setEnabled(true);
+                //txtSaldo.setEditable(true);       
+            } 
+            else
+            {
+                cmbCuota.setEnabled(false);
+                txtCuota.setEditable(false);
+                txtEfectivo.setEditable(false);
+                cmbPlazo.setEnabled(false);
+                //txtSaldo.setEditable(false);     
+            }
+        //}
     }
 }//GEN-LAST:event_chkCreditoItemStateChanged
 

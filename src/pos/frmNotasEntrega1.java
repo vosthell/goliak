@@ -86,7 +86,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     Double baseTarifaCero = 0.00;
     int filas=0;
     int controlComboBox = 0;
-    //control del chkboxcredito para q nod e error al aplicar changue item
+    //control del chkboxcredito para q no de error al aplicar changue item
     int controlCmbCredito = 0;
     //CODIGO DEL CLIENTE SELECCIONADO
     public static int codigoCliente;
@@ -1518,7 +1518,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     vaciarDatos();
                     p_exito = true;
                     //obtenerFacturaQueToca();
-                    objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE  ENTREGA:"
+                    objAuditoria.insertarAuditoria("frmNotasEntrega1", "INGRESO DE NOTA DE  ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
                 }
                 catch(Exception e)
@@ -2242,7 +2242,7 @@ private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIR
 void calcularCuotas()
 {
     Double cuotaInicial = valorContado * valorInteresCuotaInicial/100;
-    txtEfectivo.setText(""+cuotaInicial);
+    txtEfectivo.setText("" + cuotaInicial);
     //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
     clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
     String idPlazo = objPlazoSelect.getCodigo();

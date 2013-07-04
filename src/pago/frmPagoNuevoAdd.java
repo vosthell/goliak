@@ -699,13 +699,18 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     
     double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
      
-     txtInteres.setText("" + objUtils.redondear(interes_semanal*semanas_atraso));
+    double interesesPorcentaje = objUtils.redondear(interes_semanal*semanas_atraso);
+     txtInteres.setText("" + interesesPorcentaje);
+     
+     double valorAbono = dataPagoPendiente.get(0).getValorAbono();
+     
+     double interesesPorCobrar = interesesPorcentaje * valorAbono / 100;
+     txtInteresesPlata.setText("" + objUtils.redondear(interesesPorCobrar));
     
-    
-    txtValorAbono.setText("" + dataPagoPendiente.get(0).getValorAbono());
+    txtValorAbono.setText("" + objUtils.redondear(valorAbono));
     
      txtValor.setEditable(true);
-     txtValor.setText("true");//BM-0435
+     txtValor.setText("" + objUtils.redondear(valorAbono + interesesPorCobrar));//BM-0435
      
      txtReferencia.setEditable(true);
      txtValor.requestFocus();

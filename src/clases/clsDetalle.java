@@ -227,6 +227,28 @@ public class clsDetalle {
         return exito;
     } 
     
+    public boolean borrarProductosNotaEntrega(int ultFactura)
+    {       
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_notas_de_entrega_detalle "
+                    + " SET estado = 'I' "
+                    + " WHERE id_cabecera_movi = " + ultFactura;
+            //System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+    
     public boolean insertarDetalleDevolucion(int ultFactura, int idItems, String cantidad, String precio, String descuento, String iva )
     {       
         boolean exito;
