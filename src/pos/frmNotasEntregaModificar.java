@@ -136,7 +136,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
             txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
             
-            //fecha de nacimiento
+            //fecha de nota de entrega
             SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
             String strFecha = dataCabecera.get(0).getFecha();
             Date fecha = null;
@@ -160,7 +160,20 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 {    
                     cmbCuota.setSelectedItem(oItem);
                 }  
-            }           
+            }        
+            
+            //CARGAR VENDEDOR
+            cmbVendedor.removeAllItems();
+            ArrayList<clsComboBox> dataPersonal = objPersonal.consultarPersonal();       
+            for(int i=0;i<dataPersonal.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataPersonal.get(i).getCodigo(), dataPersonal.get(i).getDescripcion());
+                cmbVendedor.addItem(oItem);   
+                if(dataPersonal.get(i).getCodigo().equals(""+dataCabecera.get(0).getIdVendedor()))
+                {    
+                    cmbVendedor.setSelectedItem(oItem);
+                }  
+            }    
         }
         else
         {
@@ -190,7 +203,8 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
             txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
-            
+            txtFechaCancelacion.setText(dataCabecera.get(0).getFechaCancelacionSistema().substring(0, 10));
+
              //CARGAR CUOTAS
             cmbCuota.removeAllItems();
             ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
@@ -228,7 +242,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 }  
             }
             
-            //fecha de nacimiento
+            //fecha de nota de entrega
             SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
             String strFecha = dataCabecera.get(0).getFecha();
             Date fecha = null;
@@ -240,6 +254,8 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 ex.printStackTrace();
             }
             txtFechaVenta.setDate(fecha);   
+            //calcular saldo e intereses porque noe sta guardado en la base de datos
+            operacion();
         }
         //COLUMNA OCULTA
         dtmData.addColumn("idProducto");
@@ -337,8 +353,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         
         //CARGAR VALOR DE LA FACTURA
         //obtenerFacturaQueToca();
-        Date fechaActual = new Date();
-        txtFechaVenta.setDate(fechaActual);  
+        
         
          //AQUI PROGRAMO LA MODIFICACION DE DATOS
         tblData.getModel().addTableModelListener(new TableModelListener() {
@@ -349,6 +364,9 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             }  
         });
         banderaChkCredito = "YA_INICIADO";
+        controlCmbCredito = 1;
+        
+        
     }   
     
     public void recalcular()
@@ -1368,9 +1386,9 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         txtFechaCancelacion.setText("0");
         txtComentario.setText("");
         txtCosto.setText("costo");
-        controlCmbCredito = 1;
+        controlCmbCredito = 1;      //sin esto salia error: For input string: "�"
         chkCredito.setSelected(false);
-        controlCmbCredito = 0;
+        controlCmbCredito = 0;      //sin esto salia error: For input string: "�"
         chkAnulada.setSelected(false);   
         //CARGAR FACTURERO DE NOTAS DE ENTREGA
         controlComboBox = 1;
@@ -1579,7 +1597,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     objVendedorSelect.getCodigo(),
                                     fechaVenta, "C", txtInteresPorcentaje.getText());
                         /***********************************************/
-                         int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                       //int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
                         
@@ -1594,7 +1612,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         //INGRESAR NUEVOS VALORES
                         objCabecera.insertarValorCuotaNotaEntrega(idCabecera, objCuotaSelect.getCodigo(), 
                                                     cuota);
-                        
+                        //BORRAR LSO ABONOS
+                        objAbono.borrarAbonos(idCabecera);
                         
                         ////*AQUI VA EL REGISTRO DE LOS PAGOS**////
                         Double numeroPagos = saldoIntereses / cuota;
@@ -1646,7 +1665,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
                             //Object[] nuevaFila = {i, fecha2, valor};
                             
-                            objAbono.insertarAbono(i+1, fecha2, cuota, ultmFactura);
+                            objAbono.insertarAbono(i+1, fecha2, cuota, idCabecera);
                             
                             
                             //dtmData.addRow(nuevaFila);
@@ -1714,11 +1733,12 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     //objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
 
                     JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-                    vaciarDatos();
+                   
                     p_exito = true;
                     //obtenerFacturaQueToca();
                     objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "INGRESO DE NOTA DE ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
+                    vaciarDatos();
                 }
                 catch(Exception e)
                 {
@@ -2501,7 +2521,8 @@ public String calcular_fecha_cancelacion()
     clsComboBox objetoPagoSeleccionado = (clsComboBox)cmbCuota.getSelectedItem();
     String tipoPago = objetoPagoSeleccionado.getCodigo();
     Calendar fechaCarta2 = Calendar.getInstance();
-    fechaCarta2.setTime(date1); 
+    //fechaCarta2.setTime(date1); 
+    fechaCarta2.setTime(txtFechaVenta.getDate());
     double numeroPagos =0;
     numeroPagos = Double.parseDouble(txtSaldo.getText())/Double.parseDouble(txtCuota.getText());
     Locale.setDefault(Locale.ENGLISH);       
@@ -2536,38 +2557,43 @@ public String calcular_fecha_cancelacion()
 
 
 private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
-    if(controlCmbCredito==0)
-    {
-        //if(banderaChkCredito.equals("YA_INICIADO"))
-        //{
-            valorContado = Double.parseDouble(txtTotal.getText().toString());
-
-            btnAgregar.setEnabled(false);
-            txtCuota.setText("");
-            txtEfectivo.setText("0");
-            txtSaldo.setText("");
-            calcularCuotas();
-            //txtEfectivo.setText(""+cuotaInicial);
-            if(chkCredito.isSelected())        
-            {
-                cmbCuota.setEnabled(true);
-                txtCuota.setEditable(true);
-                txtEfectivo.setEditable(true);
-                cmbPlazo.setEnabled(true);
-                //txtSaldo.setEditable(true);       
-            } 
-            else
-            {
-                cmbCuota.setEnabled(false);
-                txtCuota.setEditable(false);
-                txtEfectivo.setEditable(false);
-                cmbPlazo.setEnabled(false);
-                //txtSaldo.setEditable(false);     
-            }
-        //}
-    }
+    //la puse asi para q pueda llamr estos pasos al iniciar el form y se calcule los intereses y saldo
+    operacion();
 }//GEN-LAST:event_chkCreditoItemStateChanged
 
+    public void operacion ()
+    {
+        if(controlCmbCredito==1)
+        {
+            //if(banderaChkCredito.equals("YA_INICIADO"))
+            //{
+                valorContado = Double.parseDouble(txtTotal.getText().toString());
+
+                btnAgregar.setEnabled(false);
+                txtCuota.setText("");
+                txtEfectivo.setText("0");
+                txtSaldo.setText("");
+                calcularCuotas();
+                //txtEfectivo.setText(""+cuotaInicial);
+                if(chkCredito.isSelected())        
+                {
+                    cmbCuota.setEnabled(true);
+                    txtCuota.setEditable(true);
+                    txtEfectivo.setEditable(true);
+                    cmbPlazo.setEnabled(true);
+                    //txtSaldo.setEditable(true);       
+                } 
+                else
+                {
+                    cmbCuota.setEnabled(false);
+                    txtCuota.setEditable(false);
+                    txtEfectivo.setEditable(false);
+                    cmbPlazo.setEnabled(false);
+                    //txtSaldo.setEditable(false);     
+                }
+            //}
+        }
+    }
 
 void calcularCuotas()
 {

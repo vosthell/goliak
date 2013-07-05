@@ -1201,7 +1201,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         txtFechaCancelacion.setText("0");
         txtComentario.setText("");
         txtCosto.setText("costo");
-        controlCmbCredito = 1;
+        //controlCmbCredito = 1;
         chkCredito.setSelected(false);
         controlCmbCredito = 0;
         chkAnulada.setSelected(false);   

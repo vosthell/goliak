@@ -303,7 +303,8 @@ public class clsDetalle {
                         + " deta_descuento, deta_iva, a.costo costo"
                     + " FROM ck_notas_de_entrega_detalle AS a "
                     + " INNER JOIN ck_items AS b ON a.id_items = b.id_items"
-                    + " WHERE id_cabecera_movi= " + idCabecera;
+                    + " WHERE id_cabecera_movi= " + idCabecera + ""
+                    + " AND a.estado = 'A'";
             bd.resultado = bd.sentencia.executeQuery(sql);
             
             while(bd.resultado.next()){

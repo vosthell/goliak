@@ -2074,8 +2074,9 @@ private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
        try{
             ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFactureros();
           
-            for(int i=0;i<dataFacturero.size();i=i+1)
-            {                          
+            for(int i=0;i<dataFacturero.size();i++)
+            {  
+                
             }  
             frmAbrirCaja ventana = new frmAbrirCaja(null, true);
             ventana.setLocationRelativeTo(null);
@@ -2084,7 +2085,7 @@ private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         catch(Exception ex)
         {       
-             JOptionPane.showMessageDialog(null, "No existen factureros activos, ingresar uno para poder abrir caja.", "Atención!", JOptionPane.ERROR_MESSAGE);                 
+             JOptionPane.showMessageDialog(null, "No existen factureros activos, ingresar uno para poder abrir caja." + ex.getMessage(), "Atención!", JOptionPane.ERROR_MESSAGE);                 
             
         } 
    /* }

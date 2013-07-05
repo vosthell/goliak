@@ -825,8 +825,8 @@ public class clsCabecera {
         {           
             bd.conectarBaseDeDatos();          
             sql = "UPDATE ck_notas_de_entrega"
-                    + " SET codigo = " + idCliente + ", "
-                        + " id_usuario = "+idUser+", "
+                    + " SET id_usuario = "+idUser+", "
+                        //+ " codigo = " + idCliente + ", "
                         + " id_cajero = "+idCajero+", "
                         + " total = "+total + ", "
                         + " fecha = '" + fechaVenta + "', "
@@ -847,7 +847,7 @@ public class clsCabecera {
                         + " tipo = '" + tipo + "',"
                         + " porcentaje_interes = " + porcentaje_interes
                     + " WHERE  id_cabecera_movi = " + idCabecera;
-            //System.out.println("SQL enviado:" + sql);
+            System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
         }
@@ -1031,7 +1031,7 @@ public class clsCabecera {
         {           
             bd.conectarBaseDeDatos();          
             sql = "UPDATE ck_cta_cobrar "
-                    + "SET estado = 'A'"
+                    + "SET estado = 'I'"
                     + " WHERE id_cabecera_movi = " + ultFactura;          
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
@@ -1502,7 +1502,7 @@ public class clsCabecera {
                             + " a.estado, total, saldo, efectivo,  "
                             + " fecha, fact_referencia, comentario,  "
                             + " id_cajero, id_empresa, id_caja_operacion, "
-                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes "              
+                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor "              
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
@@ -1525,7 +1525,7 @@ public class clsCabecera {
                 oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));      
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
                 oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
-                
+                oListaTemporal.setIdVendedor(bd.resultado.getInt("vendedor"));
                 data.add(oListaTemporal);
             }
             //return data;

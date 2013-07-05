@@ -101,6 +101,29 @@ public class clsAbono {
         bd.desconectarBaseDeDatos();
         return exito;
     } 
+    
+     public boolean borrarAbonos(int id_cabecera_movi)
+    {       
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "UPDATE ck_abono "
+                    + "SET estado = 'I'"
+                    + "WHERE id_cabecera_movi = " + id_cabecera_movi;
+                           
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
 }
 
 
