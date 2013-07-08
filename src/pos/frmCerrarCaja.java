@@ -439,7 +439,8 @@ void imprimir()
         String referencia = "";
         if(maxData>0)
         { 
-            pw.println("PAGOS");
+            //pw.println("PAGOS");
+            pw.println("ABONOS");
             pw.println("----------------------------------------");
             for(int i=0; i<maxData;i++)
             {
@@ -449,7 +450,7 @@ void imprimir()
                                 objUtils.rellenar(""+df1.format(dataPagos.get(i).getValor())));                                  
                 totalPagos = totalPagos + dataPagos.get(i).getValor();                
             } 
-            pw.println("TOTAL PAGOS: " + objUtils.redondear(totalPagos));
+            pw.println("TOTAL ABONOS: " + objUtils.redondear(totalPagos));
             pw.println(" ");
         }
         
@@ -459,7 +460,7 @@ void imprimir()
         //String referencia = "";
         if(maxData>0)
         { 
-            pw.println("PAGOS/FACTURA");
+            pw.println("ABONOS/FACTURA");
             pw.println("----------------------------------------");
             for(int i=0; i<maxData;i++)
             {
@@ -468,7 +469,7 @@ void imprimir()
                                 objUtils.rellenar(""+df1.format(dataPagosFactura.get(i).getValor())));                                  
                  totalPagosFactura = totalPagosFactura + dataPagosFactura.get(i).getValor();                
             } 
-            pw.println("TOTAL PAGOS/FACT: " + objUtils.redondear(totalPagosFactura));
+            pw.println("TOTAL ABONOS/FACT: " + objUtils.redondear(totalPagosFactura));
             pw.println(" ");
         }
         
@@ -478,7 +479,7 @@ void imprimir()
         //String referencia = "";
         if(maxData>0)
         { 
-            pw.println("PAGOS/RECIBO");
+            pw.println("ABONOS/ENTRADA (RECIBO)");
             pw.println("----------------------------------------");
             for(int i=0; i<maxData;i++)
             {
@@ -487,7 +488,7 @@ void imprimir()
                                 objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor())));                                  
                  totalPagosRecibo = totalPagosRecibo + dataPagosRecibo.get(i).getValor();                
             } 
-            pw.println("TOTAL PAGOS/RECI: " + objUtils.redondear(totalPagosRecibo));
+            pw.println("TOTAL ABONOS/ENTRADA: " + objUtils.redondear(totalPagosRecibo));
             pw.println(" ");
         }
         
@@ -529,15 +530,18 @@ void imprimir()
             pw.println(" ");
         }
        
-        Double totalCierre = Double.parseDouble(txtValorApertura.getText()) + totalFacturas + totalPagos + totalPagosFactura + totalPagosRecibo + totalIngresos - totalEgresos;
+        Double totalCierre = Double.parseDouble(txtValorApertura.getText()) + 
+                totalFacturas + totalPagos + totalPagosFactura + totalPagosRecibo + totalIngresos - totalEgresos;
         pw.println("TOTAL:                          $"+ objUtils.rellenar(""+objUtils.redondear(totalCierre)));
         pw.println("CONTADO EN DINERO:              $"+ objUtils.rellenar(txtValorContado.getText()));
-        if(this.txtDiferencia.equals("0.0")||this.txtDiferencia.equals("-0.0"))
+        
+        double diferencia = objUtils.redondear(totalCierre - Double.parseDouble(txtValorContado.getText()));
+        if(diferencia == 0.0||diferencia ==-0.0)
                 pw.println("VALORES CUADRADOS");
-        else if(Double.parseDouble(txtDiferencia)>0)
-                pw.println("SOBRANTE:                       $" + objUtils.rellenar(txtDiferencia));
-         else if(Double.parseDouble(txtDiferencia)<0)
-                pw.println("FALTANTE:                       $" + objUtils.rellenar(txtDiferencia));
+        else if(diferencia>0)
+                pw.println("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia));
+         else if(diferencia<0)
+                pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
         
         Runtime aplicacion = Runtime.getRuntime(); 
         try{
