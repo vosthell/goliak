@@ -660,9 +660,10 @@ public class clsCaja {
         Double valorFacturado = 0.00; 
         try{
             bd.conectarBaseDeDatos();
+            /*ANTES TENIA 'WHERE id_caja_operacion =' Y DEBE SER EL QUE COBRA*/
             sql = "SELECT sum(valor) AS efectivo"
                     + " FROM ck_pagos_recibo"
-                    + " WHERE id_caja_operacion = "+idCajaAbierta
+                    + " WHERE id_caja_operacion_cobra = "+idCajaAbierta
                     + " AND estado = 'A'";
             bd.resultado = bd.sentencia.executeQuery(sql);             
             while(bd.resultado.next()){               

@@ -54,7 +54,7 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
     String idCajaAbierta = "";
     Double saldoActual;
     /** Creates new form frmPagoAdd */
-    MiModelo dtmData = new MiModelo();
+    //MiModelo dtmData = new MiModelo();
     
     public frmPagoAddOtros(javax.swing.JFrame parent, boolean modal) {
          super(parent, modal);
@@ -65,14 +65,14 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
         String cajero = objCaja.obtenerCajero(main.idUser);
         lblCajero.setText(cajero);
         
-        dtmData.addColumn("Nº");        
+        /*dtmData.addColumn("Nº");        
         dtmData.addColumn("Factura Referencia Monica");
         dtmData.addColumn("Descripcion");
         dtmData.addColumn("Valor");
         dtmData.addColumn("Saldo");
         dtmData.addColumn("idCtaCobrar");
         dtmData.addColumn("idCabecera");
-        dtmData.addColumn("TIPO DE DOCUMENTO");
+        dtmData.addColumn("TIPO DE DOCUMENTO");*/
         
         List<String> dataCedula = objCliente.consultarCedulas(); 
         SelectAllUtils.install(txtCedula);
@@ -392,7 +392,7 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
             txtValor.setText("");
             txtReferencia.setText("");
             
-            objUtils.limpiarJTable(dtmData);
+            //objUtils.limpiarJTable(dtmData);
             dispose();
             //llenarTablaDeudas();                 
         //}
@@ -424,33 +424,29 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-  ArrayList<clsCliente> dataCliente = objCliente.consultarDataCliente(txtCedula.getText().toString());
+    ArrayList<clsCliente> dataCliente = objCliente.consultarDataCliente(txtCedula.getText().toString());
     if(dataCliente.isEmpty())
     {
         JOptionPane.showMessageDialog(this, "Cédula no existe!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
     }
     else
     {
-        objUtils.limpiarJTable(dtmData);
+        codigoCliente = ""+dataCliente.get(0).getCodigo();
+        //objUtils.limpiarJTable(dtmData);
         this.txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
-         if(dataCliente.get(0).getVerificadoDeudas().equals("N"))
+        
+        if(dataCliente.get(0).getVerificadoDeudas().equals("N"))
         {
             getContentPane().setBackground(new java.awt.Color(255,0,0));
-            jPanel1.setBackground(new java.awt.Color(255,0,0));
-            
+            jPanel1.setBackground(new java.awt.Color(255,0,0));            
             jPanel3.setBackground(new java.awt.Color(255,0,0));
         }
         else
         {
             getContentPane().setBackground(new java.awt.Color(240,240,240));
-            jPanel1.setBackground(new java.awt.Color(240,240,240));
-            
-            jPanel3.setBackground(new java.awt.Color(240,240,240));
-            
-        }
-        //BUSCAR LAS CUENTAS POR COBRAR
-        codigoCliente = ""+dataCliente.get(0).getCodigo();
-        //llenarTablaDeudas();        
+            jPanel1.setBackground(new java.awt.Color(240,240,240));            
+            jPanel3.setBackground(new java.awt.Color(240,240,240));            
+        }               
     }
 }//GEN-LAST:event_btnBuscarClienteActionPerformed
 

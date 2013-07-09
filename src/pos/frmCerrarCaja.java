@@ -56,8 +56,9 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
     
     public frmCerrarCaja() {       
         //paar reimprimir
-        //main.idUser = "14";
-        //idCajaAbierta = "359";     
+        //main.idUser = "16";
+        //idCajaAbierta = "490";
+        //COMENTAR LA LINEA 70
         
         initComponents();
        
@@ -320,8 +321,8 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                                         ""+(Double.parseDouble(txtFacturado) - Double.parseDouble(txtDevoluciones)), 
                                                         this.txtValorContado.getText().toString(), 
                                                         this.txtDiferencia, 
-                                                        Double.parseDouble(this.txtPagos),
-                                                        Double.parseDouble(this.txtPagosFactura),
+                                                        Double.parseDouble(txtPagos),
+                                                        Double.parseDouble(txtPagosFactura),
                                                         Double.parseDouble(txtEgresos),
                                                         Double.parseDouble(txtRecibosPago),
                                                         Double.parseDouble(txtIngresos));
@@ -483,7 +484,7 @@ void imprimir()
             pw.println("----------------------------------------");
             for(int i=0; i<maxData;i++)
             {
-                referencia = dataPagosFactura.get(i).getNombreCliente()+ "                                         "; 
+                referencia = dataPagosRecibo.get(i).getNombreCliente()+ "                                         "; 
                 pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
                                 objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor())));                                  
                  totalPagosRecibo = totalPagosRecibo + dataPagosRecibo.get(i).getValor();                

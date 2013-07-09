@@ -682,24 +682,27 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      saldoActual = Double.parseDouble(""+tblData.getValueAt(fila,4));
      txtTipoDocumento.setText(""+tblData.getValueAt(fila,7));
           
-      /*OBTENER EL PRIMER PAGO PENDIENTE*/
-     ArrayList<clsAbono> dataPagoPendiente = objAbono.obtenerDataPagoPendiente(Integer.parseInt(tblData.getValueAt(fila,6).toString()));
+     /*OBTENER EL PRIMER PAGO PENDIENTE*/
+     //ArrayList<clsAbono> dataPagoPendiente = objAbono.obtenerDataPagoPendiente(Integer.parseInt(tblData.getValueAt(fila,6).toString()));
     
-     String fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
-    if(dataPagoPendiente.isEmpty())
-    {
-        JOptionPane.showMessageDialog(this, "Cédula no existe!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
-    }
-    else
-    {
-         txtFechaAcordada.setText(fecha_acordada);
-    }
-    double semanas_atraso = obtenerDias(fecha_acordada)/7;
-    txtDias.setText("" + semanas_atraso);
-    
-    double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
-     
-    double interesesPorcentaje = objUtils.redondear(interes_semanal*semanas_atraso);
+     String fecha_acordada = "";
+     //String fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
+     /*if(dataPagoPendiente.isEmpty())
+     {
+        
+         JOptionPane.showMessageDialog(this, "Cédula no existe!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
+     }
+     else
+     {
+          fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
+          txtFechaAcordada.setText(fecha_acordada);
+     }
+     double semanas_atraso = obtenerDias(fecha_acordada)/7;
+     txtDias.setText("" + semanas_atraso);
+
+     double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
+
+     double interesesPorcentaje = objUtils.redondear(interes_semanal*semanas_atraso);
      txtInteres.setText("" + interesesPorcentaje);
      
      double valorAbono = dataPagoPendiente.get(0).getValorAbono();
@@ -707,10 +710,11 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      double interesesPorCobrar = interesesPorcentaje * valorAbono / 100;
      txtInteresesPlata.setText("" + objUtils.redondear(interesesPorCobrar));
     
-    txtValorAbono.setText("" + objUtils.redondear(valorAbono));
-    
+     txtValorAbono.setText("" + objUtils.redondear(valorAbono));
+     */
      txtValor.setEditable(true);
-     txtValor.setText("" + objUtils.redondear(valorAbono + interesesPorCobrar));//BM-0435
+     //txtValor.setText("" + objUtils.redondear(valorAbono + interesesPorCobrar));//BM-0435
+     
      
      txtReferencia.setEditable(true);
      txtValor.requestFocus();

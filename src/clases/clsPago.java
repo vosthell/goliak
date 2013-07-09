@@ -384,7 +384,7 @@ public class clsPago {
             bd.conectarBaseDeDatos();
             sql = "SELECT a.referencia referencia, fecha_pago, a.valor valor, codigo_recibo"           
                     + " FROM ck_pagos_recibo AS a "                                           
-                    + " WHERE id_caja_operacion = "+idCajaAbierta
+                    + " WHERE id_caja_operacion_cobra = "+idCajaAbierta
                     + " AND a.estado='A'";
             bd.resultado = bd.sentencia.executeQuery(sql);
               
