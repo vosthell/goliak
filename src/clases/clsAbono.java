@@ -50,31 +50,23 @@ public class clsAbono {
                     + " ORDER BY numero_abono ASC" 
                     + " limit 1";
             System.out.println(sql);
-            bd.resultado = bd.sentencia.executeQuery(sql);
-               
-            if(bd.resultado.next())
-            {   
-                do 
-                { 
-                    clsAbono oListaTemporal = new clsAbono();
-                    oListaTemporal.setFechaAbono(bd.resultado.getString("fecha_abono"));
-                    oListaTemporal.setValorAbono(bd.resultado.getDouble("valor_abono"));
-                                       
-                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
-                    data.add(oListaTemporal);
-                }
-                while(bd.resultado.next()); 
-                //return data;
-            }
-            else
+            bd.resultado = bd.sentencia.executeQuery(sql);               
+             
+            while(bd.resultado.next())
             { 
-                data = null;
-            }            
+                clsAbono oListaTemporal = new clsAbono();
+                oListaTemporal.setFechaAbono(bd.resultado.getString("fecha_abono"));
+                oListaTemporal.setValorAbono(bd.resultado.getDouble("valor_abono"));
+
+                //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                data.add(oListaTemporal);
+            }           
+            bd.resultado.close();
         }
         catch(Exception ex)
         {
-            //System.out.print(ex);
-            data = null;
+            System.out.print(ex);
+            //data = null;
         } 
         bd.desconectarBaseDeDatos();
         return data;

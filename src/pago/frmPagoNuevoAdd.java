@@ -12,6 +12,7 @@ package pago;
 
 import clases.clsAbono;
 import clases.clsAuditoria;
+import clases.clsCabecera;
 import clases.clsCliente;
 import clases.clsCtasCobrar;
 import clases.clsPago;
@@ -53,6 +54,10 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
     clsReporte objReporte = new clsReporte();
     clsPermisos objPermisos = new clsPermisos();
     clsAbono objAbono = new clsAbono();
+    clsCabecera objCabecera = new clsCabecera();
+    
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    Date fechaActual = new Date();
     
     public static String codigoCliente;
     Double saldoActual;
@@ -76,8 +81,7 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
         ListDataIntelliHints intellihints = new ListDataIntelliHints(txtCedula, dataCedula);
         intellihints.setCaseSensitive(false);
         
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date fechaActual = new Date();
+       
         lblFechaActual.setText(""+df.format(fechaActual));
                 
         tblData.setDefaultRenderer (Object.class, new colorFilaTable());
@@ -516,6 +520,11 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
         txtDias.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtDias.setText(resourceMap.getString("txtDias.text")); // NOI18N
         txtDias.setName("txtDias"); // NOI18N
+        txtDias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiasActionPerformed(evt);
+            }
+        });
 
         jLabel17.setText(resourceMap.getString("jLabel17.text")); // NOI18N
         jLabel17.setName("jLabel17"); // NOI18N
@@ -535,30 +544,23 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
                     .addComponent(jLabel15)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtValor)
+                    .addComponent(txtFechaAcordada, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtValorAbono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                    .addComponent(txtInteresesPlata))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtValor)
-                            .addComponent(txtFechaAcordada, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtValorAbono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel9))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDias)))
-                        .addGap(6, 6, 6))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtInteresesPlata, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDias, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                    .addComponent(txtInteres))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -569,19 +571,19 @@ public class frmPagoNuevoAdd extends javax.swing.JInternalFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(jLabel4)
-                            .addComponent(txtFechaAcordada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtValorAbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
+                            .addComponent(txtFechaAcordada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel16)
                             .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtInteresesPlata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
+                            .addComponent(txtValorAbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14)
                             .addComponent(jLabel17)
                             .addComponent(txtInteres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtInteresesPlata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -681,39 +683,59 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      txtDescripcion.setText(""+tblData.getValueAt(fila,2));
      saldoActual = Double.parseDouble(""+tblData.getValueAt(fila,4));
      txtTipoDocumento.setText(""+tblData.getValueAt(fila,7));
-          
+     
+     int idCabeMovi = Integer.parseInt(tblData.getValueAt(fila,6).toString());
      /*OBTENER EL PRIMER PAGO PENDIENTE*/
-     //ArrayList<clsAbono> dataPagoPendiente = objAbono.obtenerDataPagoPendiente(Integer.parseInt(tblData.getValueAt(fila,6).toString()));
+     ArrayList<clsAbono> dataPagoPendiente = objAbono.obtenerDataPagoPendiente(idCabeMovi);
     
      String fecha_acordada = "";
      //String fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
-     /*if(dataPagoPendiente.isEmpty())
-     {
-        
-         JOptionPane.showMessageDialog(this, "Cédula no existe!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
+     double valorAbono = 0.00;
+     if(dataPagoPendiente.isEmpty())
+     {        
+         //JOptionPane.showMessageDialog(this, "Vacio!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
+         Date fechaActual = new Date();
+         fecha_acordada = ""+df.format(fechaActual);
+         txtFechaAcordada.setText(fecha_acordada); 
+         valorAbono = 0.00;   
+         
+         int i = tblData.getSelectedRow();
+         if(tblData.getValueAt(i,7).equals("NOTA DE ENTREGA"))
+         {   
+            
+            ArrayList <clsCabecera> dataCabecera;
+            dataCabecera = objCabecera.consultarDataCabeceraCredito(idCabeMovi);
+            valorAbono = dataCabecera.get(0).getValor();            
+        }
+        else if(tblData.getValueAt(i,7).equals("FACTURA"))
+        {
+             ArrayList <clsCabecera> dataCabecera = objCabecera.consultarDataCabeceraCreditoFactura(idCabeMovi);
+             valorAbono = dataCabecera.get(0).getValor();
+        }
      }
      else
      {
+          //JOptionPane.showMessageDialog(this, "Con datos!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
           fecha_acordada = dataPagoPendiente.get(0).getFechaAbono().substring(0, 10);
           txtFechaAcordada.setText(fecha_acordada);
+          valorAbono = dataPagoPendiente.get(0).getValorAbono();          
      }
+     
      double semanas_atraso = obtenerDias(fecha_acordada)/7;
      txtDias.setText("" + semanas_atraso);
 
      double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
 
      double interesesPorcentaje = objUtils.redondear(interes_semanal*semanas_atraso);
-     txtInteres.setText("" + interesesPorcentaje);
-     
-     double valorAbono = dataPagoPendiente.get(0).getValorAbono();
+     txtInteres.setText("" + interesesPorcentaje);      
      
      double interesesPorCobrar = interesesPorcentaje * valorAbono / 100;
      txtInteresesPlata.setText("" + objUtils.redondear(interesesPorCobrar));
     
      txtValorAbono.setText("" + objUtils.redondear(valorAbono));
-     */
+     
      txtValor.setEditable(true);
-     //txtValor.setText("" + objUtils.redondear(valorAbono + interesesPorCobrar));//BM-0435
+     txtValor.setText("" + objUtils.redondear(valorAbono + interesesPorCobrar));//BM-0435
      
      
      txtReferencia.setEditable(true);
@@ -763,7 +785,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         //los milisegundos corresponde al tiempo en dias
 
         //asi sabemos cuantos dias
-        
+        System.out.println(c.get(Calendar.DAY_OF_YEAR));
         return  c.get(Calendar.DAY_OF_YEAR);
 
         //System.out.println("N. dias" + c.get(Calendar.DAY_OF_YEAR));
@@ -847,6 +869,15 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+    txtFechaAcordada.setText("");
+    txtValorAbono.setText("");
+    txtInteresesPlata.setText("");
+    txtValor.setText("");
+    txtDias.setText("");
+    txtInteres.setText("");
+    txtReferencia.setText("");
+    txtValor.setEditable(false);
+    
     llenarDataCliente();
 }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
@@ -966,7 +997,7 @@ private void btnVerFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN
             System.out.println(idCabecera);
             frmFactHistoShow ventana = new frmFactHistoShow(null, true, idCabecera);
             ventana.setLocationRelativeTo(null);
-            ventana.setVisible(true);
+            ventana.setVisible(true);            
         }
         else if(tblData.getValueAt(i,7).equals("FACTURA"))
         {
@@ -1097,6 +1128,10 @@ private void chkDeudasCeroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-
     private void txtValorAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorAbonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtValorAbonoActionPerformed
+
+    private void txtDiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDiasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnBuscarCliente;
