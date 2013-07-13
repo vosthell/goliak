@@ -13,6 +13,7 @@ package pago;
 import clases.clsAuditoria;
 import clases.clsCaja;
 import clases.clsCliente;
+import clases.clsComboBox;
 import clases.clsCtasCobrar;
 import clases.clsPago;
 import clases.clsReporte;
@@ -86,7 +87,12 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
         int idReciboDePago = objCaja.obtenerReciboPagoActual();
         txtReciboDePago.setText(""+idReciboDePago);
         
-        
+         clsComboBox oItem = new clsComboBox("1", "RECIBO");
+         cmbTipoRecibo.addItem(oItem);     
+         oItem = new clsComboBox("2", "CUOTA INICIAL");
+         cmbTipoRecibo.addItem(oItem);     
+         oItem = new clsComboBox("3", "ARRIENDO");
+         cmbTipoRecibo.addItem(oItem);     
     }
 
     /** This method is called from within the constructor to
@@ -107,7 +113,8 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         lblFechaActual = new javax.swing.JLabel();
         btnBuscarCliente = new javax.swing.JButton();
-        chkCuotaInicial = new javax.swing.JCheckBox();
+        cmbTipoRecibo = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         txtValor = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -168,8 +175,10 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
             }
         });
 
-        chkCuotaInicial.setText(resourceMap.getString("chkCuotaInicial.text")); // NOI18N
-        chkCuotaInicial.setName("chkCuotaInicial"); // NOI18N
+        cmbTipoRecibo.setName("cmbTipoRecibo"); // NOI18N
+
+        jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -197,7 +206,9 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                         .addComponent(lblFechaActual, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                         .addGap(79, 79, 79))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(chkCuotaInicial)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbTipoRecibo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -212,10 +223,12 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(btnBuscarCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkCuotaInicial)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbTipoRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel3.border.title"))); // NOI18N
@@ -338,7 +351,7 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
                     .addComponent(jLabel10)
                     .addComponent(lblCajero)
                     .addComponent(btnGuardarPago))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -375,14 +388,17 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
         }
         else
         {*/
+            
+            clsComboBox objGrupoSelect = (clsComboBox)cmbTipoRecibo.getSelectedItem();
+            objGrupoSelect.getCodigo();
             String cuotaIni = "";
-            if(chkCuotaInicial.isSelected())
+            if(objGrupoSelect.getCodigo().equals("2"))
                 cuotaIni = "S";
             else
                 cuotaIni = "N";
             //INSERTAR PAGO
             objPago.insertarRegistroReciboCobro(main.idUser, factRef, ""+objUtils.redondear(valor), 
-                    idCajaAbierta, txtReciboDePago.getText(), codigoCliente, cuotaIni);
+                    idCajaAbierta, txtReciboDePago.getText(), codigoCliente, cuotaIni, objGrupoSelect.getCodigo());
             //ACTUALIZAR RECIBO ACTUAL
             objCaja.actualizarReciboPago();
             JOptionPane.showMessageDialog(this, "Pago ingresado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
@@ -476,13 +492,14 @@ private void txtReferenciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnBuscarCliente;
     private javax.swing.JButton btnGuardarPago;
-    private javax.swing.JCheckBox chkCuotaInicial;
+    private javax.swing.JComboBox cmbTipoRecibo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

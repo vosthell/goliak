@@ -724,7 +724,11 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      double semanas_atraso = obtenerDias(fecha_acordada)/7;
      txtDias.setText("" + semanas_atraso);
 
-     double interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
+     double interes_semanal = 0;
+     if(!tblData.getValueAt(fila, 7).equals("FACTURA"))
+     {
+         interes_semanal = ((Double.parseDouble(tblData.getValueAt(fila, 8).toString())/100)/48)*100;
+     }
 
      double interesesPorcentaje = objUtils.redondear(interes_semanal*semanas_atraso);
      txtInteres.setText("" + interesesPorcentaje);      
@@ -741,52 +745,77 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
      txtReferencia.setEditable(true);
      txtValor.requestFocus();
 }//GEN-LAST:event_tblDataMouseClicked
+     
+    public Date DeStringADate(String fecha){
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String strFecha = fecha;
+        Date fechaDate = null;
+        try {
+            fechaDate = formato.parse(strFecha);
+                        //System.out.println(fechaDate.toString());
+            return fechaDate;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return fechaDate;
+        }
+    }
 
     public int obtenerDias(String fecha_pago)
     {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaActual = new Date();
+        int valor = 0;
         String fecha_actual = "" + df.format(fechaActual);
-                
+        if (fechaActual.before(DeStringADate(fecha_pago)) ) 
+        {
+            
+        }
+        else if(fecha_actual.equals(fecha_pago)) 
+        {
         
-        Calendar c = Calendar.getInstance();
+        }
+        else
+        {
+           
+            Calendar c = Calendar.getInstance();
 
-        //fecha inicio
+            //fecha inicio
+            Calendar fechaInicio = new GregorianCalendar();
+            System.out.println(fecha_pago);
+            int anio = Integer.parseInt(fecha_pago.substring(0, 4));
+            System.out.println(anio);        
+            int mes = Integer.parseInt(fecha_pago.substring(5, 7));
+            System.out.println(mes);
+            int dia = Integer.parseInt(fecha_pago.substring(8, 10));
+            System.out.println(dia);
+            fechaInicio.set(anio, mes, dia);
 
-        Calendar fechaInicio = new GregorianCalendar();
-        System.out.println(fecha_pago);
-        int anio = Integer.parseInt(fecha_pago.substring(0, 4));
-        System.out.println(anio);        
-        int mes = Integer.parseInt(fecha_pago.substring(5, 7));
-        System.out.println(mes);
-        int dia = Integer.parseInt(fecha_pago.substring(8, 10));
-        System.out.println(dia);
-        fechaInicio.set(anio, mes, dia);
+            //fecha fin
 
-        //fecha fin
-        
-        Calendar fechaFin = new GregorianCalendar();
-        int anio2 = Integer.parseInt(fecha_actual.substring(0, 4));
-        System.out.println(anio2);
-        int mes2 = Integer.parseInt(fecha_actual.substring(5, 7));
-        System.out.println(mes2);
-        int dia2 = Integer.parseInt(fecha_actual.substring(8, 10));
-        System.out.println(dia2);
-        fechaFin.set(anio2, mes2, dia2);
+            Calendar fechaFin = new GregorianCalendar();
+            int anio2 = Integer.parseInt(fecha_actual.substring(0, 4));
+            System.out.println(anio2);
+            int mes2 = Integer.parseInt(fecha_actual.substring(5, 7));
+            System.out.println(mes2);
+            int dia2 = Integer.parseInt(fecha_actual.substring(8, 10));
+            System.out.println(dia2);
+            fechaFin.set(anio2, mes2, dia2);
 
-        //restamos las fechas como se puede ver son de tipo Calendar,
+            //restamos las fechas como se puede ver son de tipo Calendar,
 
-        //debemos obtener el valor long con getTime.getTime.
+            //debemos obtener el valor long con getTime.getTime.
 
-        c.setTimeInMillis(fechaFin.getTime().getTime() - fechaInicio.getTime().getTime());
+            c.setTimeInMillis(fechaFin.getTime().getTime() - fechaInicio.getTime().getTime());
 
-        //la resta provoca que guardamos este valor en c,
+            //la resta provoca que guardamos este valor en c,
 
-        //los milisegundos corresponde al tiempo en dias
+            //los milisegundos corresponde al tiempo en dias
 
-        //asi sabemos cuantos dias
-        System.out.println(c.get(Calendar.DAY_OF_YEAR));
-        return  c.get(Calendar.DAY_OF_YEAR);
+            //asi sabemos cuantos dias
+            System.out.println(c.get(Calendar.DAY_OF_YEAR));
+            valor = c.get(Calendar.DAY_OF_YEAR);
+        }
+         return  valor;
 
         //System.out.println("N. dias" + c.get(Calendar.DAY_OF_YEAR));
     }

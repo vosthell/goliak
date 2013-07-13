@@ -254,7 +254,8 @@ public class clsPago {
     }  
     
     public boolean insertarRegistroReciboCobro(String idUser, String factRef, String valor, 
-            String idCajaOperacion, String codigoRecibo, String idCliente, String cuotaInicial)
+            String idCajaOperacion, String codigoRecibo, String idCliente, String cuotaInicial,
+            String tipoRecibo)
     {       
         boolean exito;
         try
@@ -262,9 +263,9 @@ public class clsPago {
             bd.conectarBaseDeDatos();          
             sql = "INSERT INTO ck_pagos_recibo"
                     + " (id_usuario, referencia, fecha_pago, valor, id_caja_operacion, "
-                    + " codigo_recibo, estado, codigo, cuota_inicial)"
-                    + " VALUES("+idUser+", '"+ factRef+"', now(), "+valor+", "+idCajaOperacion+", "
-                    + codigoRecibo + ", 'P', " + idCliente+ ", '" + cuotaInicial + "')";           
+                    + " codigo_recibo, estado, codigo, cuota_inicial, tipo_recibo)"
+                    + " VALUES(" + idUser + ", '" + factRef + "', now(), " + valor + ", " + idCajaOperacion + ", "
+                    + codigoRecibo + ", 'P', " + idCliente+ ", '" + cuotaInicial + "', '" + tipoRecibo + "')";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
