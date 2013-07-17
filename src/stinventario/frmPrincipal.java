@@ -84,6 +84,7 @@ import reportes.frmListPagosPendientes;
 import reportes.frmListVentas;
 import reportes.frmListVentasNE;
 import reportes.frmListVentasNEVendedor;
+import reportes.frmReporteSemanal;
 import usuarios.frmNuevoUsuario;
 
 /**
@@ -653,6 +654,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem22 = new javax.swing.JMenuItem();
         mnListPagos = new javax.swing.JMenuItem();
         mnOperacionesCaja = new javax.swing.JMenuItem();
+        jSeparator14 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem14 = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem26 = new javax.swing.JMenuItem();
 
@@ -940,6 +943,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(lblLogo, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jXTaskPaneContainer2.setName("jXTaskPaneContainer2"); // NOI18N
+        org.jdesktop.swingx.VerticalLayout verticalLayout1 = new org.jdesktop.swingx.VerticalLayout();
+        verticalLayout1.setGap(14);
+        jXTaskPaneContainer2.setLayout(verticalLayout1);
 
         jXTaskPane1.setName("jXTaskPane1"); // NOI18N
 
@@ -1722,6 +1728,18 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jMenu4.add(mnOperacionesCaja);
 
+        jSeparator14.setName("jSeparator14"); // NOI18N
+        jMenu4.add(jSeparator14);
+
+        jMenuItem14.setText(resourceMap.getString("jMenuItem14.text")); // NOI18N
+        jMenuItem14.setName("jMenuItem14"); // NOI18N
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem14);
+
         jMenuBar1.add(jMenu4);
 
         jMenu10.setText(resourceMap.getString("jMenu10.text")); // NOI18N
@@ -2466,6 +2484,11 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     mostrarJInternalCentrado(formulario); 
 }//GEN-LAST:event_jMenu3ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        frmReporteSemanal formulario = new frmReporteSemanal();
+        mostrarJInternalCentrado(formulario);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
    void mostrarAuditoria()
    {
         permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmAuditoria");
@@ -2604,6 +2627,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
@@ -2643,6 +2667,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JPopupMenu.Separator jSeparator12;
     private javax.swing.JPopupMenu.Separator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator14;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
