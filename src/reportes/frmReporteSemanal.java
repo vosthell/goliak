@@ -4,6 +4,8 @@
  */
 package reportes;
 
+import clases.clsCabecera;
+import clases.clsUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,13 +18,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frmReporteSemanal extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
+    clsCabecera objCabecera = new clsCabecera();
+    clsUtils objUtils = new clsUtils();
     /**
      * Creates new form frmReporteSemanal
      */
     public frmReporteSemanal() {
         initComponents();
         
-        dtmData.addColumn("DETALLE");/*.setPreferredWidth(500)*/
+       dtmData.addColumn("DETALLE");//.setPreferredWidth(500)
         dtmData.addColumn("LUNES");
         dtmData.addColumn("MARTES");
         dtmData.addColumn("MIERCOLES");
@@ -30,6 +34,7 @@ public class frmReporteSemanal extends javax.swing.JInternalFrame {
         dtmData.addColumn("VIERNES");
         dtmData.addColumn("SABADO");
         dtmData.addColumn("DOMINGO");
+        dtmData.addColumn("TOTAL SEMANAL");
     }
     
      public class MiModelo extends DefaultTableModel
@@ -190,8 +195,10 @@ public class frmReporteSemanal extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtFechaFinPropertyChange
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        objUtils.vaciarTabla(dtmData);
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = txtFechaInicio.getDate();
+        Date fecSegCarta = txtFechaInicio.getDate();
         String fechaInicio = df1.format(date1);        
         
         Date date2 = txtFechaFin.getDate();
@@ -200,41 +207,60 @@ public class frmReporteSemanal extends javax.swing.JInternalFrame {
         //LE AUMENTO UN DIA
         Calendar fecha = Calendar.getInstance();
         fecha.setTime(date1); 
-        fecha.add(Calendar.DAY_OF_MONTH, 1); 
         
-        Date fecSegCarta = fecha.getTime();
-        date1 = fecSegCarta;        
-        String fecha2 = df1.format(fecSegCarta);
         
-        if (fecha.before(date2) ) 
-        {
-            fecha2="select sum(total)\n" +
-"from ck_cabecera_movi\n" +
-"where fecha::date = '2013-04-01'\n" +
-"AND estado ='A'\n" +
-"AND id_empresa = 1";
+        String fecha2 = "";
+        Double valor = 0.00;
+        
+        double ingresos[] = new double[8];
+        double abonos[] = new double[8];
+        double entradas[] = new double[8];
+        double ventasDiarias[] = new double[7];
+        int i=0;
+        while((fecSegCarta.before(date2))||(fecha2.equals(fechaFin)))
+        //while(fecSegCarta.before(date2))
+        {           
+            if(i==0)
+            {}
+            else
+            {
+                fecha.add(Calendar.DAY_OF_MONTH, 1); 
+            }
+            fecSegCarta = fecha.getTime();
+            date1 = fecSegCarta;        
+            fecha2 = df1.format(fecSegCarta);
+            
+            ingresos[i] = objUtils.redondear(objCabecera.obtenerValorFacturado(fecha2));
+            //ABONOS DE NOTA DE ENTREGA Y FACTURAS
+            abonos[i] = objUtils.redondear(objCabecera.obtenerValorAbonos(fecha2)+
+                    objCabecera.obtenerValorAbonosFactura(fecha2));
+            entradas[i] = objUtils.redondear(objCabecera.obtenerValorEntradas(fecha2));
+            i = i+1;        
         }
-        else if(fecha2.equals(fechaFin)) 
-        {
+        //System.out.println("Valor final de i: " +i );
+        Double totalIngresos = ingresos[0]+ ingresos[1]+ingresos[2]+ingresos[3]+ingresos[4]+ingresos[5]+ingresos[6];
+        Double totalAbonos = abonos[0] + abonos[1] +abonos[2] +abonos[3] +abonos[4] +abonos[5]+abonos[6];
+        Double totalEntradas = entradas[0] +entradas[1] +entradas[2] +entradas[3]+entradas[4] +entradas[5] +entradas[6];
         
-        }
-        else
-        {
-        
-        }
-        
-        
-        Object[] nuevaFila = { "INGRESOS", "","","","","","","",""};   
+        Object[] nuevaFila = { "INGRESOS", ingresos[0],ingresos[1], ingresos[2],ingresos[3],ingresos[4],ingresos[5],ingresos[6],totalIngresos};   
         dtmData.addRow(nuevaFila); 
-        Object[] nuevaFila2 = { "VENTAS", "","","","","","","",""};   
+        Object[] nuevaFila2 = { "VENTAS", "","","","","","","", ""};   
         dtmData.addRow(nuevaFila2); 
-        Object[] nuevaFila3 = { "ABONOS", "","","","","","","",""};   
+        Object[] nuevaFila3 = { "ABONOS", abonos[0], abonos[1], abonos[2], abonos[3], abonos[4],abonos[5],abonos[6], totalAbonos};   
         dtmData.addRow(nuevaFila3); 
-        Object[] nuevaFila4 = { "ENTRADAS", "","","","","","","",""};   
+        Object[] nuevaFila4 = { "ENTRADAS", entradas[0],entradas[1],entradas[2],entradas[3],entradas[4],entradas[5],entradas[6],totalEntradas};   
         dtmData.addRow(nuevaFila4); 
         Object[] nuevaFila5 = { "CANCELACIONES", "","","","","","","",""};   
         dtmData.addRow(nuevaFila5); 
-        Object[] nuevaFila6 = { "VENTAS DIARIAS", "","","","","","","",""};   
+        
+        double ventasDiariasTotal = 0.00;
+        for(int z=0; z<7;z++)
+        {
+            ventasDiarias[z] = ingresos[z] + abonos[z] + entradas[z];
+            ventasDiariasTotal = ventasDiariasTotal + ventasDiarias[z];
+        } 
+        
+        Object[] nuevaFila6 = { "VENTAS DIARIAS", ventasDiarias[0], ventasDiarias[1], ventasDiarias[2], ventasDiarias[3], ventasDiarias[4], ventasDiarias[5], ventasDiarias[6], ventasDiariasTotal};  
         dtmData.addRow(nuevaFila6); 
     }//GEN-LAST:event_jButton1ActionPerformed
 

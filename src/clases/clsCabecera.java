@@ -444,7 +444,7 @@ public class clsCabecera {
     public boolean insertarRegistroCompras(int idProveedor, String idUser, 
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
-            String irbp, String baseIce, String ice, String fechaCompra)
+            String irbp, String baseIce, String ice, String fechaCompra, String autorizacion)
     {       
         boolean exito = false;
         try
@@ -453,11 +453,11 @@ public class clsCabecera {
             sql = "INSERT INTO ck_cabecera_movi_compras(id_proveedor, id_usuario, "
                     + " total, efectivo, fecha, id_empresa, descuento, iva, "
                     + " base_tarifa_0, base_tarifa_iva, fact_referencia, tipo_documento,"
-                    + " irbp, baseice, ice)"                   
+                    + " irbp, baseice, ice, autorizacion)"                   
                     + " VALUES(" + idProveedor + ", " + idUser + ", "
                     + total + ", " + total + ", '" + fechaCompra + "', " + idEmpresa + ", " + descuento + ", " + iva + ", "
                     + tarifa_cero + ", " + tarifa_iva + ", '" + factura_referencia + "', '" + documento + "',"
-                    + irbp + ", " + baseIce + ", " + ice + ")";           
+                    + irbp + ", " + baseIce + ", " + ice + ", '" + autorizacion + "')";           
             //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -474,7 +474,7 @@ public class clsCabecera {
     public boolean actualizarRegistroCompras(int idCabeceraCompra, int idProveedor,  
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
-            String fechaCompra, String irbp, String baseIce, String ice )
+            String fechaCompra, String irbp, String baseIce, String ice, String autorizacion )
     {       
         boolean exito = false;
         try
@@ -482,19 +482,20 @@ public class clsCabecera {
             bd.conectarBaseDeDatos();          
             sql = "UPDATE ck_cabecera_movi_compras"
                     + " SET id_proveedor = " +idProveedor +","
-                    + " total = " + total+ ","
-                    + " efectivo = " + total + ","
-                    + " id_empresa = " + idEmpresa + ","
-                    + " descuento = " + descuento + ","
-                    + " iva =  " + iva + ","
-                    + " base_tarifa_0 = " + tarifa_cero + ","
-                    + " base_tarifa_iva =  " + tarifa_iva + ","
-                    + " fact_referencia = '" + factura_referencia + "',"
-                    + " tipo_documento = '"+ documento + "',"
-                    + " fecha = '" + fechaCompra + "',"
-                    + " irbp = " + irbp + ", "
-                    + " baseice = " + baseIce + ", "
-                    + " ice = " + ice
+                        + " total = " + total+ ","
+                        + " efectivo = " + total + ","
+                        + " id_empresa = " + idEmpresa + ","
+                        + " descuento = " + descuento + ","
+                        + " iva =  " + iva + ","
+                        + " base_tarifa_0 = " + tarifa_cero + ","
+                        + " base_tarifa_iva =  " + tarifa_iva + ","
+                        + " fact_referencia = '" + factura_referencia + "',"
+                        + " tipo_documento = '"+ documento + "',"
+                        + " fecha = '" + fechaCompra + "',"
+                        + " irbp = " + irbp + ", "
+                        + " baseice = " + baseIce + ", "
+                        + " ice = " + ice + ", "
+                        + " autorizacion = '" + autorizacion + "'"
                     + " WHERE id_cabecera_movi_compras = " + idCabeceraCompra;           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
@@ -2242,5 +2243,104 @@ public class clsCabecera {
         return data;
     }
     
+    public double obtenerValorFacturado(String fecha)
+    {          
+        double nombreCajero = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT SUM(total) suma" 
+                    + " FROM ck_cabecera_movi " 
+                    + " WHERE fecha::date = '" + fecha + "'" 
+                    + " AND estado ='A'" 
+                    + " AND id_empresa = 1";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                nombreCajero = bd.resultado.getDouble("suma");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            nombreCajero = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return nombreCajero;
+    }
     
+    public double obtenerValorEntradas(String fecha)
+    {          
+        double nombreCajero = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT SUM(valor) suma " 
+                    + " FROM ck_pagos_recibo " 
+                    + " WHERE fecha_cobro::date = '" + fecha + "' " 
+                    + " AND cuota_inicial = 'S' " 
+                    + " AND estado = 'A'";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                nombreCajero = bd.resultado.getDouble("suma");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            nombreCajero = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return nombreCajero;
+    }
+    
+    public double obtenerValorAbonos(String fecha)
+    {          
+        double nombreCajero = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT SUM(valor) suma " 
+                    + " FROM ck_pagos " 
+                    + " WHERE fecha_cobro::date = '" + fecha + "' " 
+                    + " AND estado = 'A'";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                nombreCajero = bd.resultado.getDouble("suma");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            nombreCajero = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return nombreCajero;
+    }
+    public double obtenerValorAbonosFactura(String fecha)
+    {          
+        double nombreCajero = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT SUM(valor) suma " 
+                    + " FROM ck_pagos_factura " 
+                    + " WHERE fecha_cobro::date = '" + fecha + "' " 
+                    + " AND estado = 'A'";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                nombreCajero = bd.resultado.getDouble("suma");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            nombreCajero = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return nombreCajero;
+    }
 }

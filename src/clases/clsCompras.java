@@ -34,6 +34,7 @@ public class clsCompras {
     private double baseIce;
     private double ice;
     private String tipo; 
+    private String autorizacion; 
         
     public int getIdCompras()
     {
@@ -193,6 +194,16 @@ public class clsCompras {
     public void setFechaRecibe(String fecha_recibe)
     {
         this.fecha_recibe = fecha_recibe;
+    }
+    
+    public String getAutorizacion()
+    {
+        return autorizacion;
+    }
+    
+    public void setAutorizacion(String autorizacion)
+    {
+        this.autorizacion = autorizacion;
     }
     
     public Double getIrbp()
@@ -661,11 +672,11 @@ public class clsCompras {
         try{
             bd.conectarBaseDeDatos();
             sql = "SELECT id_cabecera_movi_compras, a.id_proveedor, b.ruc ruc, "
-                    + " b.nombre nombre_proveedor, a.id_usuario, c.name nombre_elaborador, a.estado, total, "
-                    + " saldo, efectivo, fecha::date fecha, fact_referencia, comentario, id_cajero, "
-                    + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
-                    + " base_tarifa_iva, tipo_documento, estado_tramite,"
-                    + " irbp, baseice, ice "
+                        + " b.nombre nombre_proveedor, a.id_usuario, c.name nombre_elaborador, a.estado, total, "
+                        + " saldo, efectivo, fecha::date fecha, fact_referencia, comentario, id_cajero, "
+                        + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, tipo_documento, estado_tramite,"
+                        + " irbp, baseice, ice, autorizacion "
                     + " FROM ck_cabecera_movi_compras AS a "
                     + " JOIN ck_proveedor AS b ON a.id_proveedor = b.id_proveedor"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
@@ -695,6 +706,7 @@ public class clsCompras {
                     oListaTemporal.setBaseIce(bd.resultado.getDouble("baseice"));
                     oListaTemporal.setIce(bd.resultado.getDouble("ice"));
                     oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setAutorizacion(bd.resultado.getString("autorizacion"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 

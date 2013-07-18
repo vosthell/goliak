@@ -73,7 +73,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtIRBP.setText("" + dataCompra.get(0).getIrbp());
         txtBaseICE.setText("" + dataCompra.get(0).getBaseIce());
         txtICE.setText("" + dataCompra.get(0).getIce());
-        txtFecha.setText(dataCompra.get(0).getFecha());        
+        txtFecha.setText(dataCompra.get(0).getFecha());   
+        txtAutorizacion.setText(dataCompra.get(0).getAutorizacion());
         
         if(dataCompra.get(0).getTipoDocumento().equals("V"))
         {
@@ -154,6 +155,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtFacturaReferencia = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtAutorizacion = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
@@ -192,8 +195,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
-        txtCodigoProveedor.setBackground(resourceMap.getColor("txtCodigoProveedor.background")); // NOI18N
         txtCodigoProveedor.setEditable(false);
+        txtCodigoProveedor.setBackground(resourceMap.getColor("txtCodigoProveedor.background")); // NOI18N
         txtCodigoProveedor.setText(resourceMap.getString("txtCodigoProveedor.text")); // NOI18N
         txtCodigoProveedor.setName("txtCodigoProveedor"); // NOI18N
 
@@ -223,6 +226,13 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtFecha.setText(resourceMap.getString("txtFecha.text")); // NOI18N
         txtFecha.setName("txtFecha"); // NOI18N
 
+        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        txtAutorizacion.setEditable(false);
+        txtAutorizacion.setText(resourceMap.getString("txtAutorizacion.text")); // NOI18N
+        txtAutorizacion.setName("txtAutorizacion"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -230,12 +240,14 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtNombreProveedor)
-                    .addComponent(txtCodigoProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                    .addComponent(txtAutorizacion, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                    .addComponent(txtCodigoProveedor))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -270,7 +282,10 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNombreProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel2.setBackground(resourceMap.getColor("jPanel2.background")); // NOI18N
@@ -399,8 +414,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel14))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtICE, 0, 0, Short.MAX_VALUE)
-                                    .addComponent(txtBaseICE, 0, 0, Short.MAX_VALUE)
+                                    .addComponent(txtICE, 0, 1, Short.MAX_VALUE)
+                                    .addComponent(txtBaseICE, 0, 1, Short.MAX_VALUE)
                                     .addComponent(txtIRBP, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(39, 39, 39)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -498,23 +513,27 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnGuardar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnGuardar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -655,12 +674,14 @@ private void tblDataKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtAutorizacion;
     private javax.swing.JTextField txtBaseICE;
     private javax.swing.JTextField txtCodigoFactura;
     public static javax.swing.JTextField txtCodigoProveedor;
