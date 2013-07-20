@@ -12,12 +12,14 @@ package producto;
 
 import clases.clsAuditoria;
 import clases.clsCabecera;
+import clases.clsComboBox;
 import clases.clsCompras;
 import clases.clsDetalle;
 import clases.clsImpuestos;
 import clases.clsKardex;
 import clases.clsProducto;
 import clases.clsProveedor;
+import clases.clsProvincia;
 import clases.clsUtils;
 import index.main;
 import java.awt.Dimension;
@@ -43,6 +45,7 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
     clsAuditoria objAuditoria = new clsAuditoria();
     clsCompras objCompras = new clsCompras();
     clsKardex objKardex = new clsKardex();
+    clsProvincia objProvincia = new clsProvincia();
     
     int idCabeceraCompra = 0;
       
@@ -133,6 +136,17 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                         , descuento};
             dtmData.addRow(nuevaFila); 
         }
+         //CARGAR TIPOS DE GASTOS
+        ArrayList<clsComboBox> dataGasto = objProvincia.consultarGastos();        
+        for(int i=0;i<dataGasto.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataGasto.get(i).getCodigo(), dataGasto.get(i).getDescripcion());
+            cmbTipoGasto.addItem(oItem);  
+            if(Integer.parseInt(dataGasto.get(i).getCodigo())==(dataCompra.get(0).getIdCuenta()))
+                {    
+                    cmbTipoGasto.setSelectedItem(oItem);
+                }    
+        }
         
     }
 
@@ -157,6 +171,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtFecha = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtAutorizacion = new javax.swing.JTextField();
+        cmbTipoGasto = new javax.swing.JComboBox();
+        jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
@@ -233,6 +249,11 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtAutorizacion.setText(resourceMap.getString("txtAutorizacion.text")); // NOI18N
         txtAutorizacion.setName("txtAutorizacion"); // NOI18N
 
+        cmbTipoGasto.setName("cmbTipoGasto"); // NOI18N
+
+        jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
+        jLabel15.setName("jLabel15"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -248,17 +269,20 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                     .addComponent(txtNombreProveedor)
                     .addComponent(txtAutorizacion, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                     .addComponent(txtCodigoProveedor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel10))
+                    .addComponent(jLabel15))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtCodigoFactura, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                    .addComponent(txtFacturaReferencia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbTipoGasto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCodigoFactura, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addComponent(txtFacturaReferencia))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -282,10 +306,18 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNombreProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(cmbTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jPanel2.setBackground(resourceMap.getColor("jPanel2.background")); // NOI18N
@@ -521,7 +553,7 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -662,12 +694,14 @@ private void tblDataKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JCheckBox chkNotaVenta;
+    private javax.swing.JComboBox cmbTipoGasto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;

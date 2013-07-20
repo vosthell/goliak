@@ -315,7 +315,9 @@ public class clsCliente {
         return data;
     }  
     
-    public boolean insertarRegistro(String cedula, String n1, String n2, String a1, String a2, String convencional, String celular, String direccion, String ciudad, String credito, String prov, String termino, String recinto, String email)
+    public boolean insertarRegistro(String cedula, String n1, String n2, String a1, 
+            String a2, String convencional, String celular, String direccion, String ciudad, 
+            String credito, String prov, String termino, String recinto, String email)
     {       
         boolean exito;
         try

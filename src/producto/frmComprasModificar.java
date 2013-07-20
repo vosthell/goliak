@@ -13,11 +13,13 @@ package producto;
 import clases.clsAuditoria;
 import clases.clsCabecera;
 import clases.clsCaja;
+import clases.clsComboBox;
 import clases.clsCompras;
 import clases.clsDetalle;
 import clases.clsImpuestos;
 import clases.clsProducto;
 import clases.clsProveedor;
+import clases.clsProvincia;
 import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
@@ -53,6 +55,7 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsAuditoria objAuditoria = new clsAuditoria();
     clsCompras objCompras = new clsCompras();
+    clsProvincia objProvincia = new clsProvincia();
     
     int idCabeceraCompra;
     
@@ -220,6 +223,18 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
                 dtmData.addTableModelListener(this);
             }  
         });
+        
+        //CARGAR TIPOS DE GASTOS
+        ArrayList<clsComboBox> dataGasto = objProvincia.consultarGastos();        
+        for(int i=0;i<dataGasto.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataGasto.get(i).getCodigo(), dataGasto.get(i).getDescripcion());
+            cmbTipoGasto.addItem(oItem);  
+            if(Integer.parseInt(dataGasto.get(i).getCodigo())==(dataCompra.get(0).getIdCuenta()))
+                {    
+                    cmbTipoGasto.setSelectedItem(oItem);
+                }    
+        }
     }
 
     public void recalcular()
@@ -282,6 +297,8 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
         txtFecha = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
         txtAutorizacion = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        cmbTipoGasto = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -391,6 +408,11 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
         txtAutorizacion.setText(resourceMap.getString("txtAutorizacion.text")); // NOI18N
         txtAutorizacion.setName("txtAutorizacion"); // NOI18N
 
+        jLabel19.setText(resourceMap.getString("jLabel19.text")); // NOI18N
+        jLabel19.setName("jLabel19"); // NOI18N
+
+        cmbTipoGasto.setName("cmbTipoGasto"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -417,15 +439,21 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
                         .addComponent(txtAutorizacion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCodigoFactura, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtFacturaReferencia))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtCodigoFactura)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFacturaReferencia)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbTipoGasto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -455,8 +483,11 @@ public class frmComprasModificar extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
-                            .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel19)
+                                .addComponent(cmbTipoGasto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 4, Short.MAX_VALUE))
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -915,11 +946,13 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             //FACTURA
             documento = "F";
         } 
+        clsComboBox objGastoSelect = (clsComboBox)cmbTipoGasto.getSelectedItem();
         
         exito = objCabecera.actualizarRegistroCompras(idCabeceraCompra, codigoProveedor,  
                 txtTotal.getText(), main.idEmpresa, descuentoF, ivaF, txtTarifaIVA.getText(), 
                 txtTarifaCero.getText(), txtFacturaReferencia.getText(), documento, fechaCompra, 
-                txtIRBP.getText(), txtBaseICE.getText(), txtICE.getText(), txtAutorizacion.getText());
+                txtIRBP.getText(), txtBaseICE.getText(), txtICE.getText(), txtAutorizacion.getText(),
+                objGastoSelect.getCodigo());
         
         if(exito)
         {
@@ -1508,6 +1541,7 @@ private void txtFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
     private javax.swing.JButton btnGuardar;
     private javax.swing.JCheckBox chkIvaIncluido;
     private javax.swing.JCheckBox chkNotaVenta;
+    private javax.swing.JComboBox cmbTipoGasto;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -1520,6 +1554,7 @@ private void txtFechaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-F
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;

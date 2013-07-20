@@ -444,7 +444,7 @@ public class clsCabecera {
     public boolean insertarRegistroCompras(int idProveedor, String idUser, 
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
-            String irbp, String baseIce, String ice, String fechaCompra, String autorizacion)
+            String irbp, String baseIce, String ice, String fechaCompra, String autorizacion, String idGasto)
     {       
         boolean exito = false;
         try
@@ -453,11 +453,11 @@ public class clsCabecera {
             sql = "INSERT INTO ck_cabecera_movi_compras(id_proveedor, id_usuario, "
                     + " total, efectivo, fecha, id_empresa, descuento, iva, "
                     + " base_tarifa_0, base_tarifa_iva, fact_referencia, tipo_documento,"
-                    + " irbp, baseice, ice, autorizacion)"                   
+                    + " irbp, baseice, ice, autorizacion, id_cuenta)"                   
                     + " VALUES(" + idProveedor + ", " + idUser + ", "
                     + total + ", " + total + ", '" + fechaCompra + "', " + idEmpresa + ", " + descuento + ", " + iva + ", "
                     + tarifa_cero + ", " + tarifa_iva + ", '" + factura_referencia + "', '" + documento + "',"
-                    + irbp + ", " + baseIce + ", " + ice + ", '" + autorizacion + "')";           
+                    + irbp + ", " + baseIce + ", " + ice + ", '" + autorizacion + "', " + idGasto + ")";           
             //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -474,7 +474,8 @@ public class clsCabecera {
     public boolean actualizarRegistroCompras(int idCabeceraCompra, int idProveedor,  
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
-            String fechaCompra, String irbp, String baseIce, String ice, String autorizacion )
+            String fechaCompra, String irbp, String baseIce, String ice, String autorizacion,
+            String idCuenta)
     {       
         boolean exito = false;
         try
@@ -495,7 +496,8 @@ public class clsCabecera {
                         + " irbp = " + irbp + ", "
                         + " baseice = " + baseIce + ", "
                         + " ice = " + ice + ", "
-                        + " autorizacion = '" + autorizacion + "'"
+                        + " autorizacion = '" + autorizacion + "',"
+                        + " id_cuenta = " + idCuenta
                     + " WHERE id_cabecera_movi_compras = " + idCabeceraCompra;           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);

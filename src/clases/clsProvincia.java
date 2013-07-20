@@ -48,6 +48,41 @@ public class clsProvincia {
         return data;
     }
     
+    public ArrayList<clsComboBox>  consultarGastos(){            
+        ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT id_cuenta, descripcion"
+                    + " FROM ck_cuenta"
+                    + " WHERE estado = 'A' "
+                    + " AND id_tipo = 1"
+                    + " ORDER BY descripcion";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsComboBox oListaTemporal = new clsComboBox(bd.resultado.getString("id_cuenta"),bd.resultado.getString("descripcion"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+    
     public ArrayList<clsComboBox>  consultarTipoIncobrable(){            
         ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
         try{

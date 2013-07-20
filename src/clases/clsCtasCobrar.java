@@ -85,15 +85,17 @@ public class clsCtasCobrar {
         try{
             bd.conectarBaseDeDatos();
             sql = "select ck_cta_cobrar.id_cta_cobrar, fact_referencia, ck_cta_cobrar.descripcion, "
-                    + " ck_cta_cobrar.valor valor, ck_cta_cobrar.valor_actual valor_actual, "
-                    + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo, "
-                    + " ck_notas_de_entrega.porcentaje_interes porc"
+                        + " ck_cta_cobrar.valor valor, ck_cta_cobrar.valor_actual valor_actual, "
+                        + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo, "
+                        + " ck_notas_de_entrega.porcentaje_interes porc"
                     + " FROM ck_cta_cobrar  "
-                    + " INNER JOIN ck_notas_de_entrega ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
+                    + " INNER JOIN ck_notas_de_entrega "
+                    + " ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
                     + " WHERE ck_notas_de_entrega.codigo = " + idCliente
                     + " AND id_caja_operacion=0"
                     + " AND ck_notas_de_entrega.estado = 'A'"
                     + " AND (ck_cta_cobrar.estado = 'A' OR ck_cta_cobrar.estado = 'C')"
+                    + " AND ck_notas_de_entrega.estado_tramite = 'S'"
                     + " ORDER BY valor_actual DESC";
                     //+ " --and valor_actual>0"
                     
@@ -170,12 +172,14 @@ public class clsCtasCobrar {
                     + " ck_cta_cobrar.valor valor, ck_cta_cobrar.valor_actual valor_actual, "
                     + " ck_cta_cobrar.id_cabecera_movi, ck_notas_de_entrega.codigo, ck_notas_de_entrega.porcentaje_interes porc"
                     + " FROM ck_cta_cobrar  "
-                    + " INNER JOIN ck_notas_de_entrega ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
+                    + " INNER JOIN ck_notas_de_entrega "
+                    + " ON ck_cta_cobrar.id_cabecera_movi = ck_notas_de_entrega.id_cabecera_movi "
                     + " WHERE ck_notas_de_entrega.codigo = " + idCliente
                     + " AND id_caja_operacion=0"
                     + " AND ck_notas_de_entrega.estado = 'A'"
                     + " AND ck_cta_cobrar.estado = 'A'"
                     + " AND valor_actual>0"
+                    + " AND ck_notas_de_entrega.estado_tramite = 'S'"
                     + " ORDER BY valor_actual DESC";
                     
             bd.resultado = bd.sentencia.executeQuery(sql);           
