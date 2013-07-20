@@ -231,7 +231,7 @@ public class frmKardex extends javax.swing.JInternalFrame {
         );
         imagepanel1Layout.setVerticalGroup(
             imagepanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 95, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -284,12 +284,12 @@ public class frmKardex extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnImagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnNuevo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
                                 .addComponent(btnBuscarNombre)
-                                .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -357,7 +357,7 @@ public class frmKardex extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRecibir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -471,14 +471,20 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         
         //JLabel etiqueta = new JLabel(imagen);
         //jPanel5.add(etiqueta);
-        int ancho =imagepanel.getWidth();
+       
+        
+        
+        
+        /*int ancho =imagepanel.getWidth();
         int alto = imagepanel.getHeight();
         Image x = redimensionarImagen(img, ancho, alto);
         imagepanel.setImage(x);
         imagepanel.setStyle(Style.CENTERED);  
         //imagepanel.setStyle(Style.SCALED);  
         imagepanel.setStyle(Style.SCALED_KEEP_ASPECT_RATIO);  
-        imagepanel.setStyle(Style.TILED);  
+        imagepanel.setStyle(Style.TILED);  */
+        
+        
         //etiqueta.setBounds(0,0,300,200);
     }
     
@@ -607,7 +613,6 @@ private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JButton btnRecibir;
     private javax.swing.JButton btnRetirar;
     public static javax.swing.JComboBox cmbPrecio;
-    private org.jdesktop.swingx.JXImagePanel imagepanel;
     private org.jdesktop.swingx.JXImagePanel imagepanel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
