@@ -15,6 +15,7 @@ import clases.clsCaja;
 import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCtasCobrar;
+import clases.clsGrupo;
 import clases.clsPago;
 import clases.clsReporte;
 import clases.clsUtils;
@@ -50,6 +51,7 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
     clsUtils objUtils = new clsUtils();
     clsReporte objReporte = new clsReporte();
     clsCaja objCaja = new clsCaja();
+    clsGrupo objGrupo = new clsGrupo();
     
     public static String codigoCliente;
     String idCajaAbierta = "";
@@ -87,12 +89,23 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
         int idReciboDePago = objCaja.obtenerReciboPagoActual();
         txtReciboDePago.setText(""+idReciboDePago);
         
-         clsComboBox oItem = new clsComboBox("1", "RECIBO");
+         /*clsComboBox oItem = new clsComboBox("1", "RECIBO");
          cmbTipoRecibo.addItem(oItem);     
          oItem = new clsComboBox("2", "CUOTA INICIAL");
          cmbTipoRecibo.addItem(oItem);     
          oItem = new clsComboBox("3", "ARRIENDO");
-         cmbTipoRecibo.addItem(oItem);     
+         cmbTipoRecibo.addItem(oItem);  
+         oItem = new clsComboBox("4", "PLAN ACUMULATIVO");
+         cmbTipoRecibo.addItem(oItem);  */
+         
+         //CARGAR GRUPO
+         //cmbGrupo.removeAllItems();
+         ArrayList<clsComboBox> dataGrupo = objGrupo.consultarTiposIngresos();  
+         for(int i=0;i<dataGrupo.size();i=i+1)
+         {
+             clsComboBox oItem = new clsComboBox(dataGrupo.get(i).getCodigo(), dataGrupo.get(i).getDescripcion());
+             cmbTipoRecibo.addItem(oItem);             
+         }
     }
 
     /** This method is called from within the constructor to

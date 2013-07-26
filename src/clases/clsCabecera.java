@@ -789,7 +789,7 @@ public class clsCabecera {
             Double saldo, String efectivo, String descuento, String iva, String factura, 
             String tarifaIva, String tarifaCero, 
             String tarifaIva2, String iva2, String total2, String codigo_vendedor,
-            String fechaVenta, String tipo, String porcentaje_interes)
+            String fechaVenta, String tipo, String porcentaje_interes, String baseTarifaCero_Interes)
     {       
         boolean exito = false;
         try
@@ -798,11 +798,12 @@ public class clsCabecera {
             sql = "INSERT INTO ck_notas_de_entrega(codigo, id_usuario, id_cajero, total, "
                     + " fecha, id_empresa, id_caja_operacion, "
                     + " comentario, saldo, efectivo, descuento, iva, fact_referencia, base_tarifa_0, base_tarifa_iva, "
-                    + " total_interes, iva_interes, base_tarifa_iva_interes, vendedor, tipo, porcentaje_interes)"                   
+                    + " total_interes, iva_interes, base_tarifa_iva_interes, vendedor, tipo, porcentaje_interes,"
+                    + " base_tarifa_0_interes)"                   
                     + " VALUES(" + idCliente + ", "+idUser+", "+idCajero+", "+total
                     + " , '" + fechaVenta + "', "+idEmpresa+", "+cajaAbierta+", "
                     + " '"+comentario+"', "+saldo+", "+efectivo+", "+descuento+", "+iva+", '"+factura+"', "+tarifaCero+", "+tarifaIva+","
-                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "', " + porcentaje_interes + ")";           
+                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "', " + porcentaje_interes + ", " + baseTarifaCero_Interes + ")";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -821,7 +822,7 @@ public class clsCabecera {
             Double saldo, String efectivo, String descuento, String iva, String factura, 
             String tarifaIva, String tarifaCero, 
             String tarifaIva2, String iva2, String total2, String codigo_vendedor,
-            String fechaVenta, String tipo, String porcentaje_interes)
+            String fechaVenta, String tipo, String porcentaje_interes, String baseTarifaCero_interes)
     {       
         boolean exito = false;
         try
@@ -842,13 +843,14 @@ public class clsCabecera {
                         + " iva = "+iva+", "
                         + " fact_referencia = '"+factura+"', "
                         + " base_tarifa_0 = "+tarifaCero+", "
-                        + " base_tarifa_iva = "+total2+", "
-                        + " total_interes = "+tarifaIva+", "
+                        + " base_tarifa_iva = "+tarifaIva+", "
+                        + " total_interes = "+total2+", "
                         + " iva_interes = " + iva2+ ", "
                         + " base_tarifa_iva_interes = " + tarifaIva2+", "
                         + " vendedor = " + codigo_vendedor + ", "
                         + " tipo = '" + tipo + "',"
-                        + " porcentaje_interes = " + porcentaje_interes
+                        + " porcentaje_interes = " + porcentaje_interes + ", "
+                        + " base_tarifa_0_interes = " + baseTarifaCero_interes
                     + " WHERE  id_cabecera_movi = " + idCabecera;
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);

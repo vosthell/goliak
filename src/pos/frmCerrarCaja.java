@@ -536,7 +536,7 @@ void imprimir()
         pw.println("TOTAL:                          $"+ objUtils.rellenar(""+objUtils.redondear(totalCierre)));
         pw.println("CONTADO EN DINERO:              $"+ objUtils.rellenar(txtValorContado.getText()));
         
-        double diferencia = objUtils.redondear(totalCierre - Double.parseDouble(txtValorContado.getText()));
+        double diferencia = objUtils.redondear(Double.parseDouble(txtValorContado.getText()) - totalCierre);
         if(diferencia == 0.0||diferencia ==-0.0)
                 pw.println("VALORES CUADRADOS");
         else if(diferencia>0)

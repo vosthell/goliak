@@ -559,7 +559,7 @@ public class clsProducto {
                         + " control_perecible, fecha_caducidad, control_existencia, "
                         + " control_minimo, cantidad_minima, descuento, id_grupo_producto, "
                         + " precio1, imagen"
-                        + " FROM ck_items"
+                    + " FROM ck_items"
                     + " WHERE cod_item = '" + codigo + "'"
                     + " AND estado='A'";
             bd.resultado = bd.sentencia.executeQuery(sql);

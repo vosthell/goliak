@@ -672,7 +672,7 @@ private void tblDataPreciosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_tblDataPreciosKeyTyped
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    frmListProductos ventana = new frmListProductos(null, true, "6");        
+    frmListProductos ventana = new frmListProductos(null, true, "6", 0);        
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
 }//GEN-LAST:event_jButton1ActionPerformed

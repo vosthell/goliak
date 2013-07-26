@@ -69,6 +69,40 @@ public class clsGrupo {
         return data;
     }
     
+    public ArrayList<clsComboBox>  consultarTiposIngresos(){            
+        ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT id_tipo_ingreso, descripcion"
+                    + " FROM ck_tipo_ingreso"
+                    + " WHERE estado = 'A' ";
+                    //+ " ORDER BY grupo_descripcion";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsComboBox oListaTemporal = new clsComboBox(bd.resultado.getString("id_tipo_ingreso"),bd.resultado.getString("descripcion"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+    
     public List<String> consultarNombreGrupos(){            
         List<String> data = new ArrayList<String>();  
         try{

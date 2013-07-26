@@ -36,12 +36,14 @@ public class frmListProductos extends javax.swing.JDialog {
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
     String p_tipo;
-    
+    int codigoClienteX = 0;
     MiModelo dtmData = new MiModelo();
     /** Creates new form frmListProductos */
-    public frmListProductos(java.awt.Dialog parent, boolean modal, String tipo) {
+    public frmListProductos(java.awt.Dialog parent, boolean modal, String tipo, int codigoCliente) {
         super(parent, modal);
         initComponents();
+        
+        codigoClienteX = codigoCliente;
         p_tipo = tipo;
         dtmData.addColumn("Nº");
         dtmData.addColumn("Codigo");
@@ -202,7 +204,8 @@ public class frmListProductos extends javax.swing.JDialog {
 
     private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
         int fila = tblData.rowAtPoint(evt.getPoint());
-        int columna = tblData.columnAtPoint(evt.getPoint());        
+        int columna = tblData.columnAtPoint(evt.getPoint());   
+        String costo = "";
         if ((fila > -1) && (columna >-1)) 
         {
             String codigo = "" + tblData.getValueAt(fila,3);
@@ -212,7 +215,7 @@ public class frmListProductos extends javax.swing.JDialog {
             String descuento = "" + tblData.getValueAt(fila,5); 
             String control_existencia = "" + tblData.getValueAt(fila,6); 
             String precio = "" + tblData.getValueAt(fila,7); 
-            String costo = "" + tblData.getValueAt(fila,8); 
+            costo = "" + tblData.getValueAt(fila,8); 
            
             if(p_tipo.equals("1"))
             {
@@ -386,11 +389,28 @@ public class frmListProductos extends javax.swing.JDialog {
                     }
                     else if(p_tipo.equals("9"))
                     {
-                        frmNotasEntrega1.cmbPrecio.addItem(oItem);
+                        if((codigoClienteX==202)||(codigoClienteX==3054))
+                        {
+                            oItem = new clsComboBox(costo, "1 - " + costo);  
+                            frmNotasEntrega1.cmbPrecio.addItem(oItem);
+                        }
+                        else
+                        {
+                            frmNotasEntrega1.cmbPrecio.addItem(oItem);
+                        }
                     }
                     else if(p_tipo.equals("11"))
                     {
-                        frmNotasEntregaModificar.cmbPrecio.addItem(oItem);
+                        if((codigoClienteX==202)||(codigoClienteX==3054))
+                        {
+                            oItem = new clsComboBox(costo, "1 - " + costo); 
+                            frmNotasEntregaModificar.cmbPrecio.addItem(oItem);
+                        }
+                        else
+                        {
+                            frmNotasEntregaModificar.cmbPrecio.addItem(oItem);
+                        }
+                            
                     }
                     else if(p_tipo.equals("12"))
                     {
@@ -543,7 +563,7 @@ private void txtNombreProductoFocusGained(java.awt.event.FocusEvent evt) {//GEN-
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                frmListProductos dialog = new frmListProductos(new javax.swing.JDialog(), true, new String());
+                frmListProductos dialog = new frmListProductos(new javax.swing.JDialog(), true, new String(), 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override

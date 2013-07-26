@@ -117,6 +117,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             chkCredito.setSelected(false);
             dataCabecera = objCabecera.consultarDataCabeceraNotaEntrega(idCabecera);
             
+            codigoCliente = dataCabecera.get(0).getCodigo();
             txtCedula.setText(dataCabecera.get(0).getCedula());
             txtNombreCliente.setText(dataCabecera.get(0).getNameCompleto());
             txtNotaEntrega.setText(dataCabecera.get(0).getFactReferencia());
@@ -185,6 +186,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             txtEfectivo.setEditable(true);
             cmbPlazo.setEnabled(true);
             
+            codigoCliente = dataCabecera.get(0).getCodigo();
             txtCedula.setText(dataCabecera.get(0).getCedula());
             txtNombreCliente.setText(dataCabecera.get(0).getNameCompleto());
             txtNotaEntrega.setText(dataCabecera.get(0).getFactReferencia());
@@ -1595,7 +1597,10 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "C", txtInteresPorcentaje.getText());
+                                    fechaVenta, 
+                                    "C", 
+                                    txtInteresPorcentaje.getText(),
+                                    txtTarifaCero1.getText());
                         /***********************************************/
                        //int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
@@ -1698,7 +1703,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "D", "0.00");  
+                                    fechaVenta, "D", "0.00", "0.00");  
                         /***********************************************/
                     
                     }
@@ -1805,7 +1810,9 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtIVA1.getText(),
                     txtTotalFinal.getText(),
                     objVendedorSelect.getCodigo(),
-                    fechaVenta, "C", txtInteresPorcentaje.getText());
+                    fechaVenta, "C", 
+                    txtInteresPorcentaje.getText(),
+                    txtTarifaCero1.getText());
 
             if(exito)
             {
@@ -2014,7 +2021,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_btnMostrarArturoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "11");        
+        frmListProductos ventana = new frmListProductos(null, true, "11", codigoCliente);        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
@@ -2035,18 +2042,28 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                 txtStock.setText(""+dataProducto.get(0).getCantStock());
                 controlExistencia = dataProducto.get(0).getControlExistencia();
                 txtDescuentoUnidad.setText(dataProducto.get(0).getDescuento().toString());
-                txtCosto.setText(dataProducto.get(0).getCosto().toString());
+                String costo = dataProducto.get(0).getCosto().toString();
+                txtCosto.setText(costo);
                 //CARGAR PRECIOS DEL PRODUCTO
-                cmbPrecio.removeAllItems();                
-                ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
-                if(dataPrecios.isEmpty())
-                {}
-                else
+                //SI ES PARA BETTY RODAS COLOCAR COSTO
+                cmbPrecio.removeAllItems();   
+                if((codigoCliente==202)||(codigoCliente==3054))
                 {
-                    for(int i=0;i<dataPrecios.size();i=i+1)
+                     clsComboBox oItem = new clsComboBox(costo, "1 - " + costo);
+                     cmbPrecio.addItem(oItem);
+                }
+                else
+                {   
+                    ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
+                    if(dataPrecios.isEmpty())
+                    {}
+                    else
                     {
-                        clsComboBox oItem = new clsComboBox(dataPrecios.get(i).getDescripcion(), dataPrecios.get(i).getCodigo() + " - " + dataPrecios.get(i).getDescripcion());
-                        cmbPrecio.addItem(oItem);            
+                        for(int i=0;i<dataPrecios.size();i=i+1)
+                        {
+                            clsComboBox oItem = new clsComboBox(dataPrecios.get(i).getDescripcion(), dataPrecios.get(i).getCodigo() + " - " + dataPrecios.get(i).getDescripcion());
+                            cmbPrecio.addItem(oItem);            
+                        }
                     }
                 }
                 txtCantidad.setEditable(true);

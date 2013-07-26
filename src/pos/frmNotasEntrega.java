@@ -1342,7 +1342,10 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtIVA1.getText(),
                     txtTotalFinal.getText(),
                     objVendedorSelect.getCodigo(),
-                    fechaVenta, "PILA QUE NO VALE", txtInteresPorcentaje.getText());      
+                    fechaVenta, 
+                    "PILA QUE NO VALE", 
+                    txtInteresPorcentaje.getText(),
+                    txtTarifaCero1.getText());      
 
             if(exito)
             {
@@ -1546,7 +1549,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_btnMostrarArturoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(this, true, "9");        
+        frmListProductos ventana = new frmListProductos(this, true, "9", 0);        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
@@ -1566,18 +1569,29 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                 txtStock.setText(""+dataProducto.get(0).getCantStock());
                 controlExistencia = dataProducto.get(0).getControlExistencia();
                 txtDescuentoUnidad.setText(dataProducto.get(0).getDescuento().toString());
-                txtCosto.setText(dataProducto.get(0).getCosto().toString());
+                String costo = dataProducto.get(0).getCosto().toString();
+                txtCosto.setText(costo);
                 //CARGAR PRECIOS DEL PRODUCTO
-                cmbPrecio.removeAllItems();                
-                ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
-                if(dataPrecios.isEmpty())
-                {}
-                else
+                //SI ES PARA BETTY RODAS COLOCAR COSTO
+                cmbPrecio.removeAllItems(); 
+                
+                if((codigoCliente==202)||(codigoCliente==3054))
                 {
-                    for(int i=0;i<dataPrecios.size();i=i+1)
+                     clsComboBox oItem = new clsComboBox(costo, "1 - " + costo);
+                     cmbPrecio.addItem(oItem);
+                }
+                else
+                {   
+                    ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
+                    if(dataPrecios.isEmpty())
+                    {}
+                    else
                     {
-                        clsComboBox oItem = new clsComboBox(dataPrecios.get(i).getDescripcion(), dataPrecios.get(i).getCodigo() + " - " + dataPrecios.get(i).getDescripcion());
-                        cmbPrecio.addItem(oItem);            
+                        for(int i=0;i<dataPrecios.size();i=i+1)
+                        {
+                            clsComboBox oItem = new clsComboBox(dataPrecios.get(i).getDescripcion(), dataPrecios.get(i).getCodigo() + " - " + dataPrecios.get(i).getDescripcion());
+                            cmbPrecio.addItem(oItem);            
+                        }
                     }
                 }
                 txtCantidad.setEditable(true);
