@@ -131,11 +131,17 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
             txtIVA.setText("" + dataCabecera.get(0).getIVA());
             
-            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
+            /*txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
             txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
             txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
-            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
+            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());*/
+            
+            txtTarifaIVA1.setText("0.00");
+            txtTarifaCero1.setText("0.00");
+            txtDescuento1.setText("0.00");
+            txtIVA1.setText("0.00");
+            txtTotalFinal.setText("0.00");
             
             //fecha de nota de entrega
             SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
@@ -153,15 +159,27 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             //CARGAR CUOTAS
             cmbCuota.removeAllItems();
             ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
-            for(int i=0;i<dataCuota.size();i=i+1)
+           for(int i=0;i<dataCuota.size();i=i+1)
             {
                 clsComboBox oItem = new clsComboBox(dataCuota.get(i).getCodigo(), dataCuota.get(i).getDescripcion());
                 cmbCuota.addItem(oItem);   
-                if(dataCuota.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcion()))
+               /* if(dataCuota.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcion()))
                 {    
                     cmbCuota.setSelectedItem(oItem);
-                }  
-            }        
+                }  */
+            }   
+           
+           //CARGAR PLAZOS
+            ArrayList<clsComboBox> dataPlazo = objPlazo.consultarPlazo();        
+            for(int i=0;i<dataPlazo.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataPlazo.get(i).getCodigo(), dataPlazo.get(i).getDescripcion());
+                cmbPlazo.addItem(oItem);
+                /*if(dataPlazo.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcionPlazo()))
+                {    
+                    cmbPlazo.setSelectedItem(oItem);
+                }  */ 
+            }
             
             //CARGAR VENDEDOR
             cmbVendedor.removeAllItems();
