@@ -10,7 +10,9 @@
  */
 package index;
 
+import clases.clsComboBox;
 import clases.clsConexion;
+import clases.clsEmpresa;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import clases.clsUsuario;
 import clases.clsUtils;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import index.main;
 
 /**
  *
@@ -27,6 +30,8 @@ public class frmIngreso extends javax.swing.JFrame {
     clsUsuario objUsuario = new clsUsuario();
     clsUtils objUtils = new clsUtils();
     clsConexion objConexion = new clsConexion();
+    clsEmpresa objEmpresa = new clsEmpresa();
+    //public String server;
     /** Creates new form frmIngreso */
     public frmIngreso() {
         initComponents();
@@ -34,7 +39,17 @@ public class frmIngreso extends javax.swing.JFrame {
         lblMensaje.setText("");
         btnAceptar.addKeyListener(new PresionarTecla());
         this.rootPane.setDefaultButton(btnAceptar);
-        lblVersion.setText(objUtils.version);        
+        lblVersion.setText(objUtils.version);  
+        
+         //CARGAR PROVINCIAS
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas();        
+        for(int i=0;i<dataEmpresas.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
+            cmbEmpresa.addItem(oItem);            
+        }
+        
+        cmbEmpresa.setSelectedIndex(objEmpresa.consultaEmpresaDefault()-1);
         
         Double cantidad = 7.358958;
         Double cantidad2 = 1.15;
@@ -47,7 +62,10 @@ public class frmIngreso extends javax.swing.JFrame {
         System.out.println(objUtils.redondear(cantidad2));
         System.out.println(objUtils.redondearCincoDec(cantidad2));
         
-        lblServer.setText(objConexion.obtenerServer());         
+        //lblServer.setText("Servidor: " + objConexion.obtenerServer());   
+        lblServer.setText("Servidor: " + objEmpresa.consultaIPEmpresaDefault());   
+        
+        
     }
 
     /** This method is called from within the constructor to
@@ -63,6 +81,8 @@ public class frmIngreso extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         lblMensaje = new javax.swing.JLabel();
         txtClave = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        cmbEmpresa = new javax.swing.JComboBox();
         btnAceptar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblVersion = new javax.swing.JLabel();
@@ -75,7 +95,7 @@ public class frmIngreso extends javax.swing.JFrame {
 
         jLabel1.setText("Contraseña:");
 
-        lblMensaje.setFont(new java.awt.Font("Tahoma", 1, 11));
+        lblMensaje.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblMensaje.setForeground(new java.awt.Color(255, 0, 0));
         lblMensaje.setText("lblMensaje");
 
@@ -85,29 +105,40 @@ public class frmIngreso extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Empresa:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                .addContainerGap()
+                .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(235, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtClave, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(cmbEmpresa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(lblMensaje)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblMensaje))
         );
 
         btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/key.png"))); // NOI18N
@@ -155,7 +186,7 @@ public class frmIngreso extends javax.swing.JFrame {
                     .addComponent(btnAceptar)
                     .addComponent(jLabel2)
                     .addComponent(lblVersion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(lblServer)
                 .addContainerGap())
         );
@@ -164,7 +195,12 @@ public class frmIngreso extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-    char passArray[] = this.txtClave.getPassword();
+    clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();
+    main.ipSeleccionada = objEmpresa.consultaIPEmpresaSeleccionada(objEmpresaSelect.getCodigo());
+    
+    System.out.println(main.ipSeleccionada);
+    
+    char passArray[] = txtClave.getPassword();
     String pass = new String(passArray);
     //boolean exito = objUsuario.consultarExistencia(pass.toUpperCase());
     boolean exito = objUsuario.consultarExistencia(pass);
@@ -245,8 +281,10 @@ private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
+    private javax.swing.JComboBox cmbEmpresa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblMensaje;
     private javax.swing.JLabel lblServer;

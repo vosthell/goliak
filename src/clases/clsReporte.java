@@ -4,6 +4,7 @@
  */
 package clases;
 
+import index.main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Date;
@@ -26,6 +27,8 @@ public class clsReporte {
     clsConexion objConexion = new clsConexion();
     clsUtils objUtils = new clsUtils();    
     String server = objConexion.obtenerServer();
+    //String server = main.ipSeleccionada;
+    
     Connection conn = null;  
     //DIRECCION DEL REPORTE
     String direccion = objUtils.HostSystemReportes;

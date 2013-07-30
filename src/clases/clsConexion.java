@@ -4,6 +4,8 @@
  */
 package clases;
 
+import index.frmIngreso;
+import index.main;
 import java.io.*;
 import java.sql.*;
 
@@ -13,19 +15,29 @@ import java.sql.*;
  */
 public class clsConexion {
     clsUtils objUtils = new clsUtils();
-    String url;
+    String url, url2;
     final String user;
     final String pass;
     private Connection conexion;
     public Statement sentencia;
     public ResultSet resultado;
-    
-    public clsConexion(){
-        String server = obtenerServer();
-        url = "jdbc:postgresql://" + server + "/" + objUtils.nameBD;
+    //public String server;
+    //clsEmpresa objEmpresa = new clsEmpresa();
+    public clsConexion(){        
+        String server2 = obtenerServer();      
+        //url = "jdbc:postgresql://" + main.ipSeleccionada + "/" + objUtils.nameBD;
+        url2 = "jdbc:postgresql://" + server2 + "/" + objUtils.nameBD;
         user = objUtils.userBD;
         pass = objUtils.passBD;
     }
+ 
+ 
+    
+   /* public String obtenerServerc()
+    {
+        return objEmpresa.consultaIPEmpresaDefault();
+    }*/
+    
     
     public String obtenerServer(){
         String server ="";
@@ -72,7 +84,7 @@ public class clsConexion {
             final String CONTROLADOR = "org.postgresql.Driver";
             Class.forName( CONTROLADOR );
             //System.getProperty( "user.dir" )+"/CarpetaBD/NombredelaBasedeDatos.mdb";
-            conexion = DriverManager.getConnection(url, user, pass);
+            conexion = DriverManager.getConnection("jdbc:postgresql://" + main.ipSeleccionada + "/" + objUtils.nameBD, user, pass);
             sentencia = conexion.createStatement();
             /*JOptionPane.showMessageDialog(null, "si conecta");*/
         }
@@ -83,7 +95,31 @@ public class clsConexion {
         }
         catch (SQLException ex) {
             //ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage());
+             javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage()
+                   + " / " + url +" / " +user +" / " +pass);
+            System.exit(1);
+        }
+    }  
+    
+    //AQUI VOYA  OBTENER EL SERVDUIOR QUEMADO EN UN ARCHIVO DE TEXTO
+    public void conectarBaseDeDatos2() {
+        try {
+            final String CONTROLADOR = "org.postgresql.Driver";
+            Class.forName( CONTROLADOR );
+            //System.getProperty( "user.dir" )+"/CarpetaBD/NombredelaBasedeDatos.mdb";
+            conexion = DriverManager.getConnection(url2, user, pass);
+            sentencia = conexion.createStatement();
+            /*JOptionPane.showMessageDialog(null, "si conecta");*/
+        }
+        catch (ClassNotFoundException ex1) {
+            //ex1.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,"Error Carga Driver." + ex1.getMessage());
+            System.exit(1);
+        }
+        catch (SQLException ex) {
+            //ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage()
+                    + " / " + url2 + " / " + user +" / " + pass);
             System.exit(1);
         }
     }  

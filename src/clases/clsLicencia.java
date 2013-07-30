@@ -73,10 +73,10 @@ public class clsLicencia {
     {       
          int cantidad = 0;
          try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT count(*) cantidad "
                     + "  FROM ck_licencia";
-            //System.out.println(sql);
+            System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
              
             if(bd.resultado.next())
@@ -97,10 +97,12 @@ public class clsLicencia {
         return cantidad;
     } 
     
+        
+    
     public ArrayList<clsLicencia>  consultarDataLicencia(String codigo1, String codigo2){            
          ArrayList<clsLicencia> data = new ArrayList<clsLicencia>();  
          try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT id_licencia, codigo_licencia, codigo_licencia_2, fecha_registro::date fecha, fecha_registro::time hora, estado, substr(codigo_licencia_2, 1,1) tiempo"
                     + " FROM ck_licencia"
                     + " WHERE codigo_licencia = '" + codigo1+"'"
@@ -132,7 +134,7 @@ public class clsLicencia {
     {
         boolean exito;
         try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT * "
                     + " FROM ck_licencia"
                     + " WHERE codigo_licencia = '" + codigo1+"'"
@@ -173,7 +175,7 @@ public class clsLicencia {
     {
         boolean exito;
         try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT * "
                     + " FROM ck_licencia"
                     + " WHERE codigo_licencia = '" + codigo1+"'"
@@ -215,7 +217,7 @@ public class clsLicencia {
     {       
          String cantidad = "";
          try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT valor "
                     + "  FROM ck_parametros"
                     + " WHERE descripcion = 'version_programa'";

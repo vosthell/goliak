@@ -40,7 +40,7 @@ public class clsUsuario {
     {
         boolean exito;
         try{
-            bd.conectarBaseDeDatos();
+            bd.conectarBaseDeDatos2();
             sql = "SELECT * "
                     + " FROM ck_usuario"
                     + " WHERE pass = md5('" + password + "')"
@@ -76,6 +76,7 @@ public class clsUsuario {
         bd.desconectarBaseDeDatos();
         return exito;
     }
+    
     
     public boolean consultarExistenciaCardMaster(String password)
     {

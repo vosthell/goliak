@@ -13,6 +13,7 @@ package stinventario;
 import clases.clsCaja;
 import clases.clsComboBox;
 import clases.clsFacturero;
+import clases.clsParametros;
 import clases.clsPermisos;
 import producto.frmProductosAdd;
 import clases.clsUtils;
@@ -97,6 +98,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     clsPermisos objPermisos = new clsPermisos();
     clsCaja objCaja = new clsCaja();
     clsFacturero objFacturero = new clsFacturero();
+    clsParametros objParametros = new clsParametros();
     
     boolean permitido;
     
@@ -105,7 +107,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     public frmPrincipal() {
         initComponents();
         
-        this.setTitle(objUtils.nombreLargoSistema);        
+        this.setTitle(objUtils.nombreLargoSistema + " / " + objParametros.consultaNombreEmpresa() 
+                + " - " + objParametros.consultaNombreCiudad());        
         lblUsuario.setText(main.nameUser);        
         jXTaskPane1.setTitle("Clientes");
         jXTaskPane2.setTitle("Proveedores");

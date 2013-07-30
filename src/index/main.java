@@ -24,6 +24,7 @@ public class main {
     public static String idUser;
     public static String nameUser;
     public static String idEmpresa = "1";
+    public static String ipSeleccionada;
     /**
      * @param args the command line arguments
      */
