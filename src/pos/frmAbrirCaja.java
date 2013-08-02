@@ -42,6 +42,7 @@ public class frmAbrirCaja extends javax.swing.JDialog {
         //CARGAR CAJERO
         ArrayList<clsComboBox> dataPrecio = objCaja.consultarCajero();        
         for(int i=0;i<dataPrecio.size();i=i+1)
+        //if(dataPrecio.isEmpty())
         {
             clsComboBox oItem = new clsComboBox(dataPrecio.get(i).getCodigo(), dataPrecio.get(i).getDescripcion());
             cmbCajero.addItem(oItem);            

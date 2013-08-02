@@ -436,8 +436,14 @@ public class clsCaja {
                     + " WHERE estado = 'I' "
                     + " ORDER BY nombre";
             bd.resultado = bd.sentencia.executeQuery(sql);
+            
+            while(bd.resultado.next()){
+                clsComboBox oListaTemporal = new clsComboBox(bd.resultado.getString("id_cajero"),bd.resultado.getString("nombre"));
+                data.add(oListaTemporal);
+            }
+            bd.resultado.close();
               
-            if(bd.resultado.next())
+            /*if(bd.resultado.next())
             {   
                 do 
                 { 
@@ -450,7 +456,7 @@ public class clsCaja {
             else
             { 
                 data = null;
-            }            
+            }     */       
         }
         catch(Exception ex)
         {

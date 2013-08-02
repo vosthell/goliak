@@ -132,8 +132,12 @@ public class clsFacturero {
                     + " WHERE estado = 'A' "
                     + " ORDER BY id_facturero";
             bd.resultado = bd.sentencia.executeQuery(sql);
-              
-            if(bd.resultado.next())
+            
+            while(bd.resultado.next()){
+                clsComboBox oListaTemporal = new clsComboBox(bd.resultado.getString("id_facturero"),bd.resultado.getString("id_facturero"));
+                data.add(oListaTemporal);            
+            }
+            /*if(bd.resultado.next())
             {   
                 do 
                 { 
@@ -146,7 +150,7 @@ public class clsFacturero {
             else
             { 
                 data = null;
-            }            
+            }  */          
         }
         catch(Exception ex)
         {

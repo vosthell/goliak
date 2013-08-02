@@ -2092,23 +2092,29 @@ private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     /*permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmAbrirCaja");
     if(permitido)
     { */  
-       try{
+       //try{
             ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFactureros();
           
-            for(int i=0;i<dataFacturero.size();i++)
+            /*for(int i=0;i<dataFacturero.size();i++)
             {  
                 
-            }  
-            frmAbrirCaja ventana = new frmAbrirCaja(null, true);
-            ventana.setLocationRelativeTo(null);
-            ventana.setVisible(true);
-            //dispose();
-        }
+            }  */
+            if(dataFacturero.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "No existen factureros activos, ingresar uno para poder abrir caja." , "Atención!", JOptionPane.ERROR_MESSAGE);                 
+            }
+            else
+            {
+                frmAbrirCaja ventana = new frmAbrirCaja(null, true);
+                ventana.setLocationRelativeTo(null);
+                ventana.setVisible(true);
+                //dispose();
+            }            
+        /*}
         catch(Exception ex)
         {       
              JOptionPane.showMessageDialog(null, "No existen factureros activos, ingresar uno para poder abrir caja." + ex.getMessage(), "Atención!", JOptionPane.ERROR_MESSAGE);                 
-            
-        } 
+        } */
    /* }
     else
     {
