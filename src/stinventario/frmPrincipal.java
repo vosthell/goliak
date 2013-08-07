@@ -2589,18 +2589,18 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     public void productos() {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAbrir;
-    private javax.swing.JButton btnCajaAntes;
-    private javax.swing.JButton btnCerrar;
+    public static javax.swing.JButton btnAbrir;
+    public static javax.swing.JButton btnCajaAntes;
+    public static javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnCompras;
-    private javax.swing.JButton btnEgreso;
-    private javax.swing.JButton btnFacturar;
+    public static javax.swing.JButton btnEgreso;
+    public static javax.swing.JButton btnFacturar;
     private javax.swing.JButton btnFacturarHistorico;
-    private javax.swing.JButton btnIngreso;
+    public static javax.swing.JButton btnIngreso;
     private javax.swing.JButton btnKardex;
     private javax.swing.JButton btnNE;
     private javax.swing.JButton btnPagoNuevo;
-    private javax.swing.JButton btnPagos;
+    public static javax.swing.JButton btnPagos;
     private javax.swing.JButton btnPagosHistoricos;
     private javax.swing.JButton btnRecibo;
     private org.jdesktop.swingx.JXHyperlink clienteAdd;
@@ -2691,7 +2691,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private org.jdesktop.swingx.JXTaskPane jXTaskPane3;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer2;
     private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblPendiente;
+    public static javax.swing.JLabel lblPendiente;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JMenuItem mnBuscarFacturasEliminar;
     private javax.swing.JMenuItem mnCliDel;

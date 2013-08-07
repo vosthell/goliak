@@ -19,6 +19,7 @@ import clases.clsDetalle;
 import clases.clsImpuestos;
 import clases.clsPrecio;
 import clases.clsProducto;
+import clases.clsReporte;
 import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
@@ -47,6 +48,7 @@ public class frmFactHistoShow extends javax.swing.JDialog {
     clsCuota objCuota = new clsCuota();
     clsDetalle objDetalle = new clsDetalle();
     clsImpuestos objImpuestos = new clsImpuestos();
+    clsReporte objReporte = new clsReporte();
     
     MiModelo dtmData = new MiModelo();
     String idCajero="";
@@ -56,13 +58,14 @@ public class frmFactHistoShow extends javax.swing.JDialog {
     public static int codigoCliente;
     //CODIGO DEL PRODUCTO SELECCIONADO 
     public static int codigoProducto;
+    int idCabecera;
     /** Creates new form frmFacturar */
     public frmFactHistoShow(java.awt.Frame parent, boolean modal, int p_idCabecera) {
         super(parent, modal);
         initComponents();  
         this.setTitle(objUtils.nombreSistema + "Datos de factura");
         
-        int idCabecera = p_idCabecera; 
+        idCabecera = p_idCabecera; 
         //cosnulto y luego veo si es a contado o credito
         ArrayList <clsCabecera> dataCabecera;
         dataCabecera = objCabecera.consultarDataCabeceraCredito(idCabecera);
@@ -287,9 +290,9 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMonica, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                            .addComponent(txtNombreCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
+                            .addComponent(txtMonica)
+                            .addComponent(txtCedula)
+                            .addComponent(txtNombreCliente, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
@@ -487,7 +490,7 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel24)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaCancelacion))
+                                .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addGap(53, 53, 53)
                                 .addComponent(jLabel25)
@@ -509,7 +512,7 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+                            .addComponent(txtEfectivo))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel16)
@@ -527,10 +530,10 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                                 .addComponent(txtIVA)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtIVA1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                            .addComponent(txtDescuento1, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-                            .addComponent(txtTotal1, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+                            .addComponent(txtIVA1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTarifaCero1)
+                            .addComponent(txtDescuento1)
+                            .addComponent(txtTotal1)
                             .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
@@ -538,7 +541,6 @@ public class frmFactHistoShow extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -586,10 +588,11 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTotal)
-                            .addComponent(txtTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, Short.MAX_VALUE)
+                            .addComponent(txtTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jLabel3)))))
         );
 
+        btnImprimir.setIcon(resourceMap.getIcon("btnImprimir.icon")); // NOI18N
         btnImprimir.setText(resourceMap.getString("btnImprimir.text")); // NOI18N
         btnImprimir.setName("btnImprimir"); // NOI18N
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
@@ -606,8 +609,8 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImprimir, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImprimir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -619,7 +622,7 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnImprimir)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -648,7 +651,8 @@ private void tblDataKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl
 }//GEN-LAST:event_tblDataKeyTyped
 
 private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-    //CONFIRMAR NOTA DE ENTREGA
+     objReporte.ejecutarReporteParametroInt(idCabecera, "rptNotaEntrega");         // TODO add your handling code here:
+     this.dispose();
 }//GEN-LAST:event_btnImprimirActionPerformed
 
     /**

@@ -39,10 +39,14 @@ public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
         dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
         dtmData.addColumn("FECHA DE APERTURA");
         dtmData.addColumn("FECHA DE CIERRE");
+        dtmData.addColumn("NOMBRE");
         dtmData.addColumn("VALOR APERTURA");
         dtmData.addColumn("VALOR FACTURADO");
         dtmData.addColumn("INGRESOS");
-        dtmData.addColumn("RECIBOS/PAGO");   
+        dtmData.addColumn("ABONOS");
+        dtmData.addColumn("RECIBOS/PAGO"); 
+        dtmData.addColumn("ABONO/FACTURA");
+        
         dtmData.addColumn("EGRESOS");   
         dtmData.addColumn("TOTAL SISTEMA");   
         dtmData.addColumn("TOTAL CONTADO");   
@@ -56,7 +60,16 @@ public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
         //ALINEAR COLUMNA
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
-        tblData.getColumnModel().getColumn(3).setCellRenderer(tcr);        
+        tblData.getColumnModel().getColumn(3).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(4).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(5).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(6).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(7).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(8).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(9).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(10).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(11).setCellRenderer(tcr);  
+        tblData.getColumnModel().getColumn(12).setCellRenderer(tcr);  
         
         tblData.setAutoCreateRowSorter(true);  
     }
@@ -304,15 +317,20 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                  Object[] nuevaFila = {  i+1,                          
                                         fecha_apertura,
                                         fecha_cierre,
+                                        dataCaja.get(i).getNombre(),
                                         "$ " + df1.format(dataCaja.get(i).getValorApertura()), 
                                         "$ " + df1.format(dataCaja.get(i).getTotalFacturado()), 
                                         "$ " + df1.format(dataCaja.get(i).getIngresos()), 
                                         "$ " + df1.format(dataCaja.get(i).getRecibosPago()), 
+                                        "$ " + df1.format(dataCaja.get(i).getAbonos()), 
+                                        "$ " + df1.format(dataCaja.get(i).getValorPagosFactura()), 
                                         "$ " + df1.format(dataCaja.get(i).getEgresos()), 
                                         "$ " + df1.format(dataCaja.get(i).getValorApertura() + 
                                                 dataCaja.get(i).getTotalFacturado() + 
                                                 dataCaja.get(i).getIngresos() + 
-                                                dataCaja.get(i).getRecibosPago() -
+                                                dataCaja.get(i).getRecibosPago() +
+                                                dataCaja.get(i).getAbonos() +
+                                                dataCaja.get(i).getValorPagosFactura() -
                                                 dataCaja.get(i).getEgresos()), 
                                         "$ " + df1.format(dataCaja.get(i).getValorContado()),
                                         "$ " + df1.format(dataCaja.get(i).getDiferencia()),

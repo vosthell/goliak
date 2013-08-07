@@ -18,13 +18,16 @@ public class clsCaja {
     
     private double valor_apertura;
     private String id_caja_operacion;
+    private String nombre;
     private String fecha_apertura;
     private String fecha_cierre;
     private double ingresos;
     private double recibos_pago;
+    private double abonos;
     private double egresos;
     private double total_facturado;
     private double valor_contado;
+    private double valor_pagos_factura;
     private double diferencia;
     private String observacion;
     private String cierre;
@@ -36,6 +39,15 @@ public class clsCaja {
     
     public void setCierre(String cierre) {
         this.cierre = cierre;
+    }
+    
+    public String getNombre()
+    {
+        return nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     public String getObservacion()
@@ -53,6 +65,22 @@ public class clsCaja {
 
     public void setDiferencia(double diferencia) {
         this.diferencia = diferencia;
+    }
+    
+     public double getValorPagosFactura() {
+        return valor_pagos_factura;
+    }
+
+    public void setValorPagosFactura(double valor_pagos_factura) {
+        this.valor_pagos_factura = valor_pagos_factura;
+    }
+    
+    public double getAbonos() {
+        return abonos;
+    }
+
+    public void setAbonos(double abonos) {
+        this.abonos = abonos;
     }
     
     public double getValorContado() {
@@ -303,22 +331,42 @@ public class clsCaja {
         ArrayList<clsCaja> data = new ArrayList<clsCaja>(); 
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT id_caja_operacion, a.id_usuario, b.name, apertura, cierre, "
+            sql = "SELECT id_caja_operacion, a.id_usuario, b.name nombre, apertura, cierre, "
                        + " valor_apertura, valor_contado, valor_facturado, "
                        + " diferencia, id_cajero, valor_pagos, facturacion_manual, primer_valor_manual, "
                        + " primera_vez_manual, id_facturero, valor_egresos, valor_recibos, "
-                       + " fecha_apertura, fecha_cierre, observacion, valor_ingreso"
+                       + " fecha_apertura, fecha_cierre, observacion, valor_ingreso,"
+                       + " valor_pagos_factura"
                   + " FROM ck_caja_operacion AS a"
                   + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                   + " WHERE a.id_usuario != 1"
                   + " AND fecha_apertura is not null"
                   + " AND fecha_apertura::date >= '" + fecha_inicio + "'"
-                    + " AND fecha_cierre::date <= '" + fecha_fin + "'"
-                  ;
+                  + " AND fecha_cierre::date <= '" + fecha_fin + "'";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
                
-            if(bd.resultado.next())
+            while(bd.resultado.next())
+            {
+                clsCaja oListaTemporal = new clsCaja();
+                oListaTemporal.setValorApertura(bd.resultado.getDouble("valor_apertura"));
+                oListaTemporal.setIdCajaOperacion(bd.resultado.getString("id_caja_operacion"));
+                oListaTemporal.setDiferencia(bd.resultado.getDouble("diferencia"));
+                oListaTemporal.setEgresos(bd.resultado.getDouble("valor_egresos"));
+                oListaTemporal.setFechaCierre(bd.resultado.getString("fecha_cierre"));
+                oListaTemporal.setFechaApertura(bd.resultado.getString("fecha_apertura"));
+                oListaTemporal.setIngresos(bd.resultado.getDouble("valor_ingreso"));
+                oListaTemporal.setObservacion(bd.resultado.getString("observacion"));
+                oListaTemporal.setRecibosPago(bd.resultado.getDouble("valor_recibos"));
+                oListaTemporal.setTotalFacturado(bd.resultado.getDouble("valor_facturado"));
+                oListaTemporal.setValorContado(bd.resultado.getDouble("valor_contado"));
+                oListaTemporal.setAbonos(bd.resultado.getDouble("valor_pagos"));
+                oListaTemporal.setCierre(bd.resultado.getString("cierre"));
+                oListaTemporal.setNombre(bd.resultado.getString("nombre"));
+                oListaTemporal.setValorPagosFactura(bd.resultado.getDouble("valor_pagos_factura"));
+                data.add(oListaTemporal);
+            }
+            /*if(bd.resultado.next())
             {   
                 do 
                 { 
@@ -337,13 +385,12 @@ public class clsCaja {
                     oListaTemporal.setCierre(bd.resultado.getString("cierre"));
                     data.add(oListaTemporal);
                 }
-                while(bd.resultado.next()); 
-                //return data;
+                while(bd.resultado.next());                 
             }
             else
             { 
                 data = null;
-            }            
+            }    */        
         }
         catch(Exception ex)
         {

@@ -76,13 +76,13 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
         //OBTENER VALOR DEVOLUCIONES
         txtDevoluciones = ""+objCaja.obtenerValorDevolucionesVentas(idCajaAbierta);
         
-        //OBTENER VALOR DE PAGOS
+        //OBTENER VALOR DE ABONOS
         txtPagos=""+objUtils.redondear(objCaja.obtenerValorPagos(idCajaAbierta));
         
         //OBTENER VALOR DE PAGOS/FACTURA
         txtPagosFactura = ""+objUtils.redondear(objCaja.obtenerValorPagosFactura(idCajaAbierta));
         
-        //OBTENER VALOR DE RECIBOS
+        //OBTENER VALOR DE RECIBOS/COUTAS INICIALES/ARRIENDOS
         txtRecibosPago =""+objUtils.redondear(objCaja.obtenerValorRecibos(idCajaAbierta));
         
         //OBTENER VALOR DE INGRESOS
@@ -348,6 +348,16 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                             this.txtValorContado.getText().toString() +
                                             ", TUVO DIFERENCIA: $ " +
                                             this.txtDiferencia, "1");
+            //********************//            
+            frmPrincipal.lblPendiente.setText("");
+            frmPrincipal.btnAbrir.setEnabled(true);  
+            frmPrincipal.btnFacturar.setEnabled(false);
+            frmPrincipal.btnPagos.setEnabled(false);
+            frmPrincipal.btnCerrar.setEnabled(false); 
+            frmPrincipal.btnEgreso.setEnabled(false); 
+            frmPrincipal.btnIngreso.setEnabled(false);             
+            frmPrincipal.btnCajaAntes.setVisible(false);
+             //********************//
             imprimir();
         }
         else

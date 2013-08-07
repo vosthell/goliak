@@ -18,6 +18,7 @@ import clases.clsCaja;
 import clases.clsComboBox;
 import clases.clsFacturero;
 import java.util.ArrayList;
+import stinventario.frmPrincipal;
 
 
 /**
@@ -335,6 +336,20 @@ private void btnAbrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             JOptionPane.showMessageDialog(this, "Datos almacenados con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
             objAuditoria.insertarAuditoria("frmAbrirCaja", "ABRIO CAJA CON: $ "+                                            
                                                 txtValor.getText().toString(), "1");
+            //********************//
+            exito = objCaja.consultarCajaAbierta(index.main.idUser);
+            if(exito)
+            {
+                frmPrincipal.lblPendiente.setText("TIENE PENDIENTE CERRAR CAJA");
+                frmPrincipal.btnAbrir.setEnabled(false);  
+                frmPrincipal.btnFacturar.setEnabled(true);
+                frmPrincipal.btnPagos.setEnabled(true);
+                frmPrincipal.btnCerrar.setEnabled(true); 
+                frmPrincipal.btnEgreso.setEnabled(true); 
+                frmPrincipal.btnIngreso.setEnabled(true); 
+            }   
+            frmPrincipal.btnCajaAntes.setVisible(false);
+             //********************//
             dispose();
         }
         else
