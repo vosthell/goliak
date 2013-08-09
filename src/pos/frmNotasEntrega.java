@@ -2054,6 +2054,7 @@ public String calcular_fecha_cancelacion()
     Locale.setDefault(Locale.ENGLISH);       
     DecimalFormat formateador = new DecimalFormat("####");
     Integer numeroPagosRedondeado = Integer.parseInt(formateador.format(numeroPagos)); 
+    
     if(tipoPago.equals("1"))       
     {
         //DIARIO
@@ -2121,34 +2122,31 @@ void calcularCuotas()
     int meses = 0;
     if(idPlazo.equals("1"))
     {
-        interes = valorInteresTresMeses;
-        txtInteresPorcentaje.setText("" + interes);
+        interes = valorInteresTresMeses;        
         meses = 3;
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
-        txtInteresPorcentaje.setText("" + interes);
         meses = 6;
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
-        txtInteresPorcentaje.setText("" + interes);
         meses = 9;
     }
     else if(idPlazo.equals("4"))
     {
-        interes = valorInteresDoceMeses;
-        txtInteresPorcentaje.setText("" + interes);
+        interes = valorInteresDoceMeses;        
         meses = 12;
     }
     else if(idPlazo.equals("9"))
     {
-        interes = 0.00;
-        txtInteresPorcentaje.setText("" + interes);
+        interes = 0.00;        
         meses = 2;
     }
+    txtInteresPorcentaje.setText("" + interes);
+    
     double cantidadAdeudada = valorContado - cuotaInicial;
     txtSaldoDeuda.setText("" + cantidadAdeudada);
     
