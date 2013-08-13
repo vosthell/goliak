@@ -174,6 +174,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         txtFechaInicio = new com.toedter.calendar.JDateChooser();
         txtFechaFin = new com.toedter.calendar.JDateChooser();
@@ -189,6 +190,9 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         chkProveedor = new javax.swing.JCheckBox();
         txtCedula = new javax.swing.JTextField();
         btnBuscarProveedor = new javax.swing.JButton();
+        rbtnTodas = new javax.swing.JRadioButton();
+        rbtnActivas = new javax.swing.JRadioButton();
+        rbtnAnuladas = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
@@ -305,6 +309,19 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
             }
         });
 
+        buttonGroup1.add(rbtnTodas);
+        rbtnTodas.setText(resourceMap.getString("rbtnTodas.text")); // NOI18N
+        rbtnTodas.setName("rbtnTodas"); // NOI18N
+
+        buttonGroup1.add(rbtnActivas);
+        rbtnActivas.setSelected(true);
+        rbtnActivas.setText(resourceMap.getString("rbtnActivas.text")); // NOI18N
+        rbtnActivas.setName("rbtnActivas"); // NOI18N
+
+        buttonGroup1.add(rbtnAnuladas);
+        rbtnAnuladas.setText(resourceMap.getString("rbtnAnuladas.text")); // NOI18N
+        rbtnAnuladas.setName("rbtnAnuladas"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -319,9 +336,8 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnBuscarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))
+                        .addGap(15, 15, 15)
+                        .addComponent(txtCedula))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -332,7 +348,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtFechaInicioRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(54, 54, 54)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -342,40 +358,52 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbtnTodas)
+                    .addComponent(rbtnActivas)
+                    .addComponent(rbtnAnuladas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBuscar)
-                .addGap(104, 104, 104))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(chkFechaRegistro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkFechaRecibe))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbtnActivas))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(chkFechaRegistro)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chkFechaRecibe))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(3, 3, 3)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtFechaInicioRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel4))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkProveedor)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnBuscarProveedor)
-                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jLabel4)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbtnAnuladas)))))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkProveedor)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBuscarProveedor)
+                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rbtnTodas)))
                 .addGap(6, 6, 6))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -416,10 +444,10 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 512, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -442,21 +470,20 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(516, 516, 516))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -511,6 +538,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         String fechaInicio = "";
         String fechaFin = "";
         String soloCliente = "";
+        String anuladas = "";
         
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         
@@ -522,6 +550,19 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         {
             soloCliente = "N";
         }
+        
+        if(this.rbtnTodas.isSelected())
+        {
+            anuladas = "T"; //TODAS
+        }
+        if(this.rbtnAnuladas.isSelected())
+        {
+            anuladas = "N"; //SOLO ANULADAS
+        }
+        if(this.rbtnActivas.isSelected())
+        {
+            anuladas = "A"; //SOLO ACTIVAS
+        }
 
         if(this.chkFechaRegistro.isSelected())
         {
@@ -531,7 +572,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Date date2 = txtFechaFin.getDate();
             fechaFin = df1.format(date2);
 
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoRegistro(fechaInicio, fechaFin, soloCliente, txtCedula.getText()); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoRegistro(fechaInicio, fechaFin, soloCliente, txtCedula.getText(), anuladas); 
             llenarData(dataCompras);
         }
         else if(this.chkFechaRecibe.isSelected())
@@ -542,12 +583,12 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Date date2 = txtFechaFinRecibe.getDate();
             fechaFin = df1.format(date2);
 
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoConfirmacion(fechaInicio, fechaFin, soloCliente, txtCedula.getText()); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoConfirmacion(fechaInicio, fechaFin, soloCliente, txtCedula.getText(), anuladas); 
             llenarData(dataCompras);
         }
         else
         {
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaCliente(soloCliente, txtCedula.getText()); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaCliente(soloCliente, txtCedula.getText(), anuladas); 
             llenarData(dataCompras);    
         }
     }        
@@ -690,6 +731,7 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscarProveedor;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkFechaRecibe;
     private javax.swing.JCheckBox chkFechaRegistro;
     private javax.swing.JCheckBox chkProveedor;
@@ -702,6 +744,9 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbtnActivas;
+    private javax.swing.JRadioButton rbtnAnuladas;
+    private javax.swing.JRadioButton rbtnTodas;
     private javax.swing.JTable tblData;
     public static javax.swing.JTextField txtCedula;
     private com.toedter.calendar.JDateChooser txtFechaFin;

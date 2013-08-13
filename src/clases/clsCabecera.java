@@ -1149,7 +1149,7 @@ public class clsCabecera {
                         + " base_tarifa_0, base_tarifa_iva, descuento, iva, "
                         + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
                         + " f.descripcion descripcion_plazo, fecha_cancelacion_sistema, "
-                        + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor"
+                        + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor, porcentaje_interes"
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
                     + " inner join ck_rel_cabecera_cuota AS d on a.id_cabecera_movi = d.id_cabecera_movi"
@@ -1189,6 +1189,7 @@ public class clsCabecera {
                 oListaTemporal.setFechaCancelacionSistema(bd.resultado.getString("fecha_cancelacion_sistema"));
                 
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));
                  
                 data.add(oListaTemporal);
             }

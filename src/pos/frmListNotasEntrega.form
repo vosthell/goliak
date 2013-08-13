@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
@@ -29,11 +33,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jPanel2" alignment="0" max="32767" attributes="1"/>
-                  <Component id="jPanel1" alignment="0" pref="766" max="32767" attributes="1"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jPanel1" max="32767" attributes="1"/>
+                  <Component id="jPanel2" alignment="1" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -42,11 +46,10 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="516" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -76,11 +79,10 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="1">
+                      <Group type="102" attributes="0">
                           <Component id="btnBuscarProveedor" min="-2" pref="37" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="txtCedula" min="-2" pref="314" max="-2" attributes="1"/>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="txtCedula" max="32767" attributes="1"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -95,7 +97,7 @@
                                   <Component id="txtFechaInicioRecibe" min="-2" pref="123" max="-2" attributes="1"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -110,31 +112,38 @@
                           </Group>
                       </Group>
                   </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="rbtnTodas" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbtnActivas" min="-2" max="-2" attributes="0"/>
+                      <Component id="rbtnAnuladas" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="btnBuscar" alignment="0" max="32767" attributes="1"/>
-                      <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="chkFechaRegistro" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="chkFechaRecibe" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFechaInicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtFechaFin" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="rbtnActivas" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="chkFechaRegistro" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkFechaRecibe" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtFechaInicio" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtFechaFin" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="txtFechaInicioRecibe" min="-2" max="-2" attributes="0"/>
                                       <Component id="txtFechaFinRecibe" min="-2" max="-2" attributes="0"/>
@@ -142,18 +151,27 @@
                                       <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chkProveedor" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="btnBuscarProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtCedula" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rbtnAnuladas" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="chkProveedor" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="btnBuscarProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtCedula" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="rbtnTodas" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="btnBuscar" min="-2" pref="71" max="-2" attributes="1"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -281,6 +299,34 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarProveedorActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JRadioButton" name="rbtnTodas">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="rbtnTodas.text"/>
+            <Property name="name" type="java.lang.String" value="rbtnTodas" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbtnActivas">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="rbtnActivas.text"/>
+            <Property name="name" type="java.lang.String" value="rbtnActivas" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbtnAnuladas">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="rbtnAnuladas.text"/>
+            <Property name="name" type="java.lang.String" value="rbtnAnuladas" noResource="true"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
@@ -299,10 +345,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="0" pref="742" max="32767" attributes="1"/>
+                      <Component id="jScrollPane1" alignment="0" max="32767" attributes="1"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="512" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="txtTotal" min="-2" pref="85" max="-2" attributes="0"/>

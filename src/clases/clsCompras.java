@@ -365,13 +365,13 @@ public class clsCompras {
         return data;
      }
 
-    public ArrayList<clsCompras> consultaDataNotasEntregaRangoRegistro(String fechaInicio, String fechaFin, String soloCliente, String cedula)
+    public ArrayList<clsCompras> consultaDataNotasEntregaRangoRegistro(String fechaInicio, String fechaFin, String soloCliente, String cedula, String anuladas)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
             bd.conectarBaseDeDatos();
                         
-             sql = "SELECT id_cabecera_movi, a.codigo, b.name_completo nombre_proveedor, "
+            sql = "SELECT id_cabecera_movi, a.codigo, b.name_completo nombre_proveedor, "
                         + " a.id_usuario, c.name, a.estado, total_interes, "
                         + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
                         + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
@@ -379,9 +379,22 @@ public class clsCompras {
                     + " FROM ck_notas_de_entrega AS a "
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
-                    + " WHERE a.estado = 'A'"
-                    + " AND fecha::date >= '" + fechaInicio + "'"
+                    + " WHERE fecha::date >= '" + fechaInicio + "'"
                     + " AND fecha::date <= '" + fechaFin + "'";
+            if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " AND a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " AND a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " AND a.estado = 'A'";
+            }
+            
+            
             if(soloCliente.equals("S"))
             {
               sql = sql + " AND b.cedula = '" + cedula + "'";  
@@ -429,7 +442,7 @@ public class clsCompras {
         return data;
      }
     
-    public ArrayList<clsCompras> consultaDataNotasEntregaRangoConfirmacion(String fechaInicio, String fechaFin, String soloCliente, String cedula)
+    public ArrayList<clsCompras> consultaDataNotasEntregaRangoConfirmacion(String fechaInicio, String fechaFin, String soloCliente, String cedula, String anuladas)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
@@ -443,9 +456,21 @@ public class clsCompras {
                     + " FROM ck_notas_de_entrega AS a "
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
-                    + " WHERE a.estado = 'A'"
-                    + " AND fecha_confirmacion::date >= '" + fechaInicio + "'"
+                    + " WHERE fecha_confirmacion::date >= '" + fechaInicio + "'"
                     + " AND fecha_confirmacion::date <= '" + fechaFin + "'";
+             if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " AND a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " AND a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " AND a.estado = 'A'";
+            }
+             
             if(soloCliente.equals("S"))
             {
               sql = sql + " AND b.cedula = '" + cedula + "'";  
@@ -493,7 +518,7 @@ public class clsCompras {
         return data;
      }
     
-     public ArrayList<clsCompras> consultaDataNotasEntregaCliente(String soloCliente, String cedula)
+     public ArrayList<clsCompras> consultaDataNotasEntregaCliente(String soloCliente, String cedula, String anuladas)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
@@ -506,8 +531,22 @@ public class clsCompras {
                         + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
                     + " FROM ck_notas_de_entrega AS a "
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
-                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
-                    + " WHERE a.estado = 'A'";
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario ";
+                   
+            
+            if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " WHERE a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " WHERE a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " WHERE a.estado = 'A'";
+            }
+             
             if(soloCliente.equals("S"))
             {
               sql = sql + " AND b.cedula = '" + cedula + "'";  
