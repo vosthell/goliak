@@ -111,19 +111,25 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         for(int i=0; i<maxData; i++)
         {
             if(dataCompras.get(i).getEstadoTramite().equals("S"))
-            {    etiqueta = "CONFIRMADA";
+            {    
+                etiqueta = "CONFIRMADA";
                 etiqueta2 = "";
                 etiqueta3 = "";
-            }else
-            {    etiqueta = "SIN CONFIRMAR";
-                 etiqueta2 = "MODIFICAR";
-                 etiqueta3 = "RECIBIR";
+            }
+            else
+            {    
+                etiqueta = "SIN CONFIRMAR";
+                etiqueta2 = "MODIFICAR";
+                etiqueta3 = "RECIBIR";
             }
             if(dataCompras.get(i).getTipo().equals("D"))
-            {    etiquetaTipo = "CONTADO";
+            {   
+                etiquetaTipo = "CONTADO";
                 
-            }else
-            {    etiquetaTipo = "CREDITO";
+            }
+            else
+            {    
+                etiquetaTipo = "CREDITO";
                  
             }
             fecha_realizada = dataCompras.get(i).getFecha().substring(0 , 16);

@@ -880,10 +880,10 @@ public class clsCabecera {
             bd.conectarBaseDeDatos();          
             sql = "INSERT INTO ck_notas_de_entrega(id_usuario, id_cajero,"
                     + " fecha, id_empresa, id_caja_operacion, "
-                    + " comentario, fact_referencia, estado)"                   
-                    + " VALUES("+idUser+", "+idCajero + ", "
-                    + " '" + fechaVenta + "', "+idEmpresa+", "+cajaAbierta+", "
-                    + " '"+comentario+"', '"+factura+"', 'N')";           
+                    + " comentario, fact_referencia, estado, codigo, estado_tramite)"                   
+                    + " VALUES("+idUser+", " + idCajero + ", "
+                    + " '" + fechaVenta + "', " + idEmpresa + ", " + cajaAbierta + ", "
+                    + " '" + comentario + "', '" + factura + "', 'N', 0, 'S')";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
