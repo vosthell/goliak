@@ -534,6 +534,30 @@ public class clsPago {
         return exito;
     }
     
+    public boolean actualizarArriendo(String codigoArriendo, int id_pago, String estado)
+    {
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();
+            sql = "UPDATE ck_abono_arriendo"
+                    + " SET estado_pago = '" + estado+ "',"
+                        + " id_pagos_recibo = " + id_pago + ","           
+                        + " fecha_cobro = NOW()" 
+                    + " WHERE id_abono_Arriendo = " + codigoArriendo;            
+            //System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true;
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }
+    
     public boolean actualizarDataPagoFactura(int id_pago, String idCajaAbierta, String idUser)
     {
         boolean exito;

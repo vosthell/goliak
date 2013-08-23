@@ -227,6 +227,11 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         //OBTENER IDCAJAOPERACION ACTUAL, OSEA QUE  NO ESTA CERRADA
         String idCajaAbierta = objCaja.obtenerCajaAbierta(main.idUser);
         objPago.actualizarDataPagoOtros(idPago_publica, idCajaAbierta, main.idUser);
+        //cambiar ESTA DEL PAGO ARRIENDO DE PENDIENTE EN CAJA "P"  A COBRADO "S"
+        if(this.txtReferencia.getText().substring(0,4).equals("WEB-"))
+        {
+            objPago.actualizarArriendo(this.txtReferencia.getText().substring(4), idPago_publica, "S");
+        }
         //RESTAR SALDO
         //ACTUALIZAR SALDO
         dataPago = objPago.consultaDataPagoDetalleOtros(idPago_publica);
@@ -373,7 +378,14 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
 private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
     if(objPago.eliminarPagoRecibo(idPago_publica))
+    {    
         JOptionPane.showMessageDialog(this, "Pago eliminado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
+        //CAMBIAR ESTADO DE ARRIENDO DE PENDIENTE "P" a NO COBRADO
+        if(this.txtReferencia.getText().substring(0,4).equals("WEB-"))
+        {
+            objPago.actualizarArriendo(this.txtReferencia.getText().substring(4), idPago_publica, "N");
+        }
+    }
     else
         JOptionPane.showMessageDialog(this, "Error al eliminar pago", "Atención!", JOptionPane.INFORMATION_MESSAGE);
     dispose();
