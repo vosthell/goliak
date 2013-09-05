@@ -541,9 +541,30 @@ public class clsPago {
         {           
             bd.conectarBaseDeDatos();
             sql = "UPDATE ck_abono_arriendo"
-                    + " SET estado_pago = '" + estado+ "',"
-                        + " id_pagos_recibo = " + id_pago + ","           
+                    + " SET estado_pago = '" + estado+ "',"                        
                         + " fecha_cobro = NOW()" 
+                    + " WHERE id_abono_Arriendo = " + codigoArriendo;            
+            //System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true;
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }
+    
+    public boolean actualizarArriendoPendiente(String codigoArriendo, double valorCobrado)
+    {
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();
+            sql = "UPDATE ck_abono_arriendo"
+                    + " SET valor_abono_pendiente = valor_abono_pendiente - " + valorCobrado                         
                     + " WHERE id_abono_Arriendo = " + codigoArriendo;            
             //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
@@ -1604,6 +1625,31 @@ public class clsPago {
             bd.resultado = bd.sentencia.executeQuery(sql);             
             while(bd.resultado.next()){               
                 nombreCajero = bd.resultado.getDouble("total");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            nombreCajero = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return nombreCajero;
+    }
+                                                        
+    public double consultaDataCuotaPendiente(String idCabeceraArriendo)
+    {          
+        double nombreCajero = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+
+            sql = "SELECT valor_abono_pendiente" 
+                    + " FROM ck_abono_arriendo"                    
+                    + "	WHERE id_abono_arriendo = " + idCabeceraArriendo;
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                nombreCajero = bd.resultado.getDouble("valor_abono_pendiente");              
             }
             //return nombreCajero;            
         }

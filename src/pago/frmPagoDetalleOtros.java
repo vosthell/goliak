@@ -228,9 +228,22 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         String idCajaAbierta = objCaja.obtenerCajaAbierta(main.idUser);
         objPago.actualizarDataPagoOtros(idPago_publica, idCajaAbierta, main.idUser);
         //cambiar ESTA DEL PAGO ARRIENDO DE PENDIENTE EN CAJA "P"  A COBRADO "S"
+        String arriendo = "";
         if(this.txtReferencia.getText().substring(0,4).equals("WEB-"))
         {
-            objPago.actualizarArriendo(this.txtReferencia.getText().substring(4), idPago_publica, "S");
+            //RESTARLE AL VALOR PENDIENTE EL VALOR COBRADO
+            objPago.actualizarArriendoPendiente(this.txtReferencia.getText().substring(4), Double.parseDouble(txtValor.getText()));
+            //CONSULTAR SI ES CERO EL VALOR PENDIENTE PARA POENRLE COBRADO
+            Double dataPagoPendiente = objPago.consultaDataCuotaPendiente(this.txtReferencia.getText().substring(4));
+            if (dataPagoPendiente<=0)
+            {
+                objPago.actualizarArriendo(this.txtReferencia.getText().substring(4), idPago_publica, "S");
+            }   
+            else
+            {
+                objPago.actualizarArriendo(this.txtReferencia.getText().substring(4), idPago_publica, "N");
+            }
+            arriendo = "ARRIENDO ";
         }
         //RESTAR SALDO
         //ACTUALIZAR SALDO
@@ -265,7 +278,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
        
         pw.println("RECIBI DE : " + dataPago.get(0).getNombreCliente());
         pw.println("LA CANTIDAD DE: " + valor + " ***DOLARES");
-        pw.println("POR CONCEPTO DE: " + dataPago.get(0).getReferencia());
+        pw.println("POR CONCEPTO DE: " + arriendo + dataPago.get(0).getReferencia());
         pw.println("");
         /******************************************************************************************/
         pw.println("LUGAR/FECHA/HORA: BABA, " + fecha_cobro);
