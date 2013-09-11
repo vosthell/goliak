@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import clases.clsCaja;
 import clases.clsComboBox;
 import clases.clsFacturero;
+import clases.javaMail;
 import java.util.ArrayList;
 import stinventario.frmPrincipal;
 
@@ -336,6 +337,12 @@ private void btnAbrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             JOptionPane.showMessageDialog(this, "Datos almacenados con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
             objAuditoria.insertarAuditoria("frmAbrirCaja", "ABRIO CAJA CON: $ "+                                            
                                                 txtValor.getText().toString(), "1");
+            javaMail mail = new javaMail();
+            mail.send("vosthell@hotmail.com","APERTURA DE CAJA", "EL USUARIO: " 
+                    + txtUsuario.getText().toString()
+                    + ", ABRIO CAJA CON: $ " + txtValor.getText().toString() + "</BR>"
+                    + " OBSERVACION: " + txtObservacion.getText().toString());
+  
             //********************//
             exito = objCaja.consultarCajaAbierta(index.main.idUser);
             if(exito)

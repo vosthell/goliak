@@ -30,6 +30,7 @@ public class clsPago {
     private String fecha_registro;
     private String descripcion_deuda;
     private Double valor_actual;
+    private int codigo;
     
     public String getIdCabeceraMovi() {
         return id_cabecera_movi;
@@ -142,6 +143,14 @@ public class clsPago {
     
     public void setValorActual(Double valor_actual) {
         this.valor_actual = valor_actual;
+    }
+    
+    public int getCodigo() {
+        return codigo;
+    }
+    
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
     
     public boolean insertarRegistroHistorico(String idCtaCobrar, String idUser, String factRef, String fechaPago, String valor)
@@ -1069,7 +1078,7 @@ public class clsPago {
                         + " c.valor_actual valor_actual, a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente,"
                         + " a.fecha_registro fecha_registro, fecha_cobro, f.name name_cobrador,"
-                        + " c.id_cabecera_movi id_cabecera_movi"
+                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo"
                     + " FROM ck_pagos AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                     + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"                   
@@ -1100,6 +1109,7 @@ public class clsPago {
                     oListaTemporal.setFechaCobro(bd.resultado.getString("fecha_cobro"));
                     oListaTemporal.setValorActual(bd.resultado.getDouble("valor_actual"));
                     oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
+                    oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -1184,7 +1194,7 @@ public class clsPago {
                         + " c.valor_actual valor_actual, a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente, "
                         + " a.fecha_registro fecha_registro, fecha_cobro, f.name name_cobrador, "
-                        + " c.id_cabecera_movi id_cabecera_movi"
+                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo"
                     + " FROM ck_pagos_factura AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                     + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"
@@ -1215,6 +1225,7 @@ public class clsPago {
                     oListaTemporal.setValorActual(bd.resultado.getDouble("valor_actual"));
                     oListaTemporal.setNombreCobrador(bd.resultado.getString("name_cobrador"));
                     oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
+                    oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -1660,5 +1671,64 @@ public class clsPago {
         }     
         bd.desconectarBaseDeDatos();
         return nombreCajero;
+    }
+    
+    public double consultaTotalDeudaNE(int idCliente)
+    {          
+        double totalDeuda = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+
+            sql = "select sum(valor_actual) actual " 
+                    + " FROM ck_cta_cobrar AS a " 
+                    + " JOIN ck_notas_de_entrega AS c ON a.id_cabecera_movi = c.id_cabecera_movi " 
+                    + " JOIN ck_cliente AS b ON c.codigo = b.codigo" 
+                    + " WHERE b.codigo = " + idCliente
+                    + " AND a.estado = 'A'"
+                    + " AND c.estado = 'A'"
+                    + " AND estado_tramite = 'S'";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                totalDeuda = bd.resultado.getDouble("actual");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            totalDeuda = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return totalDeuda;
+    }
+    
+     public double consultaTotalDeudaFacturas(int idCliente)
+    {          
+        double totalDeuda = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+
+            sql = "select sum(valor_actual) actual " 
+                    + " FROM ck_cta_cobrar_facturas AS a " 
+                    + " JOIN ck_cabecera_movi AS c ON a.id_cabecera_movi = c.id_cabecera_movi " 
+                    + " JOIN ck_cliente AS b ON c.codigo = b.codigo" 
+                    + " WHERE b.codigo = " + idCliente
+                    + " AND a.estado = 'A'"
+                    + " AND c.estado = 'A'";
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                totalDeuda = bd.resultado.getDouble("actual");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            totalDeuda = 0;
+        }     
+        bd.desconectarBaseDeDatos();
+        return totalDeuda;
     }
 }

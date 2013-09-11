@@ -20,6 +20,7 @@ import clases.clsCaja;
 import clases.clsEgreso;
 import clases.clsPago;
 import clases.clsUtils;
+import clases.javaMail;
 import java.awt.Dimension;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -547,12 +548,25 @@ void imprimir()
         pw.println("CONTADO EN DINERO:              $"+ objUtils.rellenar(txtValorContado.getText()));
         
         double diferencia = objUtils.redondear(Double.parseDouble(txtValorContado.getText()) - totalCierre);
+        String mensajeEmail =""; 
         if(diferencia == 0.0||diferencia ==-0.0)
-                pw.println("VALORES CUADRADOS");
+        {        
+            pw.println("VALORES CUADRADOS");
+            mensajeEmail = "VALORES CUADRADOS";
+        }
         else if(diferencia>0)
-                pw.println("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia));
-         else if(diferencia<0)
-                pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
+        {        
+            pw.println("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia));
+            mensajeEmail = "SOBRANTE: $" + objUtils.rellenar(""+diferencia);
+        }
+        else if(diferencia<0)
+        {       
+            pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
+            mensajeEmail = "FALTANTE: $" + objUtils.rellenar(""+diferencia);
+        }
+       
+        
+        
         
         Runtime aplicacion = Runtime.getRuntime(); 
         try{
@@ -564,6 +578,24 @@ void imprimir()
         {
             System.out.println(e);
         }
+        
+         //ENVIAR CORREO
+        javaMail mail = new javaMail();
+        mail.send("vosthell@hotmail.com","CIERRE DE CAJA", "EL USUARIO: " 
+                    + txtUsuario.getText().toString()
+                    + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + txtValorContado.getText() + "</BR>"
+                    + " SISTEMA: $ " + objUtils.redondear(totalCierre) + "</BR>"
+                    + " OBSERVACION: " +  mensajeEmail + "</BR>"
+                    + "<TABLE>"
+                        + "<tr><td>DESCRIPCION</td><td>VALOR</td></tr>"
+                        + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + objUtils.redondear(totalFacturas)+ "</TD></TR>"
+                        + "<TR><TD>TOTAL ABONOS:</TD><TD>" + objUtils.redondear(totalPagos)+ "</TD></TR>"
+                        + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + objUtils.redondear(totalPagosFactura)+ "</TD></TR>"
+                        + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + objUtils.redondear(totalPagosRecibo)+ "</TD></TR>"
+                        + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(totalIngresos)+ "</TD></TR>"
+                        + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(totalEgresos)+ "</TD></TR>"
+                
+                    + "</TABLE>");
     } 
     catch (Exception e) 
     {

@@ -237,6 +237,13 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         objCtasCobrar.actualizarSaldoFacturasNuevo(idCtaCobrar, objUtils.redondear(valor));
         //OBTENER SALDO SI SALDO ES  CERO CANCELO DEUDA
         Double saldo = objCtasCobrar.consultarSaldoCtaFactura("" + idCtaCobrar);
+        
+        //OBTENER DEUDAS NOTAS ENTREGA y facturas
+        double totalNE = objPago.consultaTotalDeudaNE(dataPago.get(0).getCodigo());
+        double totalFacturas = objPago.consultaTotalDeudaFacturas(dataPago.get(0).getCodigo());
+        double totalNEFacturas = 0.00;
+        totalNEFacturas = totalNE + totalFacturas;
+        
         if((saldo == 0)||(saldo==0.00)||(saldo<0))
         {
             //REGISTRAR QUE FECHA QUEDO CANCELADO O EN CERO
@@ -259,13 +266,13 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         pw.println("");
         
         pw.println("RECIBI DE : " + dataPago.get(0).getNombreCliente());
-        pw.println("LA CANTIDAD DE: " + valor + " ***DOLARES");
+        pw.println("LA CANTIDAD DE: $ " + valor + " ***DOLARES");
         pw.println("POR CONCEPTO DE: " + dataPago.get(0).getReferencia());
         pw.println("CODIGO FACTURA: " + dataPago.get(0).getIdCabeceraMovi());
         pw.println("CODIGO DEUDA: " + dataPago.get(0).getIdCtaCobrar());
         if (saldo<0)
             saldo = 0.00;
-        pw.println("VALOR PENDIENTE: " + objUtils.redondear(saldo));
+        pw.println("VALOR PENDIENTE: $ " + objUtils.redondear(saldo)+ ", TOTAL DEUDAS PENDIENTES: $ " + objUtils.redondear(totalNEFacturas));
         pw.println("");
         /******************************************************************************************/
         pw.println("LUGAR/FECHA/HORA: BABA, " + fecha_cobro);
