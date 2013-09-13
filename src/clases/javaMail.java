@@ -35,13 +35,11 @@ public class javaMail {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(destino));
-            //message.addRecipient(Message.RecipientType.CC, new InternetAddress("betsuka@hotmail.com"));
-            //message.addRecipient(Message.RecipientType.CC, new InternetAddress("jrmsupertodo@gmail.com"));
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("vosthell@gmail.com"));
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("c.kaiser.a@hotmail.com"));
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("betsuka@hotmail.com"));
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("jrmsupertodo@gmail.com"));
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("karl02@hotmail.es"));
+            /*message.addRecipient(Message.RecipientType.CC, new InternetAddress("vosthell@gmail.com"));
+            message.addRecipient(Message.RecipientType.CC, new InternetAddress("c.kaiser.a@hotmail.com"));
+            message.addRecipient(Message.RecipientType.CC, new InternetAddress("betsuka@hotmail.com"));
+            message.addRecipient(Message.RecipientType.CC, new InternetAddress("jrmsupertodo@gmail.com"));
+            message.addRecipient(Message.RecipientType.BCC, new InternetAddress("karl02@hotmail.es"));*/
             
             message.setSubject(asunto);
             //TEXTO PLANO

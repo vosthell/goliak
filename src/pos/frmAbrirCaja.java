@@ -337,11 +337,14 @@ private void btnAbrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             JOptionPane.showMessageDialog(this, "Datos almacenados con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
             objAuditoria.insertarAuditoria("frmAbrirCaja", "ABRIO CAJA CON: $ "+                                            
                                                 txtValor.getText().toString(), "1");
-            javaMail mail = new javaMail();
+            /*javaMail mail = new javaMail();
             mail.send("vosthell@hotmail.com","APERTURA DE CAJA", "EL USUARIO: " 
                     + txtUsuario.getText().toString()
                     + ", ABRIO CAJA CON: $ " + txtValor.getText().toString() + "</BR>"
-                    + " OBSERVACION: " + txtObservacion.getText().toString());
+                    + " OBSERVACION: " + txtObservacion.getText().toString());*/
+            frmEnviarCorreoAbrir ventana = new frmEnviarCorreoAbrir(null, true, txtValor.getText().toString(), txtObservacion.getText().toString());
+            ventana.setLocationRelativeTo(null);
+            ventana.setVisible(true);
   
             //********************//
             exito = objCaja.consultarCajaAbierta(index.main.idUser);

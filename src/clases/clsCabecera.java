@@ -1312,7 +1312,7 @@ public class clsCabecera {
         return data;
     }
     
-     public ArrayList<clsCabecera>  consultaFacturasRealizadas(String idCajaAbierta){            
+     public ArrayList<clsCabecera>  consultaFacturasRealizadas(int idCajaAbierta){            
         ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
         try{
             bd.conectarBaseDeDatos();
@@ -1356,7 +1356,7 @@ public class clsCabecera {
         return data;
     }
      
-     public ArrayList<clsCabecera>  consultaDevolucionesRealizadas(String idCajaAbierta){            
+     public ArrayList<clsCabecera>  consultaDevolucionesRealizadas(int idCajaAbierta){            
         ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
         try{
             bd.conectarBaseDeDatos();

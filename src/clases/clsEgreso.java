@@ -73,7 +73,7 @@ public class clsEgreso {
         return exito;
     }
     
-    public Double obtenerValorEgresos(String idCajaAbierta, String tipo_transaccion)
+    public Double obtenerValorEgresos(int idCajaAbierta, String tipo_transaccion)
     {          
         Double valorFacturado = 0.00; 
         try{
@@ -98,7 +98,7 @@ public class clsEgreso {
         return valorFacturado;        
     }
     
-    public ArrayList<clsEgreso>  consultaEgresosRealizadas(String idCajaAbierta, String tipo_transaccion){            
+    public ArrayList<clsEgreso>  consultaEgresosRealizadas(int idCajaAbierta, String tipo_transaccion){            
         ArrayList<clsEgreso> data = new ArrayList<clsEgreso>(); 
         try{
             bd.conectarBaseDeDatos();

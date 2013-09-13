@@ -288,7 +288,7 @@ public class clsPago {
         return exito;
     }  
     
-     public ArrayList<clsPago>  consultaPagosRealizadas(String idCajaAbierta){            
+     public ArrayList<clsPago>  consultaPagosRealizadas(int idCajaAbierta){            
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();
@@ -320,7 +320,7 @@ public class clsPago {
         return data;
     }
      
-     public ArrayList<clsPago>  consultaPagosFacturaRealizadas(String idCajaAbierta){            
+     public ArrayList<clsPago>  consultaPagosFacturaRealizadas(int idCajaAbierta){            
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();
@@ -355,7 +355,7 @@ public class clsPago {
         return data;
     }
      
-     public ArrayList<clsPago>  consultaPagosRecibo(String idCajaAbierta){            
+     public ArrayList<clsPago>  consultaPagosRecibo(int idCajaAbierta){            
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();
@@ -388,7 +388,7 @@ public class clsPago {
         return data;
     }
      
-     public ArrayList<clsPago>  consultaRecibosGenerados(String idCajaAbierta){            
+     public ArrayList<clsPago>  consultaRecibosGenerados(int idCajaAbierta){            
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();

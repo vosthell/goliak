@@ -33,7 +33,7 @@ public class frmRecibosPagoGenerados extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsPago objPago = new clsPago();
     
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     
     /** Creates new form frmFacturasRealizadas */
     public frmRecibosPagoGenerados() {

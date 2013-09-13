@@ -43,7 +43,7 @@ public class frmCerrarCaja_ extends javax.swing.JInternalFrame {
     clsEgreso objEgreso = new clsEgreso(); 
     clsCabecera objCabecera = new clsCabecera();
     clsPago objPago = new clsPago();
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     String txtDevoluciones = "";
     /** Creates new form frmCerrarCaja */
     

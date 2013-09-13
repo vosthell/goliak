@@ -30,7 +30,7 @@ public class frmFacturasRealizadas extends javax.swing.JInternalFrame {
     clsCabecera objCabecera = new clsCabecera();
     clsUtils objUtils = new clsUtils();
     
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     
     /** Creates new form frmFacturasRealizadas */
     public frmFacturasRealizadas() {

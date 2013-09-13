@@ -17,7 +17,7 @@ public class clsCaja {
     String sql;
     
     private double valor_apertura;
-    private String id_caja_operacion;
+    private int id_caja_operacion;
     private String nombre;
     private String fecha_apertura;
     private String fecha_cierre;
@@ -149,12 +149,12 @@ public class clsCaja {
         this.valor_apertura = valor_apertura;
     }
     
-    public String getIdCajaOperacion()
+    public int getIdCajaOperacion()
     {
         return id_caja_operacion;
     }
     
-    public void setIdCajaOperacion(String id_caja_operacion) {
+    public void setIdCajaOperacion(int id_caja_operacion) {
         this.id_caja_operacion = id_caja_operacion;
     }
     
@@ -252,7 +252,7 @@ public class clsCaja {
                 { 
                     clsCaja oListaTemporal = new clsCaja();
                     oListaTemporal.setValorApertura(bd.resultado.getDouble("valor_apertura"));
-                    oListaTemporal.setIdCajaOperacion(bd.resultado.getString("id_caja_operacion"));
+                    oListaTemporal.setIdCajaOperacion(bd.resultado.getInt("id_caja_operacion"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -296,7 +296,59 @@ public class clsCaja {
                 { 
                     clsCaja oListaTemporal = new clsCaja();
                     oListaTemporal.setValorApertura(bd.resultado.getDouble("valor_apertura"));
-                    oListaTemporal.setIdCajaOperacion(bd.resultado.getString("id_caja_operacion"));
+                    oListaTemporal.setIdCajaOperacion(bd.resultado.getInt("id_caja_operacion"));
+                    oListaTemporal.setDiferencia(bd.resultado.getDouble("diferencia"));
+                    oListaTemporal.setEgresos(bd.resultado.getDouble("valor_egresos"));
+                    oListaTemporal.setFechaCierre(bd.resultado.getString("fecha_cierre"));
+                    oListaTemporal.setFechaApertura(bd.resultado.getString("fecha_apertura"));
+                    oListaTemporal.setIngresos(bd.resultado.getDouble("valor_ingreso"));
+                    oListaTemporal.setObservacion(bd.resultado.getString("observacion"));
+                    oListaTemporal.setRecibosPago(bd.resultado.getDouble("valor_recibos"));
+                    oListaTemporal.setTotalFacturado(bd.resultado.getDouble("valor_facturado"));
+                    oListaTemporal.setValorContado(bd.resultado.getDouble("valor_contado"));
+                    oListaTemporal.setCierre(bd.resultado.getString("cierre"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+     
+      public ArrayList<clsCaja> consultarDataOperacionesCajaID(int idCajaOperacion)
+     {       
+        ArrayList<clsCaja> data = new ArrayList<clsCaja>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT id_caja_operacion, a.id_usuario, b.name, apertura, cierre, "
+                       + " valor_apertura, valor_contado, valor_facturado, "
+                       + " diferencia, id_cajero, valor_pagos, facturacion_manual, primer_valor_manual, "
+                       + " primera_vez_manual, id_facturero, valor_egresos, valor_recibos, "
+                       + " fecha_apertura, fecha_cierre, observacion, valor_ingreso"
+                  + " FROM ck_caja_operacion AS a"
+                  + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
+                  + " WHERE id_caja_operacion = " + idCajaOperacion;
+            System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCaja oListaTemporal = new clsCaja();
+                    oListaTemporal.setValorApertura(bd.resultado.getDouble("valor_apertura"));
+                    oListaTemporal.setIdCajaOperacion(bd.resultado.getInt("id_caja_operacion"));
                     oListaTemporal.setDiferencia(bd.resultado.getDouble("diferencia"));
                     oListaTemporal.setEgresos(bd.resultado.getDouble("valor_egresos"));
                     oListaTemporal.setFechaCierre(bd.resultado.getString("fecha_cierre"));
@@ -350,7 +402,7 @@ public class clsCaja {
             {
                 clsCaja oListaTemporal = new clsCaja();
                 oListaTemporal.setValorApertura(bd.resultado.getDouble("valor_apertura"));
-                oListaTemporal.setIdCajaOperacion(bd.resultado.getString("id_caja_operacion"));
+                oListaTemporal.setIdCajaOperacion(bd.resultado.getInt("id_caja_operacion"));
                 oListaTemporal.setDiferencia(bd.resultado.getDouble("diferencia"));
                 oListaTemporal.setEgresos(bd.resultado.getDouble("valor_egresos"));
                 oListaTemporal.setFechaCierre(bd.resultado.getString("fecha_cierre"));
@@ -589,7 +641,7 @@ public class clsCaja {
         return nombreCajero;
     }
     
-    public Double obtenerValorFacturado(String idCajaAbierta)
+    public Double obtenerValorFacturado(int idCajaAbierta)
     {          
         Double valorFacturado= 0.00; 
         try{
@@ -613,14 +665,14 @@ public class clsCaja {
         return valorFacturado;
     }
     
-    public Double obtenerValorDevolucionesVentas(String idCajaAbierta)
+    public Double obtenerValorDevolucionesVentas(int idCajaAbierta)
     {          
         Double valorFacturado= 0.00; 
         try{
             bd.conectarBaseDeDatos();
             sql = "SELECT sum(efectivo) AS efectivo"
                     + " FROM ck_cabecera_movi_devolucion"
-                    + " WHERE id_caja_operacion = "+idCajaAbierta
+                    + " WHERE id_caja_operacion = " + idCajaAbierta
                     + " AND estado='A'";
             bd.resultado = bd.sentencia.executeQuery(sql);             
             while(bd.resultado.next()){               
@@ -660,7 +712,7 @@ public class clsCaja {
         return exito;
     } 
     
-    public Double obtenerValorPagos(String idCajaAbierta)
+    public Double obtenerValorPagos(int idCajaAbierta)
     {          
         Double valorFacturado = 0.00; 
         try{
@@ -684,7 +736,7 @@ public class clsCaja {
         return valorFacturado;        
     }
     
-    public Double obtenerValorPagosFactura(String idCajaAbierta)
+    public Double obtenerValorPagosFactura(int idCajaAbierta)
     {          
         Double valorFacturado = 0.00; 
         try{
@@ -708,7 +760,7 @@ public class clsCaja {
         return valorFacturado;        
     }
     
-    public Double obtenerValorRecibos(String idCajaAbierta)
+    public Double obtenerValorRecibos(int idCajaAbierta)
     {          
         Double valorFacturado = 0.00; 
         try{

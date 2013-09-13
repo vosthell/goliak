@@ -12,13 +12,19 @@ package reportes;
 
 import clases.clsCabecera;
 import clases.clsCaja;
+import clases.clsEgreso;
 import clases.clsPago;
 import clases.clsUtils;
+import clases.javaMail;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -30,7 +36,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
+    clsCabecera objCabecera = new clsCabecera();
+    clsPago objPago = new clsPago();
     clsCaja objCaja = new clsCaja();
+    clsEgreso objEgreso = new clsEgreso();
     MiModelo dtmData = new MiModelo();
     /** Creates new form frmReporteVentas */
     public frmListOperacionesCaja() {
@@ -51,7 +60,10 @@ public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
         dtmData.addColumn("TOTAL SISTEMA");   
         dtmData.addColumn("TOTAL CONTADO");   
         dtmData.addColumn("DIFERENCIA");  
-        dtmData.addColumn("OBSERVACION");   
+        dtmData.addColumn("OBSERVACION"); 
+        
+        dtmData.addColumn("ID");  
+        dtmData.addColumn("REIMPRIMIR");  
         
         Date fechaActual = new Date();
         txtFechaInicio.setDate(fechaActual);
@@ -186,6 +198,11 @@ public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
 
         tblData.setModel(dtmData);
         tblData.setName("tblData"); // NOI18N
+        tblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblData);
 
         btnImprimir.setText(resourceMap.getString("btnImprimir.text")); // NOI18N
@@ -252,7 +269,7 @@ public class frmListOperacionesCaja extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -334,7 +351,9 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                                 dataCaja.get(i).getEgresos()), 
                                         "$ " + df1.format(dataCaja.get(i).getValorContado()),
                                         "$ " + df1.format(dataCaja.get(i).getDiferencia()),
-                                        dataCaja.get(i).getObservacion()
+                                        dataCaja.get(i).getObservacion(),
+                                        dataCaja.get(i).getIdCajaOperacion(),
+                                        "IMPRIMIR"
                  };    
              //}
 
@@ -416,6 +435,243 @@ private void chkFechaRegistroItemStateChanged(java.awt.event.ItemEvent evt) {//G
 private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
    
 }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
+        int fila = tblData.rowAtPoint(evt.getPoint());
+        int columna = tblData.columnAtPoint(evt.getPoint());
+        
+        int z = tblData.getSelectedRow();
+        int idCajaAbierta = Integer.parseInt(""+tblData.getValueAt(z, 15));
+        if (columna == 16)
+        {
+            //Calendar calendario = Calendar.getInstance();
+            DecimalFormat df1 = new DecimalFormat("###0.00"); 
+            Calendar calendario = new GregorianCalendar();
+            int hora, minutos, segundos, dia, mes,annio;
+            hora =calendario.get(Calendar.HOUR_OF_DAY);
+            minutos = calendario.get(Calendar.MINUTE);
+            segundos = calendario.get(Calendar.SECOND);
+            dia = calendario.get(Calendar.DATE);
+            mes = calendario.get(Calendar.MONTH) +1;
+            annio = calendario.get(Calendar.YEAR);
+
+            Double totalFacturas = 0.00;
+            Double totalDevoluciones = 0.00;
+            Double totalPagos = 0.00;
+            Double totalPagosFactura = 0.00;
+            Double totalPagosRecibo = 0.00;
+            Double totalEgresos = 0.00;
+            Double totalIngresos = 0.00;
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            try
+            {
+                ArrayList<clsCaja> dataCaja = objCaja.consultarDataOperacionesCajaID(idCajaAbierta); 
+                String fecha = dataCaja.get(0).getFechaCierre();
+                fichero = new FileWriter(objUtils.HostSystem + "file00001.txt");
+                pw = new PrintWriter(fichero);
+                /*40COLUMNAS*/
+                //pw.println(annio + "/" + mes + "/" + dia + " " +hora + ":" + minutos + ":" + segundos);
+                pw.println(fecha.substring(0, 16) + "(AAAA-MM-DD HH:MM)");
+                
+                
+                double valor_apertura = dataCaja.get(0).getValorApertura();
+                double valor_contado = dataCaja.get(0).getValorContado();
+                
+                pw.println("VALOR APERTURA: " + valor_apertura);
+
+                //FACTURAS
+                ArrayList<clsCabecera> dataFacturas = objCabecera.consultaFacturasRealizadas(idCajaAbierta); 
+                ArrayList<clsCabecera> dataDevoluciones = objCabecera.consultaDevolucionesRealizadas(idCajaAbierta); 
+
+                int maxData = dataFacturas.size();
+                int maxDevoluciones = dataDevoluciones.size();
+
+                String factReferencia = "";
+                //SI HAY FACTURAS LAS PRESNETA
+                if(maxData>0)
+                {    
+                    pw.println("FACTURAS");
+                    pw.println("----------------------------------------");
+                    for(int i=0;i<maxData;i++)
+                    {
+                         factReferencia = dataFacturas.get(i).getFactReferencia() + "                                         "; 
+                         pw.println((i+1) + " " + factReferencia.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataFacturas.get(i).getEfectivo())));
+                         totalFacturas = totalFacturas + dataFacturas.get(i).getEfectivo();                 
+                    } 
+                    if(maxDevoluciones>0)
+                    {    
+                        for(int i=0;i<maxDevoluciones;i++)
+                        {
+                             factReferencia = dataDevoluciones.get(i).getIdCabeceraMovi() + "                                         "; 
+                             pw.println((i+1) + " DEVOLUCION:" + factReferencia.substring(0, 16) + " -" + 
+                                            objUtils.rellenar(""+df1.format(dataDevoluciones.get(i).getEfectivo())));
+                             totalDevoluciones = totalDevoluciones + dataDevoluciones.get(i).getEfectivo();                 
+                        } 
+                        /*pw.println("TOTAL FACTURADO: " + objUtils.redondear(totalFacturas));
+                        pw.println(" ");*/
+                    }
+                    totalFacturas = totalFacturas - totalDevoluciones;
+                    pw.println("TOTAL FACTURADO: " + objUtils.redondear(totalFacturas));
+                    pw.println(" ");
+                }
+
+                //PAGOS        
+                ArrayList<clsPago> dataPagos = objPago.consultaPagosRealizadas(idCajaAbierta); 
+                maxData = dataPagos.size();
+                String referencia = "";
+                if(maxData>0)
+                { 
+                    //pw.println("PAGOS");
+                    pw.println("ABONOS");
+                    pw.println("----------------------------------------");
+                    for(int i=0; i<maxData;i++)
+                    {
+                        //referencia = dataPagos.get(i).getReferencia()+ "                                         "; 
+                        referencia = dataPagos.get(i).getReferencia()+ "                                         "; 
+                        pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataPagos.get(i).getValor())));                                  
+                        totalPagos = totalPagos + dataPagos.get(i).getValor();                
+                    } 
+                    pw.println("TOTAL ABONOS: " + objUtils.redondear(totalPagos));
+                    pw.println(" ");
+                }
+
+                //PAGOS   FACTURA     
+                ArrayList<clsPago> dataPagosFactura = objPago.consultaPagosFacturaRealizadas(idCajaAbierta); 
+                maxData = dataPagosFactura.size();
+                //String referencia = "";
+                if(maxData>0)
+                { 
+                    pw.println("ABONOS/FACTURA");
+                    pw.println("----------------------------------------");
+                    for(int i=0; i<maxData;i++)
+                    {
+                        referencia = dataPagosFactura.get(i).getNombreCliente()+ "                                         "; 
+                        pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataPagosFactura.get(i).getValor())));                                  
+                         totalPagosFactura = totalPagosFactura + dataPagosFactura.get(i).getValor();                
+                    } 
+                    pw.println("TOTAL ABONOS/FACT: " + objUtils.redondear(totalPagosFactura));
+                    pw.println(" ");
+                }
+
+                //PAGOS RECIBO     
+                ArrayList<clsPago> dataPagosRecibo = objPago.consultaPagosRecibo(idCajaAbierta); 
+                maxData = dataPagosRecibo.size();
+                //String referencia = "";
+                if(maxData>0)
+                { 
+                    pw.println("ABONOS/ENTRADA (RECIBO)");
+                    pw.println("----------------------------------------");
+                    for(int i=0; i<maxData;i++)
+                    {
+                        referencia = dataPagosRecibo.get(i).getNombreCliente()+ "                                         "; 
+                        pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor())));                                  
+                         totalPagosRecibo = totalPagosRecibo + dataPagosRecibo.get(i).getValor();                
+                    } 
+                    pw.println("TOTAL ABONOS/ENTRADA: " + objUtils.redondear(totalPagosRecibo));
+                    pw.println(" ");
+                }
+
+                //INGRESOS
+                ArrayList<clsEgreso> dataIngresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "I"); 
+                maxData = dataIngresos.size();
+                String concepto = "";
+                if(maxData>0)
+                { 
+                    pw.println("INGRESOS");
+                    pw.println("----------------------------------------");
+                    for(int i=0;i<maxData;i++)
+                    {                
+                        concepto = dataIngresos.get(i).getConcepto() + "                                         "; 
+                        pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataIngresos.get(i).getCantidadEgreso())));
+                        totalIngresos = totalIngresos + dataIngresos.get(i).getCantidadEgreso();                
+                    }
+                    pw.println("TOTAL INGRESOS: " + objUtils.redondear(totalIngresos));
+                    pw.println(" ");
+                }
+
+                //EGRESOS
+                ArrayList<clsEgreso> dataEgresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "E"); 
+                maxData = dataEgresos.size();
+                concepto = "";
+                if(maxData>0)
+                { 
+                    pw.println("EGRESOS");
+                    pw.println("----------------------------------------");
+                    for(int i=0;i<maxData;i++)
+                    {                
+                        concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
+                        pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
+                                        objUtils.rellenar(""+df1.format(dataEgresos.get(i).getCantidadEgreso())));
+                        totalEgresos = totalEgresos + dataEgresos.get(i).getCantidadEgreso();                
+                    }
+                    pw.println("TOTAL EGRESOS: " + objUtils.redondear(totalEgresos));
+                    pw.println(" ");
+                }
+
+                Double totalCierre = valor_apertura + 
+                        totalFacturas + totalPagos + totalPagosFactura + totalPagosRecibo + totalIngresos - totalEgresos;
+                pw.println("TOTAL:                          $"+ objUtils.rellenar(""+objUtils.redondear(totalCierre)));
+                pw.println("CONTADO EN DINERO:              $"+ objUtils.rellenar("" + valor_contado));
+
+                double diferencia = objUtils.redondear(Double.parseDouble("" + valor_contado) - totalCierre);
+                String mensajeEmail =""; 
+                if(diferencia == 0.0||diferencia ==-0.0)
+                {        
+                    pw.println("VALORES CUADRADOS");
+                    mensajeEmail = "VALORES CUADRADOS";
+                }
+                else if(diferencia>0)
+                {        
+                    pw.println("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia));
+                    mensajeEmail = "SOBRANTE: $" + objUtils.rellenar(""+diferencia);
+                }
+                else if(diferencia<0)
+                {       
+                    pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
+                    mensajeEmail = "FALTANTE: $" + objUtils.rellenar(""+diferencia);
+                }       
+
+                Runtime aplicacion = Runtime.getRuntime(); 
+                try{
+                    //IMPRIMIR 2 VECES
+                    for(int x=0; x<1; x++)
+                        aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + "printFile.bat"); 
+                    JOptionPane.showMessageDialog(this, "Impresión realizada con éxito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                        
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+                }
+
+
+            } 
+            catch (Exception e) 
+            {
+                e.printStackTrace();
+            } 
+            finally 
+            {
+               try {
+               // Nuevamente aprovechamos el finally para 
+               // asegurarnos que se cierra el fichero.
+               if (null != fichero)
+                  fichero.close();
+               } catch (Exception e2) {
+                  e2.printStackTrace();
+               }
+            }
+            
+        }
+        
+    }//GEN-LAST:event_tblDataMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

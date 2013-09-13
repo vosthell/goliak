@@ -44,7 +44,7 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
     clsEgreso objEgreso = new clsEgreso(); 
     clsCabecera objCabecera = new clsCabecera();
     clsPago objPago = new clsPago();
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     String txtIngresos = "";
     String txtEgresos = "";
     String txtFacturado = "";
@@ -251,7 +251,7 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(141, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCerrar)
@@ -360,6 +360,12 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             frmPrincipal.btnCajaAntes.setVisible(false);
              //********************//
             imprimir();
+            
+            /*frmEnviarCorreo formulario = new frmEnviarCorreo();
+            mostrarJInternalCentrado(formulario); */
+            frmEnviarCorreo ventana = new frmEnviarCorreo(null, true, idCajaAbierta);
+            ventana.setLocationRelativeTo(null);
+            ventana.setVisible(true);
         }
         else
         {
@@ -380,7 +386,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
 void imprimir()
 {
-        //Calendar calendario = Calendar.getInstance();
+    //Calendar calendario = Calendar.getInstance();
     DecimalFormat df1 = new DecimalFormat("###0.00"); 
     Calendar calendario = new GregorianCalendar();
     int hora, minutos, segundos, dia, mes,annio;
@@ -563,39 +569,39 @@ void imprimir()
         {       
             pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
             mensajeEmail = "FALTANTE: $" + objUtils.rellenar(""+diferencia);
-        }
-       
-        
-        
+        }       
         
         Runtime aplicacion = Runtime.getRuntime(); 
         try{
             //IMPRIMIR 2 VECES
             for(int x=0; x<1; x++)
                 aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + "printFile.bat"); 
+            
+            //ENVIAR CORREO
+            /*javaMail mail = new javaMail();
+            mail.send("vosthell@hotmail.com","CIERRE DE CAJA", "EL USUARIO: " 
+                        + txtUsuario.getText().toString()
+                        + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + txtValorContado.getText() + "</BR>"
+                        + " SISTEMA: $ " + objUtils.redondear(totalCierre) + "</BR>"
+                        + " OBSERVACION: " +  mensajeEmail + "</BR>"
+                        + "<TABLE>"
+                            + "<tr><td>DESCRIPCION</td><td>VALOR</td></tr>"
+                            + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + objUtils.redondear(totalFacturas)+ "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS:</TD><TD>" + objUtils.redondear(totalPagos)+ "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + objUtils.redondear(totalPagosFactura)+ "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + objUtils.redondear(totalPagosRecibo)+ "</TD></TR>"
+                            + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(totalIngresos)+ "</TD></TR>"
+                            + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(totalEgresos)+ "</TD></TR>"                
+                        + "</TABLE>");*/
         }
         catch(Exception e)
         {
             System.out.println(e);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir y enviar correo", JOptionPane.ERROR_MESSAGE);
+  
         }
         
-         //ENVIAR CORREO
-        javaMail mail = new javaMail();
-        mail.send("vosthell@hotmail.com","CIERRE DE CAJA", "EL USUARIO: " 
-                    + txtUsuario.getText().toString()
-                    + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + txtValorContado.getText() + "</BR>"
-                    + " SISTEMA: $ " + objUtils.redondear(totalCierre) + "</BR>"
-                    + " OBSERVACION: " +  mensajeEmail + "</BR>"
-                    + "<TABLE>"
-                        + "<tr><td>DESCRIPCION</td><td>VALOR</td></tr>"
-                        + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + objUtils.redondear(totalFacturas)+ "</TD></TR>"
-                        + "<TR><TD>TOTAL ABONOS:</TD><TD>" + objUtils.redondear(totalPagos)+ "</TD></TR>"
-                        + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + objUtils.redondear(totalPagosFactura)+ "</TD></TR>"
-                        + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + objUtils.redondear(totalPagosRecibo)+ "</TD></TR>"
-                        + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(totalIngresos)+ "</TD></TR>"
-                        + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(totalEgresos)+ "</TD></TR>"
-                
-                    + "</TABLE>");
+        
     } 
     catch (Exception e) 
     {

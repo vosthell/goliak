@@ -37,7 +37,7 @@ public class frmEgresosRealizados extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsEgreso objEgreso = new clsEgreso();
     clsAuditoria objAuditoria = new clsAuditoria();
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     JInternalFrame frameNuevo;
     /** Creates new form frmPagosRealizados */
     public frmEgresosRealizados(JInternalFrame e) {

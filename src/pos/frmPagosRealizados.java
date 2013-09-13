@@ -30,7 +30,7 @@ public class frmPagosRealizados extends javax.swing.JInternalFrame {
     clsCaja objCaja = new clsCaja();
     clsPago objPago = new clsPago();
     clsUtils objUtils = new clsUtils();
-    String idCajaAbierta = "";
+    int idCajaAbierta = 0;
     /** Creates new form frmPagosRealizados */
     public frmPagosRealizados() {
         initComponents();
