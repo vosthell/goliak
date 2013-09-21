@@ -15,12 +15,15 @@ import clases.clsCaja;
 import clases.clsCliente;
 import clases.clsCuota;
 import clases.clsDetalle;
+import clases.clsEmail;
 import clases.clsImpuestos;
 import clases.clsKardex;
 import clases.clsPago;
 import clases.clsPrecio;
 import clases.clsProducto;
 import clases.clsUtils;
+import clases.javaMail;
+import index.main;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -43,6 +46,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
     clsImpuestos objImpuestos = new clsImpuestos();
     clsKardex objKardex = new clsKardex();
     clsPago objPago = new clsPago();
+    clsEmail objEmail = new clsEmail();
     
     MiModelo dtmData = new MiModelo();
     String idCajero="";
@@ -754,6 +758,21 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
        }    
        
        objCabecera.confirmarNotaEntrega(idCabecera);
+       
+       try{
+            String texto = "EL USUARIO: " 
+            + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR>";
+            javaMail mail = new javaMail();
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            for(int i=0;i<dataEmail.size();i=i+1)
+            {
+                mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
+            }
+        }
+        catch(Exception e){
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+        }
                     
        JOptionPane.showMessageDialog(this, "Nota de entrega confirmada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);  
    }

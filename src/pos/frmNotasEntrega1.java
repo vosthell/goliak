@@ -18,6 +18,7 @@ import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCuota;
 import clases.clsDetalle;
+import clases.clsEmail;
 import clases.clsFacturero;
 import clases.clsImpuestos;
 import clases.clsKardex;
@@ -28,6 +29,7 @@ import clases.clsPrecio;
 import clases.clsProducto;
 import clases.clsReporte;
 import clases.clsUtils;
+import clases.javaMail;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
@@ -70,6 +72,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     clsReporte objReporte = new clsReporte();
     clsParametros objParametros = new clsParametros();
     clsAbono objAbono = new clsAbono();
+    clsEmail objEmail = new clsEmail();
     
     Double valorInteresCuotaInicial = objParametros.consultaPorcentajeCuotaInicial(); //el 30 % del valor es  la cuota iniciañ
     //Double valorInteresTresMeses = 9.00;
@@ -1524,6 +1527,21 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     //obtenerFacturaQueToca();
                     objAuditoria.insertarAuditoria("frmNotasEntrega1", "INGRESO DE NOTA DE  ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
+                    
+                    try{
+                        String texto = "EL USUARIO: " 
+                        + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
+                        javaMail mail = new javaMail();
+                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+                        for(int i=0;i<dataEmail.size();i=i+1)
+                        {
+                            mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
+                        }
+                    }
+                    catch(Exception e){
+                        //e.printStackTrace();
+                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 catch(Exception e)
                 {
@@ -1774,6 +1792,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtComentario.getText(),
                     txtNotaEntrega.getText(),                     
                     fechaVenta);
+            
             if(exito)
             {
                 try
@@ -1785,6 +1804,21 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
                              + txtNotaEntrega.getText(), "3");
                     exito = true;
+                    
+                    try{
+                        String texto = "EL USUARIO: " 
+                        + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
+                        javaMail mail = new javaMail();
+                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+                        for(int i=0;i<dataEmail.size();i=i+1)
+                        {
+                            mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+                        }
+                    }
+                    catch(Exception e){
+                        //e.printStackTrace();
+                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 catch(Exception e)
                 {

@@ -5,6 +5,7 @@
 package pos;
 
 import clases.clsCaja;
+import clases.clsEmail;
 import clases.clsUtils;
 import clases.javaMail;
 import index.main;
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 public class frmEnviarCorreo extends javax.swing.JDialog {
     clsUtils objUtils = new clsUtils();
     clsCaja objCaja = new clsCaja();
+    clsEmail objEmail = new clsEmail();
     /**
      * Creates new form frmEnviarCorreo
      */
@@ -41,7 +43,13 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
                             + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getIngresos())+ "</TD></TR>"
                             + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getEgresos())+ "</TD></TR>"                
                         + "</TABLE>";
-            mail.send("vosthell@hotmail.com","CIERRE DE CAJA", texto);
+            
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            for(int i=0;i<dataEmail.size();i=i+1)
+            {
+                mail.send(dataEmail.get(i).getEmail(),"CIERRE DE CAJA", texto);
+            }
+            /*mail.send("vosthell@hotmail.com","CIERRE DE CAJA", texto);
             mail.send("c.kaiser.a@hotmail.com","CIERRE DE CAJA", texto);
             mail.send("betsuka@hotmail.com","CIERRE DE CAJA", texto);
             mail.send("jrmsupertodo@gmail.com","CIERRE DE CAJA", texto);
@@ -50,7 +58,7 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
             mail.send("betsy.rizzo@comisariatosupertodo.com","CIERRE DE CAJA", texto);
             mail.send("jorge.rizzo@comisariatosupertodo.com","CIERRE DE CAJA", texto);  
             mail.send("betty.rodas@comisariatosupertodo.com","CIERRE DE CAJA", texto);
-            mail.send("webmaster@comisariatosupertodo.com","CIERRE DE CAJA", texto);  
+            mail.send("webmaster@comisariatosupertodo.com","CIERRE DE CAJA", texto);  */
             
         }
         catch(Exception e){
