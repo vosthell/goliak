@@ -50,7 +50,7 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
             mail.send("betsy.rizzo@comisariatosupertodo.com","CIERRE DE CAJA", texto);
             mail.send("jorge.rizzo@comisariatosupertodo.com","CIERRE DE CAJA", texto);  
             mail.send("betty.rodas@comisariatosupertodo.com","CIERRE DE CAJA", texto);
-            mail.send("webmaster@comisariatosupertodo.com","CIERRE DE CAJA", texto);   
+            mail.send("webmaster@comisariatosupertodo.com","CIERRE DE CAJA", texto);  
             
         }
         catch(Exception e){

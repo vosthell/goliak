@@ -23,9 +23,11 @@ public class javaMail {
         properties.put("mail.smtp.host", "smtp.live.com");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.port", "587");//587
-        properties.put("mail.smtp.mail.sender", "supertodobaba@hotmail.com");
-        properties.put("mail.smtp.password", "rizzo,2012");
-        properties.put("mail.smtp.user", "supertodobaba@hotmail.com");
+        //properties.put("mail.smtp.mail.sender", "supertodobaba@hotmail.com");
+        properties.put("mail.smtp.mail.sender", "supertodo.sanjuan@hotmail.com");
+        //properties.put("mail.smtp.password", "rizzo,2012");
+        properties.put("mail.smtp.password", "rizzoecuador2013");
+        properties.put("mail.smtp.user", "supertodo.sanjuan@hotmail.com");
         properties.put("mail.smtp.auth", "true");
         session = Session.getDefaultInstance(properties);
     }

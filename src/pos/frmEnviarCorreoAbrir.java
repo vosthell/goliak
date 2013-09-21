@@ -46,7 +46,7 @@ public class frmEnviarCorreoAbrir extends javax.swing.JDialog {
                     + ", ABRIO CAJA CON: $ " + valor + "</BR>"
                     + " OBSERVACION: " + observacion;
             mail.send("vosthell@hotmail.com","APERTURA DE CAJA", texto);
-            mail.send("c.kaiser.a@hotmail.com","APERTURA DE CAJA", texto);
+           mail.send("c.kaiser.a@hotmail.com","APERTURA DE CAJA", texto);
             mail.send("betsuka@hotmail.com","APERTURA DE CAJA", texto);
             mail.send("jrmsupertodo@gmail.com","APERTURA DE CAJA", texto);
             mail.send("karl02@hotmail.es","APERTURA DE CAJA", texto); 
@@ -54,7 +54,7 @@ public class frmEnviarCorreoAbrir extends javax.swing.JDialog {
             mail.send("betsy.rizzo@comisariatosupertodo.com","APERTURA DE CAJA", texto);
             mail.send("jorge.rizzo@comisariatosupertodo.com","APERTURA DE CAJA", texto);  
             mail.send("betty.rodas@comisariatosupertodo.com","APERTURA DE CAJA", texto);
-            mail.send("webmaster@comisariatosupertodo.com","APERTURA DE CAJA", texto);  
+            mail.send("webmaster@comisariatosupertodo.com","APERTURA DE CAJA", texto); 
         }
         catch(Exception e){
             //e.printStackTrace();
