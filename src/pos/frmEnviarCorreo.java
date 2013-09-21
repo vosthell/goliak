@@ -5,6 +5,7 @@
 package pos;
 
 import clases.clsCaja;
+import clases.clsEgreso;
 import clases.clsEmail;
 import clases.clsUtils;
 import clases.javaMail;
@@ -42,7 +43,25 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
                             + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getRecibosPago())+ "</TD></TR>"
                             + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getIngresos())+ "</TD></TR>"
                             + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getEgresos())+ "</TD></TR>"                
-                        + "</TABLE>";
+                        + "</TABLE></BR>";
+            //EGRESOS
+            /*ArrayList<clsEgreso> dataEgresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "E"); 
+            maxData = dataEgresos.size();
+            concepto = "";
+            if(maxData>0)
+            { 
+                texto = texto + "EGRESOS";
+                pw.println("----------------------------------------");
+                for(int i=0;i<maxData;i++)
+                {                
+                    concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
+                    pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
+                                    objUtils.rellenar(""+df1.format(dataEgresos.get(i).getCantidadEgreso())));
+                    totalEgresos = totalEgresos + dataEgresos.get(i).getCantidadEgreso();                
+                }
+                pw.println("TOTAL EGRESOS: " + objUtils.redondear(totalEgresos));
+                pw.println(" ");
+            }*/
             
             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
             for(int i=0;i<dataEmail.size();i=i+1)
