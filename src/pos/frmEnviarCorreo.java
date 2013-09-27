@@ -21,6 +21,7 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
     clsUtils objUtils = new clsUtils();
     clsCaja objCaja = new clsCaja();
     clsEmail objEmail = new clsEmail();
+    clsEgreso objEgreso = new clsEgreso();
     /**
      * Creates new form frmEnviarCorreo
      */
@@ -29,39 +30,51 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
         initComponents();
         ArrayList<clsCaja> dataCaja = objCaja.consultarDataOperacionesCajaID(idCajaAbierta); 
         javaMail mail = new javaMail();
-        try{            
+        try{    
+            double facturado = objUtils.redondear(dataCaja.get(0).getTotalFacturado());
+            double abonos = objUtils.redondear(dataCaja.get(0).getAbonos());
+            double abonos_factura = objUtils.redondear(dataCaja.get(0).getValorPagosFactura());
+            double abonos_entrada = objUtils.redondear(dataCaja.get(0).getRecibosPago());
+            double ingresos = objUtils.redondear(dataCaja.get(0).getIngresos());
+            double egresos = objUtils.redondear(dataCaja.get(0).getEgresos());
+            double total_sistema = facturado + abonos + abonos_factura + abonos_entrada + ingresos - egresos;
             String texto = "EL USUARIO: " 
                         + main.nameUser
                         + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + dataCaja.get(0).getValorContado() + "</BR>"
-                        + " SISTEMA: $ " + "" + "</BR>"
-                        + " OBSERVACION: DIFERENCIA:" +  dataCaja.get(0).getDiferencia() + "</BR>"
-                        + "<TABLE>"
+                        + " SISTEMA: $ " + total_sistema + "</BR></BR>"
+                        + " OBSERVACION: DIFERENCIA: " +  dataCaja.get(0).getDiferencia() + "</BR></BR></BR>"
+                        + "<TABLE BORDER=\"1\">"
                             + "<tr><td>DESCRIPCION</td><td>VALOR</td></tr>"
-                            + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getTotalFacturado())+ "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getAbonos())+ "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getValorPagosFactura())+ "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getRecibosPago())+ "</TD></TR>"
-                            + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getIngresos())+ "</TD></TR>"
-                            + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + objUtils.redondear(dataCaja.get(0).getEgresos())+ "</TD></TR>"                
+                            + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + facturado + "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS:</TD><TD>" + abonos + "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + abonos_factura+ "</TD></TR>"
+                            + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + abonos_entrada + "</TD></TR>"
+                            + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + ingresos + "</TD></TR>"
+                            + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + egresos + "</TD></TR>"                
                         + "</TABLE></BR>";
             //EGRESOS
-            /*ArrayList<clsEgreso> dataEgresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "E"); 
-            maxData = dataEgresos.size();
-            concepto = "";
+            ArrayList<clsEgreso> dataEgresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "E"); 
+            int maxData = dataEgresos.size();
+            String concepto = "";
+            double totalEgresos = 0.00;
             if(maxData>0)
             { 
-                texto = texto + "EGRESOS";
-                pw.println("----------------------------------------");
+                texto = texto + "<TABLE BORDER=\"1\">"
+                + "<TR><TD>DESCRIPCION EGRESOS</TD><TD>VALOR</TD></TR>";
+                
                 for(int i=0;i<maxData;i++)
                 {                
-                    concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
-                    pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
-                                    objUtils.rellenar(""+df1.format(dataEgresos.get(i).getCantidadEgreso())));
+                    //concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
+                    concepto = dataEgresos.get(i).getConcepto(); 
+                    //texto = texto + "<TR><TD>" + concepto.substring(0, 28) + "</TD>" 
+                    texto = texto + "<TR><TD>" + concepto + "</TD>" 
+                            + "<TD>" + dataEgresos.get(i).getCantidadEgreso() + "</TD></TR>";
+                                    
                     totalEgresos = totalEgresos + dataEgresos.get(i).getCantidadEgreso();                
                 }
-                pw.println("TOTAL EGRESOS: " + objUtils.redondear(totalEgresos));
-                pw.println(" ");
-            }*/
+                texto = texto +"</TABLE>"
+                        + "TOTAL EGRESOS: " + objUtils.redondear(totalEgresos);               
+            }
             
             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
             for(int i=0;i<dataEmail.size();i=i+1)

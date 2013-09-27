@@ -335,7 +335,7 @@ public class clsCaja {
                        + " valor_apertura, valor_contado, valor_facturado, "
                        + " diferencia, id_cajero, valor_pagos, facturacion_manual, primer_valor_manual, "
                        + " primera_vez_manual, id_facturero, valor_egresos, valor_recibos, "
-                       + " fecha_apertura, fecha_cierre, observacion, valor_ingreso"
+                       + " fecha_apertura, fecha_cierre, observacion, valor_ingreso, valor_pagos_factura"
                   + " FROM ck_caja_operacion AS a"
                   + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                   + " WHERE id_caja_operacion = " + idCajaOperacion;
@@ -358,6 +358,8 @@ public class clsCaja {
                     oListaTemporal.setRecibosPago(bd.resultado.getDouble("valor_recibos"));
                     oListaTemporal.setTotalFacturado(bd.resultado.getDouble("valor_facturado"));
                     oListaTemporal.setValorContado(bd.resultado.getDouble("valor_contado"));
+                    oListaTemporal.setAbonos(bd.resultado.getDouble("valor_pagos"));
+                    oListaTemporal.setValorPagosFactura(bd.resultado.getDouble("valor_pagos_factura"));
                     oListaTemporal.setCierre(bd.resultado.getString("cierre"));
                     data.add(oListaTemporal);
                 }

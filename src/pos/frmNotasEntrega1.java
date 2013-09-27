@@ -1528,20 +1528,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     objAuditoria.insertarAuditoria("frmNotasEntrega1", "INGRESO DE NOTA DE  ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
                     
-                    try{
-                        String texto = "EL USUARIO: " 
-                        + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
-                        javaMail mail = new javaMail();
-                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
-                        for(int i=0;i<dataEmail.size();i=i+1)
-                        {
-                            mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
-                        }
-                    }
-                    catch(Exception e){
-                        //e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
-                    }
+                   
                 }
                 catch(Exception e)
                 {
@@ -1561,6 +1548,20 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
            
         /*}
         dispose();*/
+        try{
+            String texto = "EL USUARIO: " 
+            + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
+            javaMail mail = new javaMail();
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            for(int i=0;i<dataEmail.size();i=i+1)
+            {
+                mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
+            }
+        }
+        catch(Exception e){
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+        }
         return p_exito;     
     }
     
@@ -1805,20 +1806,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                              + txtNotaEntrega.getText(), "3");
                     exito = true;
                     
-                    try{
-                        String texto = "EL USUARIO: " 
-                        + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
-                        javaMail mail = new javaMail();
-                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
-                        for(int i=0;i<dataEmail.size();i=i+1)
-                        {
-                            mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
-                        }
-                    }
-                    catch(Exception e){
-                        //e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
-                    }
+                    
                 }
                 catch(Exception e)
                 {
@@ -1861,6 +1849,22 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 }
             }
         }        
+        
+        try{
+            String texto = "EL USUARIO: " 
+            + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
+                    + "COMENTARIO: " + txtComentario.getText();
+            javaMail mail = new javaMail();
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            for(int i=0;i<dataEmail.size();i=i+1)
+            {
+                mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+            }
+        }
+        catch(Exception e){
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+        }
         return exito;
     }
     

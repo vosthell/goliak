@@ -10,7 +10,7 @@ package clases;
  */
 public class clsParametros {
     clsConexion bd = new clsConexion(); 
-    String sql;
+    String sql;   
     
     public String consultaImgBlanco()
     {       
@@ -115,6 +115,36 @@ public class clsParametros {
             if(bd.resultado.next())
             {               
                 cantidad = bd.resultado.getString("ciudad_empresa");               
+            }
+            else
+            { 
+                cantidad = "";
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            cantidad = "";
+        }           
+        bd.desconectarBaseDeDatos();
+        return cantidad;
+    } 
+    
+    public String consultaValor(String nombre)
+    {       
+         String cantidad = "";
+         try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT valor "
+                    + "  FROM ck_parametros"
+                    + " WHERE descripcion='" + nombre + "'"
+                    + " AND estado = 'A'";
+            //System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+             
+            if(bd.resultado.next())
+            {               
+                cantidad = bd.resultado.getString("valor");               
             }
             else
             { 

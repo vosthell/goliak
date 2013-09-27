@@ -18,16 +18,14 @@ import javax.mail.internet.MimeMessage;
 public class javaMail {
     private final Properties properties = new Properties();
     private Session session;
+    clsParametros objParametros = new clsParametros();
     private void init() {
-        //properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.host", "smtp.live.com");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.port", "587");//587
-        properties.put("mail.smtp.mail.sender", "supertodobaba@hotmail.com");
-        //properties.put("mail.smtp.mail.sender", "supertodo.sanjuan@hotmail.com");
-        properties.put("mail.smtp.password", "rizzo,2012");
-        //properties.put("mail.smtp.password", "rizzoecuador2013");
-        properties.put("mail.smtp.user", "supertodobaba@hotmail.com");
+        properties.put("mail.smtp.host", objParametros.consultaValor("email_host"));//"smtp.live.com""smtp.gmail.com"
+        properties.put("mail.smtp.starttls.enable", "true");        
+        properties.put("mail.smtp.port", objParametros.consultaValor("email_host_port"));//587
+        properties.put("mail.smtp.mail.sender", objParametros.consultaValor("email_envia"));
+        properties.put("mail.smtp.password", objParametros.consultaValor("email_pass"));
+        properties.put("mail.smtp.user",objParametros.consultaValor("email_user"));
         properties.put("mail.smtp.auth", "true");
         session = Session.getDefaultInstance(properties);
     }

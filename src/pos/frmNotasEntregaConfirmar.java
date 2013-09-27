@@ -759,9 +759,21 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
        
        objCabecera.confirmarNotaEntrega(idCabecera);
        
-       try{
+       
+                    
+       JOptionPane.showMessageDialog(this, "Nota de entrega confirmada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);  
+   }
+   catch(Exception e)
+   {
+       System.out.println("Error:" + e.getMessage());
+       JOptionPane.showMessageDialog(this, "Error al confirmar Nota de entrega", "Atención!", JOptionPane.ERROR_MESSAGE);  
+   }
+   
+   try{
             String texto = "EL USUARIO: " 
-            + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR>";
+            + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
+                    + "COMENTARIO: " + txtComentario.getText();
+            
             javaMail mail = new javaMail();
             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
             for(int i=0;i<dataEmail.size();i=i+1)
@@ -773,14 +785,6 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             //e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
         }
-                    
-       JOptionPane.showMessageDialog(this, "Nota de entrega confirmada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);  
-   }
-   catch(Exception e)
-   {
-       System.out.println("Error:" + e.getMessage());
-       JOptionPane.showMessageDialog(this, "Error al confirmar Nota de entrega", "Atención!", JOptionPane.ERROR_MESSAGE);  
-   }
    dispose();
    
 }//GEN-LAST:event_btnConfirmarActionPerformed
