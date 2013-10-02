@@ -1350,15 +1350,15 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String descuento = "";
         String iva = "";
         Double costo = 0.00;
-        
+        String plazo = "";
+               
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1= txtFechaVenta.getDate();
         String fechaVenta = df2.format(date1);
         
         String descuentoF = txtDescuento.getText().toString();
         String ivaF = txtIVA.getText().toString();
-        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
-        
+        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();        
         
         /*if(!this.chkAnulada.isSelected())        
         {  */              
@@ -1409,6 +1409,9 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                          int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+                        
+                        plazo = objPlazoSelect.getDescripcion();
+                        
 
                         objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
                                                     saldoIntereses, txtFechaCancelacion.getText(),
@@ -1550,7 +1553,30 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         dispose();*/
         try{
             String texto = "EL USUARIO: " 
-            + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>";
+            + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>"
+                        + "<TABLE BORDER=\"1\">"
+                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
+                        + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"                        
+                        + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
+            if(this.chkCredito.isSelected())       
+            {
+                texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
+                            + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
+                            + "<TR><TD>CUOTA INICIAL:</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
+                            + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
+                            + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>"                           
+                            + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
+            }
+            else
+            {
+                texto = texto  + "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
+                        + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>";
+            }
+            
+            texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
+                    + "</TABLE></BR>";     
+                
             javaMail mail = new javaMail();
             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
             for(int i=0;i<dataEmail.size();i=i+1)
@@ -1560,7 +1586,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
         catch(Exception e){
             //e.printStackTrace();
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
         }
         return p_exito;     
     }
@@ -1814,6 +1840,26 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     exito = false;
                 }             
             }
+            
+            try{
+                String texto = "EL USUARIO: " 
+                                + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
+                                + "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                                + "<TABLE BORDER=\"1\">"
+                                + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                                + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
+                texto = texto + "</TABLE></BR>"; 
+                javaMail mail = new javaMail();
+                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+                for(int i=0;i<dataEmail.size();i=i+1)
+                {
+                    mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+                }
+            }
+            catch(Exception e){
+                //e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else
         {
@@ -1850,21 +1896,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             }
         }        
         
-        try{
-            String texto = "EL USUARIO: " 
-            + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
-                    + "COMENTARIO: " + txtComentario.getText();
-            javaMail mail = new javaMail();
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
-            for(int i=0;i<dataEmail.size();i=i+1)
-            {
-                mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
-            }
-        }
-        catch(Exception e){
-            //e.printStackTrace();
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
-        }
+        
         return exito;
     }
     

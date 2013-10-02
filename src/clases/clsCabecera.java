@@ -28,6 +28,7 @@ public class clsCabecera {
     private String nombre_descuento;
     private double valor;
     private String fecha;
+    private String fecha_registro;
     private Double descuento;
     private Double iva;
     private Double tarifaCero;
@@ -158,6 +159,14 @@ public class clsCabecera {
     
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+    
+    public String getFechaRegistro() {
+        return fecha_registro;
+    }
+    
+    public void setFechaRegistro(String fecha_registro) {
+        this.fecha_registro = fecha_registro;
     }
     
     public Double getDescuento() {
@@ -1143,7 +1152,7 @@ public class clsCabecera {
             sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo codigo, b.name_completo, "
                         + " b.cedula, a.id_usuario, c.name,  "
                         + " a.estado, total, saldo, efectivo,  "
-                        + " fecha, fact_referencia, comentario,  "
+                        + " fecha, a.fecha_registro fecha_registro, fact_referencia, comentario,  "
                         + " id_cajero, id_empresa, id_caja_operacion, "
                         + " d.valor valor, e.descripcion descripcion, "
                         + " base_tarifa_0, base_tarifa_iva, descuento, iva, "
@@ -1174,6 +1183,7 @@ public class clsCabecera {
                 oListaTemporal.setDescripcion(bd.resultado.getString("descripcion"));
                 oListaTemporal.setValor(bd.resultado.getDouble("valor"));
                 oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
                 oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
                 oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));
                 oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
@@ -1508,7 +1518,8 @@ public class clsCabecera {
                             + " a.estado, total, saldo, efectivo,  "
                             + " fecha, fact_referencia, comentario,  "
                             + " id_cajero, id_empresa, id_caja_operacion, "
-                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor "              
+                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor,"
+                            + " a.fecha_registro fecha_registro"              
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
@@ -1525,6 +1536,7 @@ public class clsCabecera {
                 oListaTemporal.setTotal(bd.resultado.getDouble("total"));
                 oListaTemporal.setSaldo(bd.resultado.getDouble("saldo"));
                 oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
                 oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
                 oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
                 oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));

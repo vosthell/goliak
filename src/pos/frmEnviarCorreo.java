@@ -30,21 +30,23 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
         initComponents();
         ArrayList<clsCaja> dataCaja = objCaja.consultarDataOperacionesCajaID(idCajaAbierta); 
         javaMail mail = new javaMail();
-        try{    
+        try{   
+            double apertura = objUtils.redondear(dataCaja.get(0).getValorApertura());
             double facturado = objUtils.redondear(dataCaja.get(0).getTotalFacturado());
             double abonos = objUtils.redondear(dataCaja.get(0).getAbonos());
             double abonos_factura = objUtils.redondear(dataCaja.get(0).getValorPagosFactura());
             double abonos_entrada = objUtils.redondear(dataCaja.get(0).getRecibosPago());
             double ingresos = objUtils.redondear(dataCaja.get(0).getIngresos());
             double egresos = objUtils.redondear(dataCaja.get(0).getEgresos());
-            double total_sistema = facturado + abonos + abonos_factura + abonos_entrada + ingresos - egresos;
+            double total_sistema = apertura + facturado + abonos + abonos_factura + abonos_entrada + ingresos - egresos;
             String texto = "EL USUARIO: " 
                         + main.nameUser
                         + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + dataCaja.get(0).getValorContado() + "</BR>"
                         + " SISTEMA: $ " + total_sistema + "</BR></BR>"
                         + " OBSERVACION: DIFERENCIA: " +  dataCaja.get(0).getDiferencia() + "</BR></BR></BR>"
                         + "<TABLE BORDER=\"1\">"
-                            + "<tr><td>DESCRIPCION</td><td>VALOR</td></tr>"
+                            + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                            + "<TR><TD>APERTURA CAJA:</TD><TD>" + apertura + "</TD></TR>"
                             + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + facturado + "</TD></TR>"
                             + "<TR><TD>TOTAL ABONOS:</TD><TD>" + abonos + "</TD></TR>"
                             + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + abonos_factura+ "</TD></TR>"

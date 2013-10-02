@@ -79,7 +79,8 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtComentario.setText(dataCabecera.get(0).getComentario());
             txtTipoCuota.setText(dataCabecera.get(0).getDescripcion());
             txtCuota.setText("" + dataCabecera.get(0).getValor());
-            txtFechaVenta.setText(dataCabecera.get(0).getFecha());
+            txtFechaVenta.setText(dataCabecera.get(0).getFecha().substring(0, 16));
+            txtFechaRegistro.setText(dataCabecera.get(0).getFechaRegistro().substring(0, 16));
             txtEfectivo.setText("" + dataCabecera.get(0).getEfectivo());        
             txtTotal.setText("" + dataCabecera.get(0).getTotal());         
             txtSaldo.setText("" + objUtils.redondear(dataCabecera.get(0).getSaldo()));
@@ -88,6 +89,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             this.txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
             txtIVA.setText("" + dataCabecera.get(0).getIVA());
             txtInteresPorcentaje.setText("" + dataCabecera.get(0).getPorcentajeInteres());
+            txtDatoCredito.setText("NO");
             
             codigoCliente = dataCabecera.get(0).getCodigo();
             btnConfirmar.setEnabled(true);
@@ -105,6 +107,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtTipoCuota.setText(dataCabecera.get(0).getDescripcion());
             txtCuota.setText(""+dataCabecera.get(0).getValor());
             txtFechaVenta.setText(dataCabecera.get(0).getFecha().substring(0, 16));
+            txtFechaRegistro.setText(dataCabecera.get(0).getFechaRegistro().substring(0, 16));
             cuotaInicial = dataCabecera.get(0).getEfectivo();
             txtEfectivo.setText("" + cuotaInicial);        
             txtTotal.setText("" + dataCabecera.get(0).getTotal());         
@@ -135,6 +138,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                 btnConfirmar.setEnabled(true);
                 btnAsignar.setEnabled(false);
             }  
+            txtDatoCredito.setText("SI");
             
         }
         //COLUMNA OCULTA
@@ -255,6 +259,10 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         txtInteresPorcentaje = new javax.swing.JTextField();
         btnConfirmar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtFechaRegistro = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtDatoCredito = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -291,8 +299,8 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        txtComentario.setColumns(20);
         txtComentario.setEditable(false);
+        txtComentario.setColumns(20);
         txtComentario.setRows(5);
         txtComentario.setName("txtComentario"); // NOI18N
         jScrollPane2.setViewportView(txtComentario);
@@ -681,15 +689,38 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText(resourceMap.getString("jLabel7.text")); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        txtFechaRegistro.setEditable(false);
+        txtFechaRegistro.setText(resourceMap.getString("txtFechaRegistro.text")); // NOI18N
+        txtFechaRegistro.setName("txtFechaRegistro"); // NOI18N
+
+        jLabel8.setText(resourceMap.getString("jLabel8.text")); // NOI18N
+        jLabel8.setName("jLabel8"); // NOI18N
+
+        txtDatoCredito.setEditable(false);
+        txtDatoCredito.setText(resourceMap.getString("txtDatoCredito.text")); // NOI18N
+        txtDatoCredito.setName("txtDatoCredito"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConfirmar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnConfirmar))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -701,8 +732,13 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnConfirmar)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmar)
+                    .addComponent(jLabel7)
+                    .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -770,21 +806,43 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
    }
    
    try{
-            String texto = "EL USUARIO: " 
-            + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
-                    + "COMENTARIO: " + txtComentario.getText();
-            
-            javaMail mail = new javaMail();
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
-            for(int i=0;i<dataEmail.size();i=i+1)
-            {
-                mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
-            }
+        String texto = "EL USUARIO: " 
+        + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
+                + "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                + "<TABLE BORDER=\"1\">"
+                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                        + "<TR><TD>FECHA DE REGISTRO:</TD><TD>" + txtFechaRegistro.getText() + "</TD></TR>"
+                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + txtFechaVenta.getText() + "</TD></TR>"
+                        + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"
+                        + "<TR><TD>CREDITO:</TD><TD>" + txtDatoCredito.getText() + "</TD></TR>"
+                        + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
+
+        if(txtDatoCredito.getText().equals("SI"))
+        {
+            texto = texto   + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
+                        + "<TR><TD>CUOTA INICIAL:</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
+                        + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
+                        + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>"                           
+                        + "<TR><TD>PLAZO:</TD><TD>" + txtPlazo.getText() + "</TD></TR>";
         }
-        catch(Exception e){
-            //e.printStackTrace();
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            texto = texto  + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>";
         }
+        texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
+                    + "</TABLE></BR>"; 
+
+        javaMail mail = new javaMail();
+        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+        for(int i=0;i<dataEmail.size();i=i+1)
+        {
+            mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
+        }
+    }
+    catch(Exception e){
+        //e.printStackTrace();
+        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+    }
    dispose();
    
 }//GEN-LAST:event_btnConfirmarActionPerformed
@@ -832,6 +890,8 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -842,10 +902,12 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public static javax.swing.JTextField txtCedula;
     private javax.swing.JTextArea txtComentario;
     private javax.swing.JTextField txtCuota;
+    private javax.swing.JTextField txtDatoCredito;
     private javax.swing.JTextField txtDescuento;
     private javax.swing.JTextField txtDescuento1;
     private javax.swing.JTextField txtEfectivo;
     private javax.swing.JTextField txtFechaCancelacion;
+    private javax.swing.JTextField txtFechaRegistro;
     private javax.swing.JTextField txtFechaVenta;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtIVA1;
