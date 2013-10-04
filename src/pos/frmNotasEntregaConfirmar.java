@@ -833,7 +833,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     + "</TABLE></BR>"; 
 
         javaMail mail = new javaMail();
-        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
         for(int i=0;i<dataEmail.size();i=i+1)
         {
             mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);

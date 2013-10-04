@@ -16,6 +16,7 @@ import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCuota;
 import clases.clsDetalle;
+import clases.clsEmail;
 import clases.clsFacturero;
 import clases.clsImpuestos;
 import clases.clsKardex;
@@ -24,6 +25,7 @@ import clases.clsPlazo;
 import clases.clsPrecio;
 import clases.clsProducto;
 import clases.clsUtils;
+import clases.javaMail;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
@@ -41,6 +43,7 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import static pos.frmNotasEntregaConfirmar.txtNombreCliente;
 
 /**
  *
@@ -60,6 +63,7 @@ public class frmFacturar extends javax.swing.JDialog {
     clsPlazo objPlazo = new clsPlazo();
     clsKardex objKardex = new clsKardex();
     clsParametros objParametros = new clsParametros();
+    clsEmail objEmail = new clsEmail(); 
     
     MiModelo dtmData = new MiModelo();
     String idCajero = "";
@@ -1289,7 +1293,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 }
                 JOptionPane.showMessageDialog(this, "Factura guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
                 vaciarDatos();
-                System.out.println("LLego a la 1155");
+                //System.out.println("LLego a la 1155");
                 p_exito = true;
                 obtenerFacturaQueToca();
             }
@@ -1541,6 +1545,11 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
     
 private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+    Double descuento = 0.00;
+    Double saldo = 0.00;
+    Double totalFactura = 0.00;
+    String nombre = "";
+    String comentario = "";
     if(facturar())
     {  
         String totalEfectivo = "";
@@ -1569,7 +1578,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             if(dataCabecera.get(0).getCodigo()==2775)
             {
                 pw.println("CEDULA: "+dataCabecera.get(0).getCedulaSinRegistrar());
-                String nombre = dataCabecera.get(0).getNombreSinRegistrar().toString();
+                nombre = dataCabecera.get(0).getNombreSinRegistrar().toString();
                 if(nombre.length()>30)
                     pw.println("NOMBRE: "+nombre.substring(0, 30));
                 else
@@ -1578,15 +1587,18 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             else
             {
                 pw.println("CEDULA: "+dataCabecera.get(0).getCedula());
-                String nombre = dataCabecera.get(0).getNameCompleto().toString();
+                nombre = dataCabecera.get(0).getNameCompleto().toString();
                 if(nombre.length()>30)
                     pw.println("NOMBRE: "+nombre.substring(0, 30));
                 else
                     pw.println("NOMBRE: "+nombre);
             }
             pw.println("FECHA:  "+dataCabecera.get(0).getFecha().substring(0, 16));
+            
+            comentario = dataCabecera.get(0).getComentario();
             //TIPO DE  COMPRA
-            if(dataCabecera.get(0).getSaldo()==0)
+            saldo = dataCabecera.get(0).getSaldo();
+            if(saldo==0)
                 pw.println("TIPO DE COMPRA: CONTADO");
             else
                 pw.println("TIPO DE COMPRA: CREDITO");
@@ -1637,17 +1649,17 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             double tarifaIva = dataCabecera.get(0).getTarifaIVA();
             double tarifaZero = dataCabecera.get(0).getTarifaCero();
             double subtotal = tarifaIva + tarifaZero;
-            
+            totalFactura = dataCabecera.get(0).getTotal();
             System.out.println("iva: "+tarifaIva +" cero: "+tarifaZero+ "subtotal: " +subtotal);
-                        
+            descuento = dataCabecera.get(0).getDescuento();            
             pw.println("SUBTOTAL:                       $" + objUtils.rellenar(""+df1.format(subtotal)));
             pw.println("VENTA TARIFA 12%:               $" + objUtils.rellenar(""+df1.format(tarifaIva)));
             pw.println("VENTA TARIFA 0%:                $" + objUtils.rellenar(""+df1.format(tarifaZero)));
-            pw.println("DESCUENTO:                      $" + objUtils.rellenar(""+df1.format(dataCabecera.get(0).getDescuento())));
+            pw.println("DESCUENTO:                      $" + objUtils.rellenar(""+df1.format(descuento)));
             pw.println("I.V.A.:                         $" + objUtils.rellenar(""+df1.format(dataCabecera.get(0).getIVA())));
             totalEfectivo = df1.format(objUtils.redondear(dataCabecera.get(0).getEfectivo()));
             //pw.println("TOTAL:                          $" + objUtils.rellenar(""+objUtils.redondear(dataCabecera.get(0).getEfectivo()))); 
-            pw.println("TOTAL:                          $" + objUtils.rellenar(""+objUtils.redondear(dataCabecera.get(0).getTotal()))); 
+            pw.println("TOTAL:                          $" + objUtils.rellenar(""+objUtils.redondear(totalFactura))); 
             pw.println("");   
             if(main.nameUser.length()>30)
                 pw.println("CAJERO: " + main.nameUser.substring(0, 30));
@@ -1709,6 +1721,51 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
               //e2.printStackTrace();
            }
         }
+        
+        //ENVIAR SUPER CORREO SI HUBO DESCUENTO        
+        String xcredito ="";
+        if(saldo==0)
+            xcredito = "NO";
+        else
+            xcredito = "SI";
+        try{
+           String texto = "EL USUARIO: " 
+                   + main.nameUser+ ", REGISTRO UN DESCUENTO.</BR></BR>"
+                   + "COMENTARIO: " + comentario + "</BR>"
+                   + "<TABLE BORDER=\"1\">"
+                           + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                           + "<TR><TD>CLIENTE:</TD><TD>" + nombre + "</TD></TR>"
+                           + "<TR><TD>CREDITO:</TD><TD>" + xcredito + "</TD></TR>"
+                           + "<TR><TD>DESCUENTO:</TD><TD>" + descuento + "</TD></TR>"
+                           + "<TR><TD>TOTAL DE FACTURA:</TD><TD>" + totalFactura + "</TD></TR>"           
+                    + "</TABLE></BR>"; 
+
+           javaMail mail = new javaMail();
+           //DESCUENTO
+           if(descuento>0)
+           {
+               ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("6");        
+               for(int i=0;i<dataEmail.size();i=i+1)
+               {
+                   mail.send(dataEmail.get(i).getEmail(), "DESCUENTO - FACTURA", texto);
+               }
+           }
+           //CREDITO 
+           if(saldo>0)
+           {   
+               ArrayList<clsEmail> dataEmail2 = objEmail.consultarEmails("7");        
+               for(int i=0;i<dataEmail2.size();i=i+1)
+               {
+                   mail.send(dataEmail2.get(i).getEmail(), "CREDITO - FACTURA", texto);
+               }
+           }
+       }
+       catch(Exception e){
+           //e.printStackTrace();
+           JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+       }
+        
+        
        
     }
 }//GEN-LAST:event_btnImprimirActionPerformed

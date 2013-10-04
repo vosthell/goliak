@@ -47,7 +47,7 @@ public class frmEnviarCorreoAbrir extends javax.swing.JDialog {
                     + main.nameUser
                     + ", ABRIO CAJA CON: $ " + valor + "</BR>"
                     + " OBSERVACION: " + observacion;
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("1");        
             for(int i=0;i<dataEmail.size();i=i+1)
             {
                 mail.send(dataEmail.get(i).getEmail(),"APERTURA DE CAJA", texto);

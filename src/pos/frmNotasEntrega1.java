@@ -98,6 +98,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     public static String controlExistencia;
     public static Double valorContado;
     Double imp_iva = objImpuestos.obtenerPorcentajeIVA();
+    Double cuotaInicial = 0.00;
     /** Creates new form frmFacturar */
     public frmNotasEntrega1() {
         initComponents();  
@@ -1525,7 +1526,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
 
                     JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-                    vaciarDatos();
+                    //vaciarDatos();
                     p_exito = true;
                     //obtenerFacturaQueToca();
                     objAuditoria.insertarAuditoria("frmNotasEntrega1", "INGRESO DE NOTA DE  ENTREGA:"
@@ -1554,6 +1555,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         try{
             String texto = "EL USUARIO: " 
             + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>"
+                        + "COMENTARIO: " + txtComentario.getText() + "</BR></BR>"
                         + "<TABLE BORDER=\"1\">"
                         + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
                         + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
@@ -1563,7 +1565,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             {
                 texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
                             + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
-                            + "<TR><TD>CUOTA INICIAL:</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
+                            + "<TR><TD>CUOTA INICIAL ($ " + cuotaInicial + "):</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
                             + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
                             + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>"                           
                             + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
@@ -1578,7 +1580,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     + "</TABLE></BR>";     
                 
             javaMail mail = new javaMail();
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        
             for(int i=0;i<dataEmail.size();i=i+1)
             {
                 mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
@@ -1588,6 +1590,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             //e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
         }
+        vaciarDatos();
         return p_exito;     
     }
     
@@ -1827,7 +1830,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();                    
                     objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
                     JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-                    vaciarDatos();
+                    
                     objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
                              + txtNotaEntrega.getText(), "3");
                     exito = true;
@@ -1850,7 +1853,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                 + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
                 texto = texto + "</TABLE></BR>"; 
                 javaMail mail = new javaMail();
-                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
                 for(int i=0;i<dataEmail.size();i=i+1)
                 {
                     mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
@@ -1860,6 +1863,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 //e.printStackTrace();
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
             }
+            
+            vaciarDatos();
         }
         else
         {
@@ -2327,7 +2332,7 @@ private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIR
 
 void calcularCuotas()
 {
-    Double cuotaInicial = valorContado * valorInteresCuotaInicial/100;
+    cuotaInicial = valorContado * valorInteresCuotaInicial/100;
     txtEfectivo.setText("" + cuotaInicial);
     //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
     clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();

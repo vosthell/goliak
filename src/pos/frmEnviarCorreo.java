@@ -78,7 +78,7 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
                         + "TOTAL EGRESOS: " + objUtils.redondear(totalEgresos);               
             }
             
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails();        
+            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("2");        
             for(int i=0;i<dataEmail.size();i=i+1)
             {
                 mail.send(dataEmail.get(i).getEmail(),"CIERRE DE CAJA", texto);
