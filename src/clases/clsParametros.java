@@ -305,4 +305,33 @@ public class clsParametros {
         bd.desconectarBaseDeDatos();
         return cantidad;
     } 
+    
+    public Double consultaPorcentajeDescuentoMaximoFactura()
+    {       
+         Double cantidad = 0.00;
+         try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT valor "
+                    + "  FROM ck_parametros"
+                    + " WHERE descripcion = 'interes_maximo_descuento_factura'";
+            //System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+             
+            if(bd.resultado.next())
+            {               
+                cantidad = bd.resultado.getDouble("valor");               
+            }
+            else
+            { 
+                cantidad = 0.00;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            cantidad = 0.00;
+        }           
+        bd.desconectarBaseDeDatos();
+        return cantidad;
+    } 
 }
