@@ -1568,7 +1568,10 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         }
                         else
                         {
-                            
+                             if(registrarVenta())
+                                    exito = true;
+                                else
+                                    exito = false; 
                         }
                     }
                  
