@@ -1602,10 +1602,14 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         {
             fichero = new FileWriter(objUtils.HostSystem + "file00001.txt");
             pw = new PrintWriter(fichero);
-            pw.println("           S U P E R  T O D O");
+            /*pw.println("           S U P E R  T O D O");
             pw.println("           RUC: 1200012613001");
             pw.println("ROCAFUERTE 617 ENTRE 9 DE OCTUBRE y SUCR");
-            pw.println("           BABA - ECUADOR");
+            pw.println("           BABA - ECUADOR");*/
+            pw.println(objParametros.consultaValor("print_factura_linea1"));
+            pw.println(objParametros.consultaValor("print_factura_linea2"));
+            pw.println(objParametros.consultaValor("print_factura_linea3"));
+            pw.println(objParametros.consultaValor("print_factura_linea4"));
             pw.println("     Fact #"+dataCabecera.get(0).getFactReferencia());
             //pw.println("");
             //pw.println("");
@@ -1703,7 +1707,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             else
                 pw.println("CAJERO: " + main.nameUser);
             pw.println("");   
-            pw.println("      MUCHAS GRACIAS POR SU COMPRA!!!");
+            pw.println(objParametros.consultaValor("print_factura_linea_final"));
             /**************************************/       
             
             pw.println("");   
