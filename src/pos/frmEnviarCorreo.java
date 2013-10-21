@@ -58,17 +58,42 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
                             + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + total_ingresos + "</TD></TR>"  
                             + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + egresos + "</TD></TR>"                
                         + "</TABLE></BR>";
+            //INGRESOS
+            ArrayList<clsEgreso> dataIngresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "I"); 
+            int maxDataIngresos = dataIngresos.size();
+            String concepto = "";
+            double totalIngresos = 0.00;
+            if(maxDataIngresos>0)
+            { 
+                texto = texto + "<TABLE BORDER=\"1\">"
+                + "<TR><TD>DESCRIPCION INGRESOS</TD><TD>VALOR</TD></TR>";
+                
+                for(int i=0;i<maxDataIngresos;i++)
+                {                
+                    //concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
+                    concepto = dataIngresos.get(i).getConcepto(); 
+                    //texto = texto + "<TR><TD>" + concepto.substring(0, 28) + "</TD>" 
+                    texto = texto + "<TR><TD>" + concepto + "</TD>" 
+                            + "<TD>" + dataIngresos.get(i).getCantidadEgreso() + "</TD></TR>";
+                                    
+                    totalIngresos = totalIngresos + dataIngresos.get(i).getCantidadEgreso();                
+                }
+                texto = texto +"</TABLE>"
+                        + "TOTAL INGRESOS: " + objUtils.redondear(totalIngresos) + "</BR></BR>";               
+            }
+            
             //EGRESOS
             ArrayList<clsEgreso> dataEgresos = objEgreso.consultaEgresosRealizadas(idCajaAbierta, "E"); 
-            int maxData = dataEgresos.size();
-            String concepto = "";
+            int maxDataEgresos = dataEgresos.size();
+            //String concepto = "";
+            concepto = "";
             double totalEgresos = 0.00;
-            if(maxData>0)
+            if(maxDataEgresos>0)
             { 
                 texto = texto + "<TABLE BORDER=\"1\">"
                 + "<TR><TD>DESCRIPCION EGRESOS</TD><TD>VALOR</TD></TR>";
                 
-                for(int i=0;i<maxData;i++)
+                for(int i=0;i<maxDataEgresos;i++)
                 {                
                     //concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
                     concepto = dataEgresos.get(i).getConcepto(); 
