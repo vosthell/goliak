@@ -39,6 +39,7 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
             double ingresos = objUtils.redondear(dataCaja.get(0).getIngresos());
             double egresos = objUtils.redondear(dataCaja.get(0).getEgresos());
             double total_sistema = apertura + facturado + abonos + abonos_factura + abonos_entrada + ingresos - egresos;
+            double total_ingresos = facturado + abonos + abonos_factura + abonos_entrada + ingresos;
             String texto = "EL USUARIO: " 
                         + main.nameUser
                         + ", CERRO CAJA CON DINERO EN EFECTIVO: $ " + dataCaja.get(0).getValorContado() + "</BR>"
@@ -47,11 +48,14 @@ public class frmEnviarCorreo extends javax.swing.JDialog {
                         + "<TABLE BORDER=\"1\">"
                             + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
                             + "<TR><TD>APERTURA CAJA:</TD><TD>" + apertura + "</TD></TR>"
-                            + "<TR><TD>TOTAL FACTURADO:</TD><TD>" + facturado + "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS:</TD><TD>" + abonos + "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS/FACT:</TD><TD>" + abonos_factura+ "</TD></TR>"
-                            + "<TR><TD>TOTAL ABONOS/ENTRADA:</TD><TD>" + abonos_entrada + "</TD></TR>"
-                            + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + ingresos + "</TD></TR>"
+                            + "<TR><TD>FACTURADO:</TD><TD>" + facturado + "</TD></TR>"
+                            + "<TR><TD>ABONOS:</TD><TD>" + abonos + "</TD></TR>"
+                            + "<TR><TD>ABONOS/FACT:</TD><TD>" + abonos_factura+ "</TD></TR>"
+                            + "<TR><TD>ABONOS/ENTRADA:</TD><TD>" + abonos_entrada + "</TD></TR>"
+                            + "<TR><TD>OTROS INGRESOS:</TD><TD>" + ingresos + "</TD></TR>"
+                        + "</TABLE></BR>"
+                        + "<TABLE BORDER=\"1\">"
+                            + "<TR><TD>TOTAL INGRESOS:</TD><TD>" + total_ingresos + "</TD></TR>"  
                             + "<TR><TD>TOTAL EGRESOS:</TD><TD>" + egresos + "</TD></TR>"                
                         + "</TABLE></BR>";
             //EGRESOS

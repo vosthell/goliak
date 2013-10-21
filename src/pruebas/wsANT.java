@@ -101,7 +101,7 @@ public class wsANT extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-         try { // Call Web Service Operation
+        /*try { // Call Web Service Operation
             pruebas.GeoIPService service = new pruebas.GeoIPService();
             pruebas.GeoIPServiceSoap port = service.getGeoIPServiceSoap();
             // TODO initialize WS operation arguments here
@@ -112,14 +112,14 @@ public class wsANT extends javax.swing.JFrame {
             this.jLabel1.setText(result.getCountryName());
         } catch (Exception ex) {
             // TODO handle custom exceptions here
-        } 
+        } */
          //
          
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try { // Call Web Service Operation
+        /*try { // Call Web Service Operation
             pos.Service1 service = new pos.Service1();
             pos.Service1Soap port = service.getService1Soap();
                    
@@ -129,7 +129,7 @@ public class wsANT extends javax.swing.JFrame {
             this.jLabel1.setText(""+result.getContent().size());
         } catch (Exception ex) {
             // TODO handle custom exceptions here
-        } 
+        } */
         //this.jLabel1.setText(""+obtenerDeudaCitaciones(, ));        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 

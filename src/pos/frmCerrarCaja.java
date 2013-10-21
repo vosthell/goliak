@@ -21,8 +21,15 @@ import clases.clsEgreso;
 import clases.clsPago;
 import clases.clsUtils;
 import clases.javaMail;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Dimension;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -30,6 +37,9 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import pruebas.pdf;
 import stinventario.frmPrincipal;
 
 
@@ -406,14 +416,30 @@ void imprimir()
     Double totalIngresos = 0.00;
     FileWriter fichero = null;
     PrintWriter pw = null;
+    
+    String RESULT   = "d:/CIERRE_" + annio + "_" + mes + "_" + dia + ".pdf";
+    Document document = new Document();
+    try {
+        // step 2
+        PdfWriter.getInstance(document, new FileOutputStream(RESULT));
+    } catch (FileNotFoundException ex) {
+        Logger.getLogger(pdf.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (DocumentException ex) {
+        Logger.getLogger(pdf.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    // step 3
+    document.open();
+    
     try
     {
         fichero = new FileWriter(objUtils.HostSystem + "file00001.txt");
         pw = new PrintWriter(fichero);
         /*40COLUMNAS*/
-        pw.println(annio + "/" + mes + "/" + dia + " " +hora + ":" + minutos + ":" + segundos);
-        pw.println("VALOR APERTURA: " + txtValorApertura.getText());
         
+        pw.println(annio + "/" + mes + "/" + dia + " " +hora + ":" + minutos + ":" + segundos);
+        document.add(new Paragraph(annio + "/" + mes + "/" + dia + " " +hora + ":" + minutos + ":" + segundos));
+        pw.println("VALOR APERTURA: " + txtValorApertura.getText());
+        document.add(new Paragraph("VALOR APERTURA: " + txtValorApertura.getText()));
         //FACTURAS
         ArrayList<clsCabecera> dataFacturas = objCabecera.consultaFacturasRealizadas(idCajaAbierta); 
         ArrayList<clsCabecera> dataDevoluciones = objCabecera.consultaDevolucionesRealizadas(idCajaAbierta); 
@@ -426,12 +452,18 @@ void imprimir()
         if(maxData>0)
         {    
             pw.println("FACTURAS");
+            document.add(new Paragraph("FACTURAS"));
+            
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
+            
             for(int i=0;i<maxData;i++)
             {
                  factReferencia = dataFacturas.get(i).getFactReferencia() + "                                         "; 
                  pw.println((i+1) + " " + factReferencia.substring(0, 28) + " " + 
                                 objUtils.rellenar(""+df1.format(dataFacturas.get(i).getEfectivo())));
+                 document.add(new Paragraph(((i+1) + " " + factReferencia.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataFacturas.get(i).getEfectivo())))));
                  totalFacturas = totalFacturas + dataFacturas.get(i).getEfectivo();                 
             } 
             if(maxDevoluciones>0)
@@ -441,6 +473,8 @@ void imprimir()
                      factReferencia = dataDevoluciones.get(i).getIdCabeceraMovi() + "                                         "; 
                      pw.println((i+1) + " DEVOLUCION:" + factReferencia.substring(0, 16) + " -" + 
                                     objUtils.rellenar(""+df1.format(dataDevoluciones.get(i).getEfectivo())));
+                     document.add(new Paragraph(((i+1) + " DEVOLUCION:" + factReferencia.substring(0, 16) + " -" + 
+                                    objUtils.rellenar(""+df1.format(dataDevoluciones.get(i).getEfectivo())))));
                      totalDevoluciones = totalDevoluciones + dataDevoluciones.get(i).getEfectivo();                 
                 } 
                 /*pw.println("TOTAL FACTURADO: " + objUtils.redondear(totalFacturas));
@@ -448,7 +482,9 @@ void imprimir()
             }
             totalFacturas = totalFacturas - totalDevoluciones;
             pw.println("TOTAL FACTURADO: " + objUtils.redondear(totalFacturas));
+            document.add(new Paragraph("TOTAL FACTURADO: " + objUtils.redondear(totalFacturas)));
             pw.println(" ");
+            document.add(new Paragraph(""));
         }
        
         //PAGOS        
@@ -459,17 +495,24 @@ void imprimir()
         { 
             //pw.println("PAGOS");
             pw.println("ABONOS");
+            document.add(new Paragraph("ABONOS"));
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
+            
             for(int i=0; i<maxData;i++)
             {
                 //referencia = dataPagos.get(i).getReferencia()+ "                                         "; 
                 referencia = dataPagos.get(i).getReferencia()+ "                                         "; 
                 pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
-                                objUtils.rellenar(""+df1.format(dataPagos.get(i).getValor())));                                  
+                                objUtils.rellenar(""+df1.format(dataPagos.get(i).getValor())));   
+                document.add(new Paragraph((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataPagos.get(i).getValor()))));
                 totalPagos = totalPagos + dataPagos.get(i).getValor();                
             } 
             pw.println("TOTAL ABONOS: " + objUtils.redondear(totalPagos));
+            document.add(new Paragraph("TOTAL ABONOS: " + objUtils.redondear(totalPagos)));
             pw.println(" ");
+            document.add(new Paragraph(" "));
         }
         
         //PAGOS   FACTURA     
@@ -479,16 +522,22 @@ void imprimir()
         if(maxData>0)
         { 
             pw.println("ABONOS/FACTURA");
+            document.add(new Paragraph("ABONOS/FACTURA"));
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
             for(int i=0; i<maxData;i++)
             {
                 referencia = dataPagosFactura.get(i).getNombreCliente()+ "                                         "; 
                 pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
-                                objUtils.rellenar(""+df1.format(dataPagosFactura.get(i).getValor())));                                  
+                                objUtils.rellenar(""+df1.format(dataPagosFactura.get(i).getValor())));  
+                document.add(new Paragraph((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataPagosFactura.get(i).getValor()))));  
                  totalPagosFactura = totalPagosFactura + dataPagosFactura.get(i).getValor();                
             } 
             pw.println("TOTAL ABONOS/FACT: " + objUtils.redondear(totalPagosFactura));
+            document.add(new Paragraph("TOTAL ABONOS/FACT: " + objUtils.redondear(totalPagosFactura)));
             pw.println(" ");
+            document.add(new Paragraph(" "));
         }
         
         //PAGOS RECIBO     
@@ -498,16 +547,22 @@ void imprimir()
         if(maxData>0)
         { 
             pw.println("ABONOS/ENTRADA (RECIBO)");
+            document.add(new Paragraph("ABONOS/ENTRADA (RECIBO)"));
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
             for(int i=0; i<maxData;i++)
             {
                 referencia = dataPagosRecibo.get(i).getNombreCliente()+ "                                         "; 
                 pw.println((i+1) +  " " + referencia.substring(0, 28) + " " + 
-                                objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor())));                                  
-                 totalPagosRecibo = totalPagosRecibo + dataPagosRecibo.get(i).getValor();                
+                                objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor())));   
+                document.add(new Paragraph((i+1) +  " " + referencia.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataPagosRecibo.get(i).getValor()))));   
+                totalPagosRecibo = totalPagosRecibo + dataPagosRecibo.get(i).getValor();                
             } 
             pw.println("TOTAL ABONOS/ENTRADA: " + objUtils.redondear(totalPagosRecibo));
+            document.add(new Paragraph("TOTAL ABONOS/ENTRADA: " + objUtils.redondear(totalPagosRecibo)));
             pw.println(" ");
+            document.add(new Paragraph(" "));
         }
         
         //INGRESOS
@@ -517,16 +572,24 @@ void imprimir()
         if(maxData>0)
         { 
             pw.println("INGRESOS");
+            document.add(new Paragraph("INGRESOS"));
+            
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
+            
             for(int i=0;i<maxData;i++)
             {                
                 concepto = dataIngresos.get(i).getConcepto() + "                                         "; 
                 pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
                                 objUtils.rellenar(""+df1.format(dataIngresos.get(i).getCantidadEgreso())));
+                document.add(new Paragraph((i+1) +  " " + concepto.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataIngresos.get(i).getCantidadEgreso()))));
                 totalIngresos = totalIngresos + dataIngresos.get(i).getCantidadEgreso();                
             }
             pw.println("TOTAL INGRESOS: " + objUtils.redondear(totalIngresos));
+            document.add(new Paragraph("TOTAL INGRESOS: " + objUtils.redondear(totalIngresos)));
             pw.println(" ");
+            document.add(new Paragraph(" "));
         }
         
         //EGRESOS
@@ -536,38 +599,50 @@ void imprimir()
         if(maxData>0)
         { 
             pw.println("EGRESOS");
+            document.add(new Paragraph("EGRESOS"));
             pw.println("----------------------------------------");
+            document.add(new Paragraph("----------------------------------------"));
             for(int i=0;i<maxData;i++)
             {                
                 concepto = dataEgresos.get(i).getConcepto() + "                                         "; 
                 pw.println((i+1) +  " " + concepto.substring(0, 28) + " " + 
                                 objUtils.rellenar(""+df1.format(dataEgresos.get(i).getCantidadEgreso())));
+                document.add(new Paragraph((i+1) +  " " + concepto.substring(0, 28) + " " + 
+                                objUtils.rellenar(""+df1.format(dataEgresos.get(i).getCantidadEgreso()))));
                 totalEgresos = totalEgresos + dataEgresos.get(i).getCantidadEgreso();                
             }
             pw.println("TOTAL EGRESOS: " + objUtils.redondear(totalEgresos));
+            document.add(new Paragraph("TOTAL EGRESOS: " + objUtils.redondear(totalEgresos)));
             pw.println(" ");
+            document.add(new Paragraph(" "));
         }
        
         Double totalCierre = Double.parseDouble(txtValorApertura.getText()) + 
                 totalFacturas + totalPagos + totalPagosFactura + totalPagosRecibo + totalIngresos - totalEgresos;
         pw.println("TOTAL:                          $"+ objUtils.rellenar(""+objUtils.redondear(totalCierre)));
+        document.add(new Paragraph("TOTAL:                          $"+ objUtils.rellenar(""+objUtils.redondear(totalCierre))));
+        
         pw.println("CONTADO EN DINERO:              $"+ objUtils.rellenar(txtValorContado.getText()));
+        document.add(new Paragraph("CONTADO EN DINERO:              $"+ objUtils.rellenar(txtValorContado.getText())));
         
         double diferencia = objUtils.redondear(Double.parseDouble(txtValorContado.getText()) - totalCierre);
         String mensajeEmail =""; 
         if(diferencia == 0.0||diferencia ==-0.0)
         {        
             pw.println("VALORES CUADRADOS");
+            document.add(new Paragraph("VALORES CUADRADOS"));
             mensajeEmail = "VALORES CUADRADOS";
         }
         else if(diferencia>0)
         {        
             pw.println("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia));
+            document.add(new Paragraph("SOBRANTE:                       $" + objUtils.rellenar(""+diferencia)));
             mensajeEmail = "SOBRANTE: $" + objUtils.rellenar(""+diferencia);
         }
         else if(diferencia<0)
         {       
             pw.println("FALTANTE:                       $" + objUtils.rellenar(""+diferencia));
+            document.add(new Paragraph("FALTANTE:                       $" + objUtils.rellenar(""+diferencia)));
             mensajeEmail = "FALTANTE: $" + objUtils.rellenar(""+diferencia);
         }       
         
@@ -606,7 +681,7 @@ void imprimir()
     catch (Exception e) 
     {
         e.printStackTrace();
-    } 
+    }          
     finally 
     {
        try {
@@ -617,6 +692,16 @@ void imprimir()
        } catch (Exception e2) {
           e2.printStackTrace();
        }
+    }
+    // step 5
+    document.close();
+    
+    try {
+        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+RESULT);
+        //System.out.println("Final");
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
     }
 }
 

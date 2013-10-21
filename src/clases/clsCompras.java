@@ -660,11 +660,26 @@ public class clsCompras {
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT id_cabecera_movi_compras, a.id_proveedor, b.ruc ruc, "
-                    + " b.nombre nombre_proveedor, a.id_usuario, c.name nombre_elaborador, a.estado, total, "
-                    + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+            sql = "SELECT id_cabecera_movi_compras, "
+                    + "a.id_proveedor, "
+                    + "b.ruc ruc, "
+                    + " b.nombre nombre_proveedor, "
+                    + "a.id_usuario, "
+                    + "c.name nombre_elaborador, "
+                    + "a.estado, "
+                    + "total, "
+                    + " saldo, "
+                    + "efectivo, "
+                    + "fecha, "
+                    + "fact_referencia, "
+                    + "comentario, "
+                    + "id_cajero, "
                     + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
-                    + " base_tarifa_iva, tipo_documento, estado_tramite, id_usuario_recibe, d.name nombre_recibe, "
+                    + " base_tarifa_iva, "
+                    + "tipo_documento, "
+                    + "estado_tramite, "
+                    + "id_usuario_recibe, "
+                    + "d.name nombre_recibe, "
                     + " irbp, baseice, ice, autorizacion, id_cuenta "
                     + " FROM ck_cabecera_movi_compras AS a "
                     + " JOIN ck_proveedor AS b ON a.id_proveedor = b.id_proveedor"
@@ -696,6 +711,7 @@ public class clsCompras {
                     oListaTemporal.setIrbp(bd.resultado.getDouble("irbp"));
                     oListaTemporal.setBaseIce(bd.resultado.getDouble("baseice"));
                     oListaTemporal.setIce(bd.resultado.getDouble("ice"));
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
                     
                     oListaTemporal.setAutorizacion(bd.resultado.getString("autorizacion"));
                     oListaTemporal.setIdCuenta(bd.resultado.getInt("id_cuenta"));

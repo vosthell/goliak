@@ -259,6 +259,11 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         pw.println("   MATRIZ: JOSE ALAVEDRA SL. 1 Y MIGUEL ALCIVAR");
         pw.println("ESTABLECIMIENTO: ROCAFUERTE # 617 Y NUEVE DE OCTUBRE");
         pw.println("        TELF.: 099-242-4196 * LOS RIOS - ECUADOR");
+        /*pw.println("            RODAS LEON BETTY SILVIA                           RECIBO DE COBRO/NE");
+        pw.println("              COMERCIAL SUPER TODO			N° " + idPago_publica);
+        pw.println("             R.U.C.: 0900260282-001");
+        pw.println("          SAN JUAN - AV. AURORA ESTRADA");        
+        pw.println("   TELF.: 0995961686  -  0992424196 * LOS RIOS - ECUADOR");*/
         //pw.println("");
         //35 lineas
         /********************CABECERA**********/

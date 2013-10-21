@@ -255,12 +255,17 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         fichero = new FileWriter(objUtils.HostSystem + objUtils.archivoPrint);
         /******************************************************************************************/
         pw = new PrintWriter(fichero);                                                           //*  
-        pw.println("            RIZZO MUÑOZ JORGE EUCLIDES                        RECIBO DE COBRO/NE");
+        pw.println("            RIZZO MUÑOZ JORGE EUCLIDES                    RECIBO DE COBRO/OTROS");
         pw.println("              COMISARIATO SUPER TODO			N° " + idPago_publica);
         pw.println("              R.U.C.: 1200012613-001");
         pw.println("   MATRIZ: JOSE ALAVEDRA SL. 1 Y MIGUEL ALCIVAR");
         pw.println("ESTABLECIMIENTO: ROCAFUERTE # 617 Y NUEVE DE OCTUBRE");
         pw.println("        TELF.: 099-242-4196 * LOS RIOS - ECUADOR");
+        /*pw.println("            RODAS LEON BETTY SILVIA                           RECIBO DE COBRO/NE");
+        pw.println("              COMERCIAL SUPER TODO			N° " + idPago_publica);
+        pw.println("             R.U.C.: 0900260282-001");
+        pw.println("          SAN JUAN - AV. AURORA ESTRADA");
+        pw.println("   TELF.: 0995961686  -  0992424196 * LOS RIOS - ECUADOR");*/
         //pw.println("");
         //35 lineas
         /********************CABECERA**********/
