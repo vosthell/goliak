@@ -1506,39 +1506,76 @@ private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_txtCantidadKeyReleased
 
 private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-    facturar();
+   facturar();
 }//GEN-LAST:event_btnGuardarActionPerformed
     
     public boolean facturar()
     {
         boolean exito=false;
-        int contRows = tblData.getRowCount();
-        if(this.chkCredito.isSelected())        
-        {
-            if(txtNombreCliente.getText().equals("")||(contRows==0)||txtCuota.getText().equals("")||txtSaldo.getText().equals("")||txtFactura.getText().equals(""))
-            {
-               JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
-            }
-            else
-            {
-                if(registrarVenta())
-                    exito = true;
-                else
-                    exito = false;                           
-            }
+        //Comprobar si descuento es mayor al porcentaje indicado en la base de datos    
+        Double total = Double.parseDouble(txtTotal.getText());
+        Double descuento = Double.parseDouble(txtDescuento.getText());
+        Double porcentajeDescuento = objParametros.consultaPorcentajeDescuentoMaximoFactura();
+
+        Double porcentajeValor = total * porcentajeDescuento/100;
+       
+        if(descuento>porcentajeValor)
+        {    
+            JOptionPane.showMessageDialog(this, "El valor del descuento es mayor al permitido (" + porcentajeDescuento + ")", "Atención!", JOptionPane.ERROR_MESSAGE);
         }
         else
         {
-            if(txtNombreCliente.getText().equals("")||(contRows==0)||txtFactura.getText().equals(""))
+            
+            int contRows = tblData.getRowCount();
+            if(this.chkCredito.isSelected())        
             {
-               JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
+                if(txtNombreCliente.getText().equals("")||(contRows==0)||
+                        txtCuota.getText().equals("")||txtSaldo.getText().equals("")||
+                        txtFactura.getText().equals("")||txtComentario.getText().equals(""))
+                {
+                   JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    if(registrarVenta())
+                        exito = true;
+                    else
+                        exito = false;                           
+                }
             }
             else
             {
-               if(registrarVenta())
-                    exito = true;
-                else
-                    exito = false; 
+               
+                    if(txtNombreCliente.getText().equals("")||(contRows==0)||txtFactura.getText().equals(""))
+                    {
+                        JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                    {
+                        if(descuento>0)
+                        {    
+                            if(txtComentario.getText().equals(""))
+                            {    
+                                JOptionPane.showMessageDialog(this, "Esta factura tiene descuento, se necesita registrar un comentario", "Atención!", JOptionPane.ERROR_MESSAGE);
+                            }
+                            else
+                            {
+                                if(registrarVenta())
+                                    exito = true;
+                                else
+                                    exito = false; 
+                            }
+                        }
+                        else
+                        {
+                             if(registrarVenta())
+                                    exito = true;
+                                else
+                                    exito = false; 
+                        }
+                    }
+                 
+               
             }
         }
         return exito;
@@ -1728,9 +1765,16 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             xcredito = "NO";
         else
             xcredito = "SI";
+        
+        String strDescuento = "";
+        String strCredito = "";
+        if(descuento>0)
+            strDescuento = "DESCUENTO";
+        if(saldo>0)
+            strCredito = "CREDITO";
         try{
            String texto = "EL USUARIO: " 
-                   + main.nameUser+ ", REGISTRO UN DESCUENTO.</BR></BR>"
+                   + main.nameUser+ ", REGISTRÓ UN " + strDescuento + " " + strCredito + ".</BR></BR>"
                    + "COMENTARIO: " + comentario + "</BR>"
                    + "<TABLE BORDER=\"1\">"
                            + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
@@ -1763,10 +1807,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
        catch(Exception e){
            //e.printStackTrace();
            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
-       }
-        
-        
-       
+       }       
     }
 }//GEN-LAST:event_btnImprimirActionPerformed
 

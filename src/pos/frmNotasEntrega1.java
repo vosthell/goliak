@@ -1810,61 +1810,67 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         int contRows = tblData.getRowCount();
         if(chkAnulada.isSelected())
         {
-            //REGISTRO NOTA DE ENTREGA ANULADA
-            DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1= txtFechaVenta.getDate();
-            String fechaVenta = df2.format(date1);
-            exito = objCabecera.insertarRegistroNotaEntregaAnulada(
-                    main.idUser, 
-                    "0", 
-                    main.idEmpresa, 
-                    "0", 
-                    txtComentario.getText(),
-                    txtNotaEntrega.getText(),                     
-                    fechaVenta);
-            
-            if(exito)
-            {
-                try
+             if(txtComentario.getText().equals(""))
+             {     
+                JOptionPane.showMessageDialog(this, "Antes de anular coloque un comentario", "Atención!", JOptionPane.ERROR_MESSAGE);
+             }
+             else
+             {
+                //REGISTRO NOTA DE ENTREGA ANULADA
+                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                Date date1= txtFechaVenta.getDate();
+                String fechaVenta = df2.format(date1);
+                exito = objCabecera.insertarRegistroNotaEntregaAnulada(
+                        main.idUser, 
+                        "0", 
+                        main.idEmpresa, 
+                        "0", 
+                        txtComentario.getText(),
+                        txtNotaEntrega.getText(),                     
+                        fechaVenta);
+
+                if(exito)
                 {
-                    clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();                    
-                    objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
-                    JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-                    
-                    objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
-                             + txtNotaEntrega.getText(), "3");
-                    exito = true;
-                    
-                    
+                    try
+                    {
+                        clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();                    
+                        objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
+                        JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
+
+                        objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
+                                 + txtNotaEntrega.getText(), "3");
+                        exito = true;
+
+
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println(e.getMessage());
+                        exito = false;
+                    }             
                 }
-                catch(Exception e)
-                {
-                    System.out.println(e.getMessage());
-                    exito = false;
-                }             
-            }
-            
-            try{
-                String texto = "EL USUARIO: " 
-                                + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
-                                + "COMENTARIO: " + txtComentario.getText() + "</BR>"
-                                + "<TABLE BORDER=\"1\">"
-                                + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
-                                + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
-                texto = texto + "</TABLE></BR>"; 
-                javaMail mail = new javaMail();
-                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
-                for(int i=0;i<dataEmail.size();i=i+1)
-                {
-                    mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+
+                try{
+                    String texto = "EL USUARIO: " 
+                                    + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
+                                    + "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                                    + "<TABLE BORDER=\"1\">"
+                                    + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                                    + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
+                    texto = texto + "</TABLE></BR>"; 
+                    javaMail mail = new javaMail();
+                    ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
+                    for(int i=0;i<dataEmail.size();i=i+1)
+                    {
+                        mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+                    }
                 }
-            }
-            catch(Exception e){
-                //e.printStackTrace();
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            vaciarDatos();
+                catch(Exception e){
+                    //e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
+                }
+                vaciarDatos();
+            } //if(txtComentario.getText().equals(""))               
         }
         else
         {
@@ -1873,7 +1879,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 if(txtNombreCliente.getText().equals("")||
                         (contRows==0)||
                         txtSaldo.getText().equals("")||
-                        txtNotaEntrega.getText().equals(""))
+                        txtNotaEntrega.getText().equals("")||
+                        txtComentario.getText().equals(""))
                 {
                    JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1887,7 +1894,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             }
             else
             {
-                if(txtNombreCliente.getText().equals("")||(contRows==0)||txtNotaEntrega.getText().equals(""))
+                if(txtNombreCliente.getText().equals("")||(contRows==0)||txtNotaEntrega.getText().equals("")||txtComentario.getText().equals(""))
                 {
                    JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
                 }
