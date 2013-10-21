@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import clases.clsCaja;
 import clases.clsEgreso;
 import clases.clsPago;
+import clases.clsParametros;
 import clases.clsUtils;
 import clases.javaMail;
 import com.lowagie.text.Document;
@@ -54,6 +55,8 @@ public class frmCerrarCaja extends javax.swing.JInternalFrame {
     clsEgreso objEgreso = new clsEgreso(); 
     clsCabecera objCabecera = new clsCabecera();
     clsPago objPago = new clsPago();
+    clsParametros objParametros = new clsParametros();
+    
     int idCajaAbierta = 0;
     String txtIngresos = "";
     String txtEgresos = "";
@@ -417,7 +420,7 @@ void imprimir()
     FileWriter fichero = null;
     PrintWriter pw = null;
     
-    String RESULT   = "d:/CIERRE_" + annio + "_" + mes + "_" + dia + ".pdf";
+    String RESULT   = objParametros.consultaValor("ruta_pdf_cierre_caja") + annio + "_" + mes + "_" + dia + ".pdf";
     Document document = new Document();
     try {
         // step 2

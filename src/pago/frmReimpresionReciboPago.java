@@ -13,6 +13,7 @@ package pago;
 import clases.clsAuditoria;
 import clases.clsCtasCobrar;
 import clases.clsPago;
+import clases.clsParametros;
 import clases.clsUtils;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -28,6 +29,7 @@ public class frmReimpresionReciboPago extends javax.swing.JInternalFrame {
    clsCtasCobrar objCtasCobrar = new clsCtasCobrar();
    clsUtils objUtils = new clsUtils();
    clsAuditoria objAuditoria = new clsAuditoria();
+   clsParametros objParametros = new clsParametros();
    
     /** Creates new form frmReimpresionReciboPago */
     public frmReimpresionReciboPago() {
@@ -200,12 +202,12 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         fichero = new FileWriter(objUtils.HostSystem + objUtils.archivoPrint);
         /******************************************************************************************/
         pw = new PrintWriter(fichero);                                                           //*  
-        pw.println("            RIZZO MUÑOZ JORGE EUCLIDES                    RECIBO DE COBRO/OTROS");
-        pw.println("              COMISARIATO SUPER TODO			N° " + pv_idPago);
-        pw.println("              R.U.C.: 1200012613-001");
-        pw.println("   MATRIZ: JOSE ALAVEDRA SL. 1 Y MIGUEL ALCIVAR");
-        pw.println("ESTABLECIMIENTO: ROCAFUERTE # 617 Y NUEVE DE OCTUBRE");
-        pw.println("        TELF.: 099-242-4196 * LOS RIOS - ECUADOR");
+        pw.println(objParametros.consultaValor("print_pago_linea1") + "RECIBO DE COBRO/NE");
+        pw.println(objParametros.consultaValor("print_pago_linea2") + "N° " + pv_idPago);
+        pw.println(objParametros.consultaValor("print_pago_linea3"));
+        pw.println(objParametros.consultaValor("print_pago_linea4"));
+        pw.println(objParametros.consultaValor("print_pago_linea5"));
+        pw.println(objParametros.consultaValor("print_pago_linea6"));
         //pw.println("");
         //35 lineas
         /********************CABECERA**********/
@@ -217,7 +219,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         pw.println("POR CONCEPTO DE: " + dataPago.get(0).getReferencia());
         pw.println("");
         /******************************************************************************************/
-        pw.println("LUGAR/FECHA/HORA: BABA, " + fecha_cobro);
+        pw.println(objParametros.consultaValor("print_pago_linea7") +" " + fecha_cobro);
         pw.println("");
         pw.println("");
         pw.println("");

@@ -1928,10 +1928,10 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         {
             fichero = new FileWriter(objUtils.HostSystem + "file00001.txt");
             pw = new PrintWriter(fichero);
-            pw.println("           S U P E R  T O D O");
-            pw.println("           RUC: 0913187068001");
-            pw.println("ROCAFUERTE 617 ENTRE 9 DE OCTUBRE y SUCR");
-            pw.println("           BABA - ECUADOR");
+            pw.println(objParametros.consultaValor("print_factura_linea1"));
+            pw.println(objParametros.consultaValor("print_factura_linea2"));
+            pw.println(objParametros.consultaValor("print_factura_linea3"));
+            pw.println(objParametros.consultaValor("print_factura_linea4"));
             //pw.println("");
             //pw.println("");
             //pw.println("");
