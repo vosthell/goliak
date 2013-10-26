@@ -605,4 +605,36 @@ public class clsCliente {
         bd.desconectarBaseDeDatos();
         return data;
     }
+    
+    public ArrayList<clsCliente>  consultarDataClienteCartera(){            
+        ArrayList<clsCliente> data = new ArrayList<clsCliente>();   
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT codigo, cedula, name_completo, verificado_deudas,"
+                    + " direccion, tlf_convencional, tlf_celular"
+                    + " FROM ck_cliente"
+                    + " WHERE estado = 'A'";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+            
+            while(bd.resultado.next()){
+                clsCliente oListaTemporal = new clsCliente();
+                oListaTemporal.setCedula(bd.resultado.getString("cedula"));
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                oListaTemporal.setNameCompleto(bd.resultado.getString("name_completo"));
+                oListaTemporal.setVerificadoDeudas(bd.resultado.getString("verificado_deudas"));
+                oListaTemporal.setDireccion(bd.resultado.getString("direccion"));
+                oListaTemporal.setTlfCelular(bd.resultado.getString("tlf_celular"));
+                oListaTemporal.setTlfConvencional(bd.resultado.getString("tlf_convencional"));
+                data.add(oListaTemporal);
+            }
+            //return data;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
 }

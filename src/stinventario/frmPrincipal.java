@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import org.jdesktop.application.Action;
 import clases.clsReporte;
 import clientes.frmClienteIncobrable;
+import clientes.frmReporteCartera;
 import javax.swing.ImageIcon;
 import pos.frmMenu;
 import javax.swing.JOptionPane;
@@ -641,6 +642,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenuItem21 = new javax.swing.JMenuItem();
         jMenuItem41 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         jMenu11 = new javax.swing.JMenu();
         jMenuItem25 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
@@ -1610,6 +1612,15 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu9.add(jMenu8);
 
+        jMenuItem15.setText(resourceMap.getString("jMenuItem15.text")); // NOI18N
+        jMenuItem15.setName("jMenuItem15"); // NOI18N
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem15);
+
         jMenuBar1.add(jMenu9);
 
         jMenu11.setText(resourceMap.getString("jMenu11.text")); // NOI18N
@@ -2498,6 +2509,11 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         mostrarJInternalCentrado(formulario);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        frmReporteCartera formulario = new frmReporteCartera();
+    mostrarJInternalCentrado(formulario);          // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
    void mostrarAuditoria()
    {
         permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmAuditoria");
@@ -2637,6 +2653,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
