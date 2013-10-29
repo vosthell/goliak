@@ -44,6 +44,7 @@ public class clsCliente {
     private Double valor_actual;
     private String descripcion_recinto;
     private Integer id_cabecera_movi;
+    private Integer num_comentario;
     
     public int getIdCabeceraMovi() {
         return id_cabecera_movi;
@@ -267,6 +268,14 @@ public class clsCliente {
     
     public void setDescripcionRecinto(String descripcion_recinto) {
         this.descripcion_recinto = descripcion_recinto;
+    }
+    
+    public int getNumComentario() {
+        return num_comentario;
+    }
+    
+    public void setNumComentario(int num_comentario) {
+        this.num_comentario = num_comentario;
     }
     
     public ArrayList<clsComboBox>  consultarClientes(){            
@@ -682,7 +691,7 @@ public class clsCliente {
         return data;
     }
     
-    public ArrayList<clsCliente>  consultarDataClienteCartera(){            
+    public ArrayList<clsCliente>  consultarDataClienteCartera(String dias){            
         ArrayList<clsCliente> data = new ArrayList<clsCliente>();   
         try{
             bd.conectarBaseDeDatos();
@@ -694,14 +703,20 @@ public class clsCliente {
                         + " valor_actual, "
                         + " date_part('days'::text,  now()::timestamp without time zone-fecha_modificacion::timestamp without time zone ) AS diferencia,"
                         + " g.descripcion descripcion_recinto,"
-                        + " b.id_cabecera_movi id_cabecera_movi"
+                        + " b.id_cabecera_movi id_cabecera_movi, "
+                        + "(SELECT count(*)"
+                        + "     FROM ck_cartera_comentario x"
+                        + "     WHERE x.id_cabecera_movi = b.id_cabecera_movi"
+                        + "     AND x.estado = 'A') num_comentario"
                     + " FROM ck_cliente AS a"
                     + " INNER JOIN ck_notas_de_entrega AS b ON a.codigo = b.codigo"
                     + " inner join ck_cta_cobrar as ee on b.id_cabecera_movi = ee.id_cabecera_movi"
                     + " inner join ck_plazo as f on ee.id_plazo = f.id_plazo"
                     + " inner join ck_recinto as g ON a.id_recinto = g.id_recinto"
-                    + " WHERE a.estado = 'A'";
+                    + " WHERE a.estado = 'A'"
+                    + " AND date_part('days'::text,  now()::timestamp without time zone-fecha_modificacion::timestamp without time zone ) > " + dias;
             bd.resultado = bd.sentencia.executeQuery(sql);
+            System.out.println(sql);
             
             while(bd.resultado.next()){
                 clsCliente oListaTemporal = new clsCliente();
@@ -719,6 +734,7 @@ public class clsCliente {
                 oListaTemporal.setValorACtual(bd.resultado.getDouble("valor_actual"));
                 oListaTemporal.setDescripcionRecinto(bd.resultado.getString("descripcion_recinto"));
                 oListaTemporal.setIdCabeceraMovi(bd.resultado.getInt("id_cabecera_movi"));
+                oListaTemporal.setNumComentario(bd.resultado.getInt("num_comentario"));
                 
                 data.add(oListaTemporal);
             }

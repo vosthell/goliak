@@ -5,7 +5,10 @@
 package clientes;
 
 import clases.clsCliente;
+import clases.clsComentario;
 import clases.clsUtils;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,13 +22,50 @@ public class frmComentario extends javax.swing.JInternalFrame {
     
     clsUtils objUtils = new clsUtils();
     clsCliente objCliente = new clsCliente();
+    clsComentario objComentario = new clsComentario();
     /**
      * Creates new form frmComentario
      */
     public frmComentario(int id_cabecera_movi, String nombre) {
         initComponents();
+        
+        dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
+        dtmData.addColumn("COMENTARIO");
+        dtmData.addColumn("FECHA Y HORA");
+        
         idcabecera_movi_master = id_cabecera_movi;
         txtNombre.setText(nombre);
+        
+        buscar_informacion();
+       
+    }
+    
+    public void buscar_informacion()
+    {
+        objUtils.vaciarTabla(dtmData);
+        ArrayList<clsComentario> dataComentario = objComentario.consultaDataComentarios(idcabecera_movi_master);
+        if(!dataComentario.isEmpty())
+        {
+            llenarData(dataComentario);
+        }
+    }
+    
+    public void llenarData(ArrayList<clsComentario> dataComentario)
+    {
+        int maxData = dataComentario.size();  
+        //String fecha_realizada = "";
+        //String fecha_registro = "";
+        for(int i=0; i<maxData; i++)
+        {                    
+            Object[] nuevaFila = {  i+1,                          
+                                        dataComentario.get(i).getComentario(),
+                                        dataComentario.get(i).getFechaRegistro().substring(0, 10),
+                                        
+            };                    
+            //totalEfectivo = totalEfectivo + dataPago.get(i).getValor();             
+            dtmData.addRow(nuevaFila); 
+        }         
+        //txtTotal.setText("" + (objUtils.redondear(totalEfectivo)));       
     }
     
      public class MiModelo extends DefaultTableModel
@@ -60,9 +100,10 @@ public class frmComentario extends javax.swing.JInternalFrame {
         btnAgregar = new javax.swing.JButton();
 
         setClosable(true);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmComentario.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmComentario.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -83,6 +124,7 @@ public class frmComentario extends javax.swing.JInternalFrame {
         txtComentario.setName("txtComentario"); // NOI18N
         jScrollPane2.setViewportView(txtComentario);
 
+        btnAgregar.setIcon(resourceMap.getIcon("btnAgregar.icon")); // NOI18N
         btnAgregar.setText(resourceMap.getString("btnAgregar.text")); // NOI18N
         btnAgregar.setName("btnAgregar"); // NOI18N
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -96,38 +138,34 @@ public class frmComentario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnAgregar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAgregar))
+                    .addComponent(jScrollPane1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAgregar))
+                    .addComponent(btnAgregar)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,6 +184,8 @@ public class frmComentario extends javax.swing.JInternalFrame {
             if (exito)
             {
                 JOptionPane.showMessageDialog(this, objUtils.exitoGuardar, objUtils.tituloVentanaMensaje, JOptionPane.INFORMATION_MESSAGE);
+                txtComentario.setText("");
+                buscar_informacion();
             }
             else
             {

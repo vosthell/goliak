@@ -5,6 +5,7 @@
 package clientes;
 
 import clases.clsCliente;
+import clases.clsComentario;
 import clases.clsPago;
 import clases.clsUtils;
 import java.awt.Dimension;
@@ -23,6 +24,8 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
     clsUtils objUtils = new clsUtils();
     clsCliente objCliente = new clsCliente();
+    clsComentario objComentario = new clsComentario();
+    //clsComentario
     /**
      * Creates new form frmReporteCartera
      */
@@ -40,10 +43,10 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         dtmData.addColumn("PLAZO CREDITO");
         dtmData.addColumn("DIAS DE MORA");
         dtmData.addColumn("VALOR PENDIENTE");
-        dtmData.addColumn("ULTIMA OBSERVACION");
+        dtmData.addColumn("COMENTARIOS");
         dtmData.addColumn("IDCABECERA");       
                 
-        //objUtils.setOcultarColumnasJTable(this.tblData, new int[]{12});  
+        objUtils.setOcultarColumnasJTable(this.tblData, new int[]{12});  
         //ALINEAR COLUMNA
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -58,11 +61,12 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
     
     public void buscar_informacion()
     {
-         ArrayList<clsCliente> dataCliente = objCliente.consultarDataClienteCartera();
-                    if(!dataCliente.isEmpty())
-                    {
-                        llenarData(dataCliente);
-                    }
+        
+        ArrayList<clsCliente> dataCliente = objCliente.consultarDataClienteCartera(txtDias.getText());
+        if(!dataCliente.isEmpty())
+        {
+            llenarData(dataCliente);
+        }
     }
     
     public void llenarData(ArrayList<clsCliente> dataCliente)
@@ -74,11 +78,14 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
             int maxData = dataCliente.size();  
             String fecha_realizada = "";
             String fecha_registro = "";
-
+            int numero_comentarios = 0;
+            int id_cabecera = 0;
             for(int i=0; i<maxData; i++)
             {                    
-                
-        Object[] nuevaFila = {  i+1,                          
+                id_cabecera = dataCliente.get(i).getIdCabeceraMovi();
+                //numero_comentarios = objComentario.consultarNumeroComentarios(id_cabecera);
+                numero_comentarios = dataCliente.get(i).getNumComentario();
+                Object[] nuevaFila = {  i+1,                          
                                         dataCliente.get(i).getCedula(),
                                         dataCliente.get(i).getNameCompleto(),
                                         dataCliente.get(i).getDescripcionRecinto(), 
@@ -89,8 +96,8 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
                                         dataCliente.get(i).getDescripcionPlazo(),
                                         dataCliente.get(i).getDiferencia(),
                                         dataCliente.get(i).getValorActual(),
-                                        "",
-                                        dataCliente.get(i).getIdCabeceraMovi()
+                                        numero_comentarios + " (VER...)",
+                                        id_cabecera
                  };                    
                  
 
@@ -136,9 +143,15 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        txtDias = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        btnMostrar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmReporteCartera.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -152,21 +165,54 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblData);
 
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        txtDias.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtDias.setText(resourceMap.getString("txtDias.text")); // NOI18N
+        txtDias.setName("txtDias"); // NOI18N
+
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        btnMostrar.setText(resourceMap.getString("btnMostrar.text")); // NOI18N
+        btnMostrar.setName("btnMostrar"); // NOI18N
+        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMostrar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(btnMostrar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,8 +236,17 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_tblDataMouseClicked
 
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
+        objUtils.vaciarTabla(dtmData);
+        buscar_informacion();
+    }//GEN-LAST:event_btnMostrarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMostrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtDias;
     // End of variables declaration//GEN-END:variables
 }
