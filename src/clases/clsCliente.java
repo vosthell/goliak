@@ -38,7 +38,21 @@ public class clsCliente {
     private String fecha_incobrable;
     private Integer facturas;
     private Double deuda_total;
-        
+    private String descripcion_plazo;
+    private String fecha;
+    private String diferencia;
+    private Double valor_actual;
+    private String descripcion_recinto;
+    private Integer id_cabecera_movi;
+    
+    public int getIdCabeceraMovi() {
+        return id_cabecera_movi;
+    }
+    
+    public void setIdCabeceraMovi(int id_cabecera_movi) {
+        this.id_cabecera_movi = id_cabecera_movi;
+    }
+    
     public int getCodigo() {
         return codigo;
     }
@@ -215,6 +229,46 @@ public class clsCliente {
         this.deuda_total = deuda_total;
     }
     
+    public String getDescripcionPlazo() {
+        return descripcion_plazo;
+    }
+    
+    public void setDescripcionPlazo(String descripcion_plazo) {
+        this.descripcion_plazo = descripcion_plazo;
+    }
+    
+    public String getFecha() {
+        return fecha;
+    }
+    
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+    
+    public String getDiferencia() {
+        return diferencia;
+    }
+    
+    public void setDiferencia(String diferencia) {
+        this.diferencia = diferencia;
+    }
+    
+    public Double getValorActual() {
+        return valor_actual;
+    }
+    
+    public void setValorACtual(Double valor_actual) {
+        this.valor_actual = valor_actual;
+    }
+    
+    public String getDescripcionRecinto() {
+        return descripcion_recinto;
+    }
+    
+    public void setDescripcionRecinto(String descripcion_recinto) {
+        this.descripcion_recinto = descripcion_recinto;
+    }
+    
     public ArrayList<clsComboBox>  consultarClientes(){            
         ArrayList<clsComboBox> data = new ArrayList<clsComboBox>();   
         try{
@@ -331,6 +385,28 @@ public class clsCliente {
                     + " VALUES('" + n1 + "', '" + n2 + "', '" + a1 + "', '" + a2 + "', '" + a1 +" "+a2+" "+n1+" "+n2+"', "
                     + " '"+convencional+"', '"+celular+"', '"+cedula+"', '"+direccion+"', '"+prov+"', " +termino
                     + ", "+credito+", '"+ciudad+"', "+recinto+", now(), '"+ email +"')";           
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    }  
+    
+     public boolean insertarRegistroComentario(int id_cabecera_movi, String comentario)
+    {       
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "INSERT INTO ck_cartera_comentario"
+                    + " (id_cabecera_movi, comentario)"
+                    + " VALUES(" + id_cabecera_movi + ", '" + comentario + "')";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -610,10 +686,21 @@ public class clsCliente {
         ArrayList<clsCliente> data = new ArrayList<clsCliente>();   
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT codigo, cedula, name_completo, verificado_deudas,"
-                    + " direccion, tlf_convencional, tlf_celular"
-                    + " FROM ck_cliente"
-                    + " WHERE estado = 'A'";
+            sql = "SELECT a.codigo codigo, cedula, name_completo, verificado_deudas,"
+                        + " direccion, tlf_convencional, tlf_celular,"
+                        + " f.descripcion descripcion_plazo, "
+                        + " b.total total,"
+                        + " b.fecha fecha,"
+                        + " valor_actual, "
+                        + " date_part('days'::text,  now()::timestamp without time zone-fecha_modificacion::timestamp without time zone ) AS diferencia,"
+                        + " g.descripcion descripcion_recinto,"
+                        + " b.id_cabecera_movi id_cabecera_movi"
+                    + " FROM ck_cliente AS a"
+                    + " INNER JOIN ck_notas_de_entrega AS b ON a.codigo = b.codigo"
+                    + " inner join ck_cta_cobrar as ee on b.id_cabecera_movi = ee.id_cabecera_movi"
+                    + " inner join ck_plazo as f on ee.id_plazo = f.id_plazo"
+                    + " inner join ck_recinto as g ON a.id_recinto = g.id_recinto"
+                    + " WHERE a.estado = 'A'";
             bd.resultado = bd.sentencia.executeQuery(sql);
             
             while(bd.resultado.next()){
@@ -625,6 +712,14 @@ public class clsCliente {
                 oListaTemporal.setDireccion(bd.resultado.getString("direccion"));
                 oListaTemporal.setTlfCelular(bd.resultado.getString("tlf_celular"));
                 oListaTemporal.setTlfConvencional(bd.resultado.getString("tlf_convencional"));
+                oListaTemporal.setDescripcionPlazo(bd.resultado.getString("descripcion_plazo"));
+                oListaTemporal.setDeudaTotal(bd.resultado.getDouble("total"));
+                oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                oListaTemporal.setDiferencia(bd.resultado.getString("diferencia"));
+                oListaTemporal.setValorACtual(bd.resultado.getDouble("valor_actual"));
+                oListaTemporal.setDescripcionRecinto(bd.resultado.getString("descripcion_recinto"));
+                oListaTemporal.setIdCabeceraMovi(bd.resultado.getInt("id_cabecera_movi"));
+                
                 data.add(oListaTemporal);
             }
             //return data;            

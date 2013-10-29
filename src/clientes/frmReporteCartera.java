@@ -7,11 +7,13 @@ package clientes;
 import clases.clsCliente;
 import clases.clsPago;
 import clases.clsUtils;
+import java.awt.Dimension;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import stinventario.frmPrincipal;
 
 /**
  *
@@ -30,7 +32,8 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
         dtmData.addColumn("CEDULA");
         dtmData.addColumn("NOMBRE");
-        dtmData.addColumn("SECTOR");
+        dtmData.addColumn("RECINTO");
+        dtmData.addColumn("DIRECCION");
         dtmData.addColumn("TELEFONO");       
         dtmData.addColumn("FECHA CREDITO");  
         dtmData.addColumn("VALOR");
@@ -38,10 +41,9 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         dtmData.addColumn("DIAS DE MORA");
         dtmData.addColumn("VALOR PENDIENTE");
         dtmData.addColumn("ULTIMA OBSERVACION");
-        
-        
+        dtmData.addColumn("IDCABECERA");       
                 
-        
+        //objUtils.setOcultarColumnasJTable(this.tblData, new int[]{12});  
         //ALINEAR COLUMNA
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -75,34 +77,22 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
 
             for(int i=0; i<maxData; i++)
             {                    
-                 //fecha_realizada = dataPago.get(i).getFechaPago().substring(0, 16);    
-                 /*fecha_realizada = dataPago.get(i).getFechaPago().substring(0, 16);    
-                 if( dataPago.get(i).getFechaRegistro()==null)
-                 {
-                     fecha_registro="";
-                 }
-                 else
-                     fecha_registro = dataPago.get(i).getFechaRegistro().substring(0, 16);    
-                 Object[] nuevaFila = {  i+1,                          
-                                        fecha_realizada,
-                                        dataPago.get(i).getNombreCliente(),
-                                        "$ " + df1.format(dataPago.get(i).getValor()), 
-                                        dataPago.get(i).getNombreUsuario(),   
-                                        dataPago.get(i).getReferencia(),
-                                        fecha_registro,
-                                        dataPago.get(i).getIdPago(),
-                                        tipo
-                 };        */
-                 Object[] nuevaFila = {  i+1,                          
+                
+        Object[] nuevaFila = {  i+1,                          
                                         dataCliente.get(i).getCedula(),
                                         dataCliente.get(i).getNameCompleto(),
-                                        "sector", 
-                                       dataCliente.get(i).getDireccion(),   
+                                        dataCliente.get(i).getDescripcionRecinto(), 
+                                        dataCliente.get(i).getDireccion(),   
                                         dataCliente.get(i).getTlfCelular(),
+                                        dataCliente.get(i).getFecha(),
+                                        dataCliente.get(i).getDeudaTotal(),
+                                        dataCliente.get(i).getDescripcionPlazo(),
+                                        dataCliente.get(i).getDiferencia(),
+                                        dataCliente.get(i).getValorActual(),
                                         "",
-                                        "",
-                                        ""
-                 };    
+                                        dataCliente.get(i).getIdCabeceraMovi()
+                 };                    
+                 
 
                  //totalEfectivo = totalEfectivo + dataPago.get(i).getValor();             
                  dtmData.addRow(nuevaFila); 
@@ -111,7 +101,7 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         
     }
     
-        public class MiModelo extends DefaultTableModel
+    public class MiModelo extends DefaultTableModel
     {
             @Override
        public boolean isCellEditable (int row, int column)
@@ -124,6 +114,17 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
            return false;
        }
     } 
+    
+    public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+    {
+        Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
+        Dimension jInternalFrameSize = formulario.getSize();
+        formulario.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+        (desktopSize.height- jInternalFrameSize.height)/2);
+
+        frmPrincipal.jDesktopPane1.add(formulario);
+        formulario.show(); 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,12 +137,19 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
 
+        setClosable(true);
+        setIconifiable(true);
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         tblData.setModel(dtmData);
         tblData.setName("tblData"); // NOI18N
+        tblData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblData);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,19 +158,38 @@ public class frmReporteCartera extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
+        int fila = tblData.rowAtPoint(evt.getPoint());
+        int columna = tblData.columnAtPoint(evt.getPoint());
+        /*int columna = 3;*/
+        /*if ((fila > -1) && (columna > -1))*/
+        int i = tblData.getSelectedRow();
+        int idCabecera = Integer.parseInt("" + tblData.getValueAt(i, 12));
+        String nombre = "" + tblData.getValueAt(i, 2);
+        
+        if (columna == 11)
+        {
+            frmComentario formulario = new frmComentario(idCabecera, nombre);
+            mostrarJInternalCentrado(formulario);  
+            //dispose();
+        }
+        
+    }//GEN-LAST:event_tblDataMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblData;
