@@ -691,7 +691,7 @@ public class clsCliente {
         return data;
     }
     
-    public ArrayList<clsCliente>  consultarDataClienteCartera(String dias){            
+    public ArrayList<clsCliente>  consultarDataClienteCartera(String dias, String nombre){            
         ArrayList<clsCliente> data = new ArrayList<clsCliente>();   
         try{
             bd.conectarBaseDeDatos();
@@ -714,7 +714,8 @@ public class clsCliente {
                     + " inner join ck_plazo as f on ee.id_plazo = f.id_plazo"
                     + " inner join ck_recinto as g ON a.id_recinto = g.id_recinto"
                     + " WHERE a.estado = 'A'"
-                    + " AND date_part('days'::text,  now()::timestamp without time zone-fecha_modificacion::timestamp without time zone ) > " + dias;
+                    + " AND date_part('days'::text,  now()::timestamp without time zone-fecha_modificacion::timestamp without time zone ) > " + dias
+                    + " AND name_completo like '%" + nombre.toUpperCase() + "%'";
             bd.resultado = bd.sentencia.executeQuery(sql);
             System.out.println(sql);
             

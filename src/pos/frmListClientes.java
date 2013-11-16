@@ -98,9 +98,6 @@ public class frmListClientes extends javax.swing.JDialog {
         txtNombre.setText(resourceMap.getString("txtNombre.text")); // NOI18N
         txtNombre.setName("txtNombre"); // NOI18N
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNombreKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNombreKeyReleased(evt);
             }
@@ -162,10 +159,6 @@ public class frmListClientes extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
-       
-    }//GEN-LAST:event_txtNombreKeyPressed
 
     private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataMouseClicked
         int fila = tblData.rowAtPoint(evt.getPoint());
