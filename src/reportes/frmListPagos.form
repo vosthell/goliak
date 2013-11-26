@@ -41,7 +41,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" pref="105" max="-2" attributes="0"/>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -81,6 +81,8 @@
                                   <Component id="chkFacturas" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="chkVarios" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="chkArriendos" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="1" attributes="1">
@@ -105,7 +107,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="199" max="32767" attributes="0"/>
+                  <EmptySpace pref="181" max="32767" attributes="0"/>
                   <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -151,6 +153,7 @@
                       <Component id="chkNE" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chkFacturas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chkVarios" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="chkArriendos" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -273,6 +276,13 @@
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" resourceKey="chkVarios.text"/>
             <Property name="name" type="java.lang.String" value="chkVarios" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkArriendos">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="chkArriendos.text"/>
+            <Property name="name" type="java.lang.String" value="chkArriendos" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

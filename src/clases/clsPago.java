@@ -912,7 +912,7 @@ public class clsPago {
         return data;
      }
     
-     public ArrayList<clsPago> consultaDataPagosOtros()
+     public ArrayList<clsPago> consultaDataPagosOtros(String arriendo)
     {       
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
@@ -926,6 +926,15 @@ public class clsPago {
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                     + " JOIN ck_cliente AS e ON a.codigo = e.codigo"
                     + " WHERE a.estado = 'A'";   
+             if(arriendo.equals("1"))
+             {
+                 sql = sql + " AND referencia NOT LIKE 'WEB%'";
+             }
+              if(arriendo.equals("2"))
+             {
+                 sql = sql + " AND referencia LIKE 'WEB%'";
+             }
+             
             
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
@@ -1469,7 +1478,7 @@ public class clsPago {
         return data;
      }
     
-    public ArrayList<clsPago> consultaDataPagosOtrosRegistroFecha(String fecha_inicio, String fecha_fin)
+    public ArrayList<clsPago> consultaDataPagosOtrosRegistroFecha(String fecha_inicio, String fecha_fin, String arriendo)
     {       
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         
@@ -1485,8 +1494,17 @@ public class clsPago {
                     + " JOIN ck_cliente AS e ON a.codigo = e.codigo"
                     + " WHERE a.estado = 'A'"
                     + " AND a.fecha_pago::date >= '" + fecha_inicio + "'"
-                    + " AND a.fecha_pago::date <= '" + fecha_fin + "'"
-                    + " ORDER BY a.fecha_pago ASC";   
+                    + " AND a.fecha_pago::date <= '" + fecha_fin + "'";
+             if(arriendo.equals("2"))
+             {
+                 sql = sql + "AND referencia LIKE 'WEB%'";
+             }
+             if(arriendo.equals("1"))
+             {
+                 sql = sql + "AND referencia NOT LIKE 'WEB%'";
+             }
+             
+             sql = sql + " ORDER BY a.fecha_pago ASC";   
             
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);

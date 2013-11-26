@@ -12,8 +12,18 @@ package reportes;
 
 import clases.clsCabecera;
 import clases.clsPago;
+import clases.clsParametros;
 import clases.clsReporte;
 import clases.clsUtils;
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfTemplate;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +43,8 @@ public class frmListPagos extends javax.swing.JInternalFrame {
     clsPago objPago = new clsPago();
     MiModelo dtmData = new MiModelo();
     clsReporte objReporte = new clsReporte();
+    clsParametros objParametros = new clsParametros();
+    
     Double totalEfectivo = 0.00;      
     /** Creates new form frmReporteVentas */
     public frmListPagos() {
@@ -92,6 +104,7 @@ public class frmListPagos extends javax.swing.JInternalFrame {
         chkNE = new javax.swing.JCheckBox();
         chkFacturas = new javax.swing.JCheckBox();
         chkVarios = new javax.swing.JCheckBox();
+        chkArriendos = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
@@ -195,6 +208,10 @@ public class frmListPagos extends javax.swing.JInternalFrame {
         chkVarios.setText(resourceMap.getString("chkVarios.text")); // NOI18N
         chkVarios.setName("chkVarios"); // NOI18N
 
+        chkArriendos.setSelected(true);
+        chkArriendos.setText(resourceMap.getString("chkArriendos.text")); // NOI18N
+        chkArriendos.setName("chkArriendos"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -214,7 +231,9 @@ public class frmListPagos extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(chkFacturas)
                                 .addGap(18, 18, 18)
-                                .addComponent(chkVarios))
+                                .addComponent(chkVarios)
+                                .addGap(18, 18, 18)
+                                .addComponent(chkArriendos))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel2)
@@ -232,7 +251,7 @@ public class frmListPagos extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel5)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtFechaFinRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addComponent(btnBuscar)
                 .addContainerGap())
         );
@@ -267,7 +286,8 @@ public class frmListPagos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkNE)
                     .addComponent(chkFacturas)
-                    .addComponent(chkVarios)))
+                    .addComponent(chkVarios)
+                    .addComponent(chkArriendos)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -340,7 +360,7 @@ public class frmListPagos extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -455,11 +475,25 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             if(chkVarios.isSelected())
             {  
                 try{
-                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin, "1");
                                     
                     if(!dataPago3.isEmpty())
                     {
                         llenarData(dataPago3, "OTROS");
+                    }   
+                } 
+                catch(Exception ex)
+                {}
+            }   
+           
+            if(chkArriendos.isSelected())
+            {  
+                try{
+                    ArrayList<clsPago> dataPago4 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin, "2");
+                                    
+                    if(!dataPago4.isEmpty())
+                    {
+                        llenarData(dataPago4, "ARRIENDOS");
                     }   
                 } 
                 catch(Exception ex)
@@ -507,11 +541,24 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             if(chkVarios.isSelected())
             {  
                 try{
-                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin);
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin, "1");
                                     
                     if(!dataPago3.isEmpty())
                     {
                         llenarData(dataPago3, "OTROS");
+                    }   
+                } 
+                catch(Exception ex)
+                {}
+            }   
+            if(chkArriendos.isSelected())
+            {  
+                try{
+                    ArrayList<clsPago> dataPago4 = objPago.consultaDataPagosOtrosRegistroFecha(fechaInicio, fechaFin, "2");
+                                    
+                    if(!dataPago4.isEmpty())
+                    {
+                        llenarData(dataPago4, "ARRIENDOS");
                     }   
                 } 
                 catch(Exception ex)
@@ -550,10 +597,22 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             if(chkVarios.isSelected())
             {  
                 try{
-                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtros();                      
+                    ArrayList<clsPago> dataPago3 = objPago.consultaDataPagosOtros("1");                      
                 if(!dataPago3.isEmpty())
                 {
                     llenarData(dataPago3, "OTROS");
+                }  
+                 } 
+                catch(Exception ex)
+                {}
+            } 
+            if(chkArriendos.isSelected())
+            {  
+                try{
+                    ArrayList<clsPago> dataPago4 = objPago.consultaDataPagosOtros("2");                      
+                if(!dataPago4.isEmpty())
+                {
+                    llenarData(dataPago4, "ARRIENDOS");
                 }  
                  } 
                 catch(Exception ex)
@@ -595,7 +654,54 @@ private void chkFechaPagoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-F
     } 
 
 private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-    if(this.chkFechaPago.isSelected())
+    //Document document = new Document(PageSize.A4.rotate());
+    Document document = new Document();
+    String RESULT = objParametros.consultaValor("ruta_pdf_cierre_caja")+"jTable.pdf";
+    try {
+        
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(RESULT));
+
+        document.open();
+        PdfContentByte cb = writer.getDirectContent();
+
+       /* cb.saveState();
+        Graphics2D g2 = cb.createGraphicsShapes(500, 500);
+
+        Shape oldClip = g2.getClip();
+        g2.clipRect(0, 0, 500, 500);
+
+        tblData.print(g2);
+        g2.setClip(oldClip);
+
+        g2.dispose();
+        cb.restoreState();*/
+        
+        PdfTemplate pdfTemplate = cb.createTemplate(tblData.getWidth(), tblData.getHeight());
+        Graphics2D g2 = pdfTemplate.createGraphics(tblData.getWidth(), tblData.getHeight());
+        /*g2.setColor(Color.BLACK);
+        g2.drawRect(x-2, y-2, table.getWidth()+2, table.getHeight()+2);*/
+        tblData.print(g2);
+        int x=10;
+        int y=10;
+        System.out.println("x="+x + "," + "y=" + y);
+        cb.addTemplate(pdfTemplate, x, y);
+        g2.dispose();
+        cb.restoreState();
+    } 
+    catch (Exception e) {
+        System.err.println(e.getMessage());
+    }
+    document.close();
+    try {
+        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+RESULT);
+        //System.out.println("Final");
+    }
+    catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    
+    /*    if(this.chkFechaPago.isSelected())
     {
         Date date1 = txtFechaInicio.getDate();
         //fechaInicio = df1.format(date1);
@@ -603,8 +709,8 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         Date date2 = txtFechaFin.getDate();
         //fechaFin = df1.format(date2);
 
-        /*ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRegistro(fechaInicio, fechaFin); 
-        llenarData(dataCompras);*/
+        //ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRegistro(fechaInicio, fechaFin); 
+        //llenarData(dataCompras);
         objReporte.ejecutarReporte2ParametrosDate(date1, date2, "rptPagosTotalesFecha");
     }
     else if (this.chkFechaRegistro.isSelected())
@@ -617,7 +723,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     else
     {
         objReporte.ejecutarReporte("rptPagosTotales"); 
-    }
+    }*/
 }//GEN-LAST:event_btnImprimirActionPerformed
 
 private void chkFechaRegistroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkFechaRegistroItemStateChanged
@@ -649,6 +755,7 @@ private void txtFechaFinRegistroPropertyChange(java.beans.PropertyChangeEvent ev
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnImprimir;
+    private javax.swing.JCheckBox chkArriendos;
     private javax.swing.JCheckBox chkFacturas;
     private javax.swing.JCheckBox chkFechaPago;
     private javax.swing.JCheckBox chkFechaRegistro;
