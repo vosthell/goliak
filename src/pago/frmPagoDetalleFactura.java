@@ -12,6 +12,7 @@ package pago;
 
 import clases.clsCaja;
 import clases.clsCtasCobrar;
+import clases.clsCupones;
 import clases.clsPago;
 import clases.clsParametros;
 import clases.clsUtils;
@@ -20,6 +21,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -31,8 +33,10 @@ public class frmPagoDetalleFactura extends javax.swing.JInternalFrame {
     clsCaja objCaja = new clsCaja();
     clsCtasCobrar objCtasCobrar = new clsCtasCobrar();
     clsParametros objParametros = new clsParametros();
+    clsCupones objCupones = new clsCupones();
     
     int idPago_publica = 0;
+    int codigo = 0;
     /** Creates new form frmPagoDetalle */
     public frmPagoDetalleFactura(int idPago) {
         idPago_publica = idPago;
@@ -235,6 +239,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         int idCtaCobrar = dataPago.get(0).getIdCtaCobrar();    
         Double valor = dataPago.get(0).getValor();
         String fecha_cobro = dataPago.get(0).getFechaCobro().substring(0, 16);   
+        codigo = dataPago.get(0).getCodigo();
         
         objCtasCobrar.actualizarSaldoFacturasNuevo(idCtaCobrar, objUtils.redondear(valor));
         //OBTENER SALDO SI SALDO ES  CERO CANCELO DEUDA
@@ -386,6 +391,81 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         /*FIN - ABRIR LA CAJA, MANDO A IMPRIMIR CODIGO ESPECIAL A LA IMPRESORA TMU*/
        
+     //CUPONES
+    //REGISTRAR CUPONES
+    Double valor = Double.parseDouble(txtValor.getText());
+    double numero_cupones_double = valor / Double.parseDouble(objParametros.consultaValor("valor_minimo_cupones"));
+    int numero_cupones = (int)numero_cupones_double;
+
+    for (int i=0; i<numero_cupones; i++ )
+    {
+        objCupones.insertarCupon(i+1, codigo, 
+                idPago_publica, "ABONO FACTURA");
+    }
+    //IMPRIMIR CUPONES
+    ArrayList<clsCupones> dataCupones = objCupones.consultarDataCupones(idPago_publica); 
+    int maxData = dataCupones.size();
+
+    //dataCompras.get(i).getEstadoTramite()
+    //FileWriter fichero2 = null;
+   // PrintWriter pw2 = null;
+    try
+    {
+        fichero = new FileWriter(objUtils.HostSystem + "file00003.txt");
+
+
+        pw = new PrintWriter(fichero);
+        for(int i=0; i<maxData; i++)
+        {
+            pw.println(objParametros.consultaValor("print_factura_linea1"));
+            pw.println("CODIGO CUPON: " + dataCupones.get(i).getIdCupones());
+            pw.println("TIPO DOC: " + dataCupones.get(i).getTipoDocumento());
+            pw.println("SERIE DOC: " + dataCupones.get(i).getIdDocumento());
+            pw.println("VALOR: $ " + valor);
+            pw.println("FECHA: " + dataCupones.get(i).getFechaRegistro().substring(1, 16));
+
+            String detalle = "";
+            if(dataCupones.get(i).getNameCompleto().length()>25)
+                detalle = dataCupones.get(i).getNameCompleto().substring(0, 25);
+            else
+            {
+                detalle = dataCupones.get(i).getNameCompleto();
+                do{
+                    detalle = detalle + " ";
+                }while(detalle.length()<25);
+            }
+            pw.println("CEDULA: " + dataCupones.get(i).getCedula());
+            pw.println("CLIENTE: " + detalle);
+            pw.println(dataCupones.get(i).getNumeroCupon() + " de " + maxData);
+            pw.println("");
+            pw.println("");
+            pw.println("");
+            pw.println("----------------------------------------");
+            pw.println("");
+            pw.println("");
+        }
+        Runtime aplicacion = Runtime.getRuntime(); 
+        aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + objUtils.archivoImprimirCupones);           
+
+    }
+    catch (Exception e) 
+    {
+        System.out.println(e.toString());
+        e.printStackTrace();
+    } 
+    finally 
+    {
+       try {
+       // Nuevamente aprovechamos el finally para 
+       // asegurarnos que se cierra el fichero.
+       if (null != fichero)
+          fichero.close();
+       } catch (Exception e2) {
+          System.out.println(e2.toString());
+          //e2.printStackTrace();
+       }
+    }
+     //CUPONES -CERRADO     
      JOptionPane.showMessageDialog(this, "Pago cobrado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
         dispose();
             // TODO add your handling code here:

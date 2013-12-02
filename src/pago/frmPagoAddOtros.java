@@ -14,9 +14,12 @@ import clases.clsAuditoria;
 import clases.clsCaja;
 import clases.clsCliente;
 import clases.clsComboBox;
+import clases.clsCompras;
 import clases.clsCtasCobrar;
+import clases.clsCupones;
 import clases.clsGrupo;
 import clases.clsPago;
+import clases.clsParametros;
 import clases.clsReporte;
 import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
@@ -26,6 +29,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +57,8 @@ public class frmPagoAddOtros extends javax.swing.JDialog {
     clsReporte objReporte = new clsReporte();
     clsCaja objCaja = new clsCaja();
     clsGrupo objGrupo = new clsGrupo();
+    clsParametros objParametros = new clsParametros();
+    clsCupones objCupones = new clsCupones();
     
     public static String codigoCliente;
     String idCajaAbierta = "";
@@ -420,7 +427,72 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
             //dispose();
             txtValor.setText("");
             txtReferencia.setText("");
+            //CUPONES
+            //REGISTRAR CUPONES
+            /*double numero_cupones_double = valor / Double.parseDouble(objParametros.consultaValor("valor_minimo_cupones"));
+            int numero_cupones = (int)numero_cupones_double;
             
+            for (int i=0; i<numero_cupones; i++ )
+            {
+                objCupones.insertarCupon(i+1, Integer.parseInt(codigoCliente), 
+                        Integer.parseInt(txtReciboDePago.getText()), objGrupoSelect.getDescripcion());
+            }*/
+            //IMPRIMIR CUPONES
+            /*ArrayList<clsCupones> dataCupones = objCupones.consultarDataCupones(Integer.parseInt(txtReciboDePago.getText())); 
+            int maxData = dataCupones.size();
+            
+            
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            try
+            {
+                fichero = new FileWriter(objUtils.HostSystem + "file00003.txt");
+
+
+                pw = new PrintWriter(fichero);
+                for(int i=0; i<maxData; i++)
+                {
+                    pw.println(objParametros.consultaValor("print_factura_linea1"));
+                    pw.println("CODIGO CUPON: " + dataCupones.get(i).getIdCupones());
+                    pw.println("TIPO DOC: " + dataCupones.get(i).getTipoDocumento());
+                    pw.println("SERIE DOC: " + dataCupones.get(i).getIdDocumento());
+                    pw.println("FECHA: " + dataCupones.get(i).getFechaRegistro().substring(1, 16));
+
+                    String detalle = "";
+                    if(dataCupones.get(i).getNameCompleto().length()>25)
+                        detalle = dataCupones.get(i).getNameCompleto().substring(0, 25);
+                    else
+                    {
+                        detalle = dataCupones.get(i).getNameCompleto();
+                        do{
+                            detalle = detalle + " ";
+                        }while(detalle.length()<25);
+                    }
+                    pw.println("CLIENTE: " + detalle);
+                    pw.println(dataCupones.get(i).getNumeroCupon() + " de " + maxData);
+                    pw.println("----------------------------------------");
+                }
+                Runtime aplicacion = Runtime.getRuntime(); 
+                aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + objUtils.archivoImprimir1);           
+
+            }
+            catch (Exception e) 
+            {
+                System.out.println(e.toString());
+                e.printStackTrace();
+            } 
+            finally 
+            {
+               try {
+               // Nuevamente aprovechamos el finally para 
+               // asegurarnos que se cierra el fichero.
+               if (null != fichero)
+                  fichero.close();
+               } catch (Exception e2) {
+                  System.out.println(e2.toString());
+                  //e2.printStackTrace();
+               }
+            }*/
             //objUtils.limpiarJTable(dtmData);
             dispose();
             //llenarTablaDeudas();                 

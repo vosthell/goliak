@@ -15,6 +15,7 @@ import clases.clsCaja;
 import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCuota;
+import clases.clsCupones;
 import clases.clsDetalle;
 import clases.clsEmail;
 import clases.clsFacturero;
@@ -43,7 +44,8 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import static pos.frmNotasEntregaConfirmar.txtNombreCliente;
+
+//import static pos.frmNotasEntregaConfirmar.txtNombreCliente;
 
 /**
  *
@@ -64,6 +66,7 @@ public class frmFacturar extends javax.swing.JDialog {
     clsKardex objKardex = new clsKardex();
     clsParametros objParametros = new clsParametros();
     clsEmail objEmail = new clsEmail(); 
+    clsCupones objCupones = new clsCupones();
     
     MiModelo dtmData = new MiModelo();
     String idCajero = "";
@@ -1208,7 +1211,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     descuentoF, ivaF, txtFactura.getText(), 
                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                     idUserCard,
-                    idUserCardCredito);               
+                    idUserCardCredito);   
+            imprimir_cupones(txtEfectivo.getText(), Integer.parseInt(txtFactura.getText()));
         }
         else
         {
@@ -1228,6 +1232,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     this.idCajaAbierta, descuentoF, ivaF, txtFactura.getText(), 
                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                     idUserCard);
+                
+                imprimir_cupones(txtTotal.getText(),  Integer.parseInt(txtFactura.getText()));
             }
         }
 
@@ -1309,6 +1315,84 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             p_exito = false;
         }
         return p_exito;     
+    }
+    
+    public void imprimir_cupones(String total, int id_documento)
+    {
+        //CUPONES
+        //REGISTRAR CUPONES
+        Double valor = Double.parseDouble(total);
+        double numero_cupones_double = valor / Double.parseDouble(objParametros.consultaValor("valor_minimo_cupones"));
+        int numero_cupones = (int)numero_cupones_double;
+
+        for (int i=0; i<numero_cupones; i++ )
+        {
+            objCupones.insertarCupon(i+1,codigoCliente, 
+                    id_documento, "FACTURA");
+        }
+        //IMPRIMIR CUPONES
+        ArrayList<clsCupones> dataCupones = objCupones.consultarDataCupones(id_documento); 
+        int maxData = dataCupones.size();
+
+        //dataCompras.get(i).getEstadoTramite()
+       FileWriter fichero = null;
+       PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(objUtils.HostSystem + "file00003.txt");
+
+            pw = new PrintWriter(fichero);
+            for(int i=0; i<maxData; i++)
+            {
+                pw.println(objParametros.consultaValor("print_factura_linea1"));
+                pw.println("CODIGO CUPON: " + dataCupones.get(i).getIdCupones());
+                pw.println("TIPO DOC: " + dataCupones.get(i).getTipoDocumento());
+                pw.println("SERIE DOC: " + dataCupones.get(i).getIdDocumento());
+                pw.println("VALOR: $ " + valor);
+                pw.println("FECHA: " + dataCupones.get(i).getFechaRegistro().substring(1, 16));
+
+                String detalle = "";
+                if(dataCupones.get(i).getNameCompleto().length()>25)
+                    detalle = dataCupones.get(i).getNameCompleto().substring(0, 25);
+                else
+                {
+                    detalle = dataCupones.get(i).getNameCompleto();
+                    do{
+                        detalle = detalle + " ";
+                    }while(detalle.length()<25);
+                }
+                pw.println("CEDULA: " + dataCupones.get(i).getCedula());
+                pw.println("CLIENTE: " + detalle);
+                pw.println(dataCupones.get(i).getNumeroCupon() + " de " + maxData);
+                pw.println("");
+                pw.println("");
+                pw.println("");
+                pw.println("----------------------------------------");
+                pw.println("");
+                pw.println("");
+            }
+            Runtime aplicacion = Runtime.getRuntime(); 
+            aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + objUtils.archivoImprimirCupones);           
+
+        }
+        catch (Exception e) 
+        {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        } 
+        finally 
+        {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              System.out.println(e2.toString());
+              //e2.printStackTrace();
+           }
+        }
+         //CUPONES -CERRADO  
     }
     
     boolean agregarCantidad(int codProducto, double cantidad)

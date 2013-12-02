@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class clsUtils {
     public String versionID = "1.20";
-    public String versionFecha = " (2013.11.16.15.46)";
+    public String versionFecha = " (2013.11.30.15.46)";
     public String version = versionID + versionFecha;
     //MENSAJE CUANDO NO TIENE PERMISOS PARA ABRIR FORMULARIO
     public String msgSinPermisosFormulario = "USTED NO TIENE PERMISOS PARA ABRIR ESTE FORMULARIO.";
@@ -47,6 +47,8 @@ public class clsUtils {
     public String batRespaldar = "respaldarGoliak";
     //archivo DE IMPRESION LPT1
     public String archivoImprimir1 = "printFile.bat";
+    
+    public String archivoImprimirCupones = "printFileCupones.bat";
     //archivo DE IMPRESION LPT3
     public String archivoImprimir3 = "printFile3.bat";
     //archivo DE IMPRESION abrircaja
