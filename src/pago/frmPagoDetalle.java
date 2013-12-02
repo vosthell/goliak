@@ -394,83 +394,88 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         /*FIN - ABRIR LA CAJA, MANDO A IMPRIMIR CODIGO ESPECIAL A LA IMPRESORA TMU*/
         
-    //CUPONES
-    //REGISTRAR CUPONES
-    Double valor = Double.parseDouble(txtValor.getText());
-    double numero_cupones_double = valor / Double.parseDouble(objParametros.consultaValor("valor_minimo_cupones"));
-    int numero_cupones = (int)numero_cupones_double;
+    String sistema_cupon = objParametros.consultaValor("cupones_habilitado");
+    if(sistema_cupon.equals("1"))
+    {        
+        //CUPONES
+        //REGISTRAR CUPONES
+        Double valor = Double.parseDouble(txtValor.getText());
+        double numero_cupones_double = valor / Double.parseDouble(objParametros.consultaValor("valor_minimo_cupones"));
+        int numero_cupones = (int)numero_cupones_double;
 
-    for (int i=0; i<numero_cupones; i++ )
-    {
-        objCupones.insertarCupon(i+1, codigo, 
-                idPago_publica, "ABONO");
-    }
-    //IMPRIMIR CUPONES
-    ArrayList<clsCupones> dataCupones = objCupones.consultarDataCupones(idPago_publica); 
-    int maxData = dataCupones.size();
-
-    //dataCompras.get(i).getEstadoTramite()
-    //FileWriter fichero2 = null;
-   // PrintWriter pw2 = null;
-    try
-    {
-        fichero = new FileWriter(objUtils.HostSystem + "file00003.txt");
-
-
-        pw = new PrintWriter(fichero);
-        for(int i=0; i<maxData; i++)
+        for (int i=0; i<numero_cupones; i++ )
         {
-            pw.println(objParametros.consultaValor("print_factura_linea1"));
-            pw.println("CODIGO CUPON: " + dataCupones.get(i).getIdCupones());
-            pw.println("TIPO DOC: " + dataCupones.get(i).getTipoDocumento());
-            pw.println("SERIE DOC: " + dataCupones.get(i).getIdDocumento());
-            pw.println("VALOR: $ " + valor);
-            pw.println("FECHA: " + dataCupones.get(i).getFechaRegistro().substring(1, 16));
-
-            String detalle = "";
-            if(dataCupones.get(i).getNameCompleto().length()>25)
-                detalle = dataCupones.get(i).getNameCompleto().substring(0, 25);
-            else
-            {
-                detalle = dataCupones.get(i).getNameCompleto();
-                do{
-                    detalle = detalle + " ";
-                }while(detalle.length()<25);
-            }
-            pw.println("CEDULA: " + dataCupones.get(i).getCedula());
-            pw.println("CLIENTE: " + detalle);
-            pw.println(dataCupones.get(i).getNumeroCupon() + " de " + maxData);
-            pw.println("");
-            pw.println("");
-            pw.println("");
-            pw.println("----------------------------------------");
-            pw.println("");
-            pw.println("");
+            objCupones.insertarCupon(i+1, codigo, 
+                    idPago_publica, "ABONO");
         }
-        Runtime aplicacion = Runtime.getRuntime(); 
-        aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + objUtils.archivoImprimirCupones);           
+        //IMPRIMIR CUPONES
+        ArrayList<clsCupones> dataCupones = objCupones.consultarDataCupones(idPago_publica); 
+        int maxData = dataCupones.size();
 
+        //dataCompras.get(i).getEstadoTramite()
+        //FileWriter fichero2 = null;
+       // PrintWriter pw2 = null;
+        try
+        {
+            fichero = new FileWriter(objUtils.HostSystem + "file00003.txt");
+
+
+            pw = new PrintWriter(fichero);
+            for(int i=0; i<maxData; i++)
+            {
+                pw.println(objParametros.consultaValor("print_factura_linea1"));
+                pw.println("CODIGO CUPON: " + dataCupones.get(i).getIdCupones());
+                pw.println("TIPO DOC: " + dataCupones.get(i).getTipoDocumento());
+                pw.println("SERIE DOC: " + dataCupones.get(i).getIdDocumento());
+                pw.println("VALOR: $ " + valor);
+                pw.println("FECHA: " + dataCupones.get(i).getFechaRegistro().substring(1, 16));
+
+                String detalle = "";
+                if(dataCupones.get(i).getNameCompleto().length()>25)
+                    detalle = dataCupones.get(i).getNameCompleto().substring(0, 25);
+                else
+                {
+                    detalle = dataCupones.get(i).getNameCompleto();
+                    do{
+                        detalle = detalle + " ";
+                    }while(detalle.length()<25);
+                }
+                pw.println("CEDULA: " + dataCupones.get(i).getCedula());
+                pw.println("CLIENTE: " + detalle);
+                pw.println(dataCupones.get(i).getNumeroCupon() + " de " + maxData);
+                pw.println("");
+                pw.println("");
+                pw.println("");
+                pw.println("----------------------------------------");
+                pw.println("");
+                pw.println("");
+            }
+            Runtime aplicacion = Runtime.getRuntime(); 
+            aplicacion.exec("cmd.exe /K "+ objUtils.HostSystem + objUtils.archivoImprimirCupones);           
+
+        }
+        catch (Exception e) 
+        {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        } 
+        finally 
+        {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              System.out.println(e2.toString());
+              //e2.printStackTrace();
+           }
+        }
+         //CUPONES -CERRADO  
     }
-    catch (Exception e) 
-    {
-        System.out.println(e.toString());
-        e.printStackTrace();
-    } 
-    finally 
-    {
-       try {
-       // Nuevamente aprovechamos el finally para 
-       // asegurarnos que se cierra el fichero.
-       if (null != fichero)
-          fichero.close();
-       } catch (Exception e2) {
-          System.out.println(e2.toString());
-          //e2.printStackTrace();
-       }
-    }
-     //CUPONES -CERRADO  
-     JOptionPane.showMessageDialog(this, "Pago cobrado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
-     dispose();
+    
+    JOptionPane.showMessageDialog(this, "Pago cobrado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
+    dispose();
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

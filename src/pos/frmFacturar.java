@@ -1212,7 +1212,9 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                     idUserCard,
                     idUserCardCredito);   
-            imprimir_cupones(txtEfectivo.getText(), Integer.parseInt(txtFactura.getText()));
+            String sistema_cupon = objParametros.consultaValor("cupones_habilitado");
+            if(sistema_cupon.equals("1"))
+                imprimir_cupones(txtEfectivo.getText(), Integer.parseInt(txtFactura.getText()));
         }
         else
         {
@@ -1233,7 +1235,9 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtTarifaIVA.getText(), txtTarifaCero.getText(),
                     idUserCard);
                 
-                imprimir_cupones(txtTotal.getText(),  Integer.parseInt(txtFactura.getText()));
+                String sistema_cupon = objParametros.consultaValor("cupones_habilitado");
+                if(sistema_cupon.equals("1"))
+                    imprimir_cupones(txtTotal.getText(),  Integer.parseInt(txtFactura.getText()));
             }
         }
 
