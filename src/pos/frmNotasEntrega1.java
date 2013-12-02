@@ -1361,6 +1361,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String ivaF = txtIVA.getText().toString();
         clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();        
         
+        int maxData = 0;
         /*if(!this.chkAnulada.isSelected())        
         {  */              
             /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
@@ -1385,7 +1386,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     cuota = Double.parseDouble(txtCuota.getText());
                     
                     
-                    int maxData = dtmData.getRowCount();
+                    maxData = dtmData.getRowCount();
                    
                     //System.out.println("S: " + ultmFactura);
                     if(this.chkCredito.isSelected())        
@@ -1577,7 +1578,30 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             }
             
             texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
-                    + "</TABLE></BR>";     
+                    + "</TABLE></BR></BR>"
+                    + "<TABLE BORDER=\"1\">"
+                    + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+            
+            String descripcion = "";
+            for(int i=0; i<maxData; i++)
+            {                       
+                //**************DETALLE*******************//
+                //factura, idProducto
+                //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
+                descripcion = "" + dtmData.getValueAt(i, 3);
+                cantidad = "" + dtmData.getValueAt(i, 4);
+                //precio = "" + dtmData.getValueAt(i, 5);                        
+                //iva = "" + dtmData.getValueAt(i, 7);
+                //descuento = "" + dtmData.getValueAt(i, 8);
+                //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
+                
+                
+                //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
+                //        precio, descuento, iva, costo);
+                texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+                
+            }  
+            texto = texto + "</TABLE>";
                 
             javaMail mail = new javaMail();
             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        

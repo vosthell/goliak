@@ -770,9 +770,10 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
    int idProducto;
    String cantidad, precio;
    Double costo;
+   int maxData = 0;
    try
    {
-       int maxData = dtmData.getRowCount();
+       maxData = dtmData.getRowCount();
        for(int i=0; i<maxData; i++)
        {  
             idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
@@ -793,9 +794,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             objProducto.disminuirStock(idProducto, cantidad);
        }    
        
-       objCabecera.confirmarNotaEntrega(idCabecera);
-       
-       
+       objCabecera.confirmarNotaEntrega(idCabecera);       
                     
        JOptionPane.showMessageDialog(this, "Nota de entrega confirmada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);  
    }
@@ -830,7 +829,18 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             texto = texto  + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>";
         }
         texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
-                    + "</TABLE></BR>"; 
+                    + "</TABLE></BR></BR>"
+                    + "<TABLE BORDER=\"1\">"
+                    + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+            
+        String descripcion = "";
+        for(int i=0; i<maxData; i++)        
+        {     
+            descripcion = "" + dtmData.getValueAt(i, 3);
+            cantidad = "" + dtmData.getValueAt(i, 4);           
+            texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+        }  
+        texto = texto + "</TABLE>";
 
         javaMail mail = new javaMail();
         ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
