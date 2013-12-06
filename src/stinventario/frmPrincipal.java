@@ -53,6 +53,7 @@ import pago.frmPagoAdd;
 import pago.frmPagoAddOtros;
 import pago.frmPagoNuevoAdd;
 import pago.frmReimpresionReciboPago;
+import pago.frmReimprimirCupones;
 import pos.frmAbrirCaja;
 import pos.frmCerrarCaja;
 import pos.frmCerrarCaja_;
@@ -637,6 +638,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnPermisos = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem20 = new javax.swing.JMenuItem();
@@ -1573,6 +1575,15 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu7.add(jMenuItem19);
+
+        jMenuItem16.setText(resourceMap.getString("jMenuItem16.text")); // NOI18N
+        jMenuItem16.setName("jMenuItem16"); // NOI18N
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        jMenu7.add(jMenuItem16);
 
         jMenuBar1.add(jMenu7);
 
@@ -2511,8 +2522,13 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
         frmReporteCartera formulario = new frmReporteCartera();
-    mostrarJInternalCentrado(formulario);          // TODO add your handling code here:
+        mostrarJInternalCentrado(formulario);          // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        frmReimprimirCupones formulario = new frmReimprimirCupones();
+        mostrarJInternalCentrado(formulario);  
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
 
    void mostrarAuditoria()
    {
@@ -2654,6 +2670,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;

@@ -143,4 +143,54 @@ public class clsCupones {
         bd.desconectarBaseDeDatos();
         return data;
     }
+     
+     public boolean registrarReimpresion(int idCupon, String id_user, String justificacion)
+    {
+        boolean exito = false;
+        try
+        {           
+            bd.conectarBaseDeDatos();
+            sql = "UPDATE ck_cupones"
+                    + " SET reimpresion_estado = '1', "
+                    + " reimpresion_id_usuario = " + id_user + ","
+                    + " reimpresion_fecha = NOW(),"
+                    + " reimpresion_justificacion = '" + justificacion+"'"
+                    + " WHERE id_cupones = " + idCupon;      
+           
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true;
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+     
+    public String obtenerValorReimpresion(String idDocumento)
+    {          
+        String reimpresion = ""; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT reimpresion_estado" 
+                    + " FROM ck_cupones " 
+                    + " WHERE id_documento = " + idDocumento;
+            System.out.println(sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                reimpresion = bd.resultado.getString("reimpresion_estado");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            reimpresion = "";
+        }     
+        bd.desconectarBaseDeDatos();
+        return reimpresion;
+    }
 }
