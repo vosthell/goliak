@@ -1143,10 +1143,12 @@ public class clsPago {
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();
-             sql = " SELECT a.id_pagos_recibo idPago, a.id_usuario, b.name name_usuario, a.referencia referencia, "
+             sql = " SELECT a.id_pagos_recibo idPago, a.id_usuario, b.name name_usuario, "
+                        + " a.referencia referencia, "
                         + " a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente,"
-                        + " a.fecha_pago fecha_registro, fecha_cobro, f.name name_cobrador"
+                        + " a.fecha_pago fecha_registro, fecha_cobro, f.name name_cobrador,"
+                        + " a.codigo codigo"
                     + " FROM ck_pagos_recibo AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                      + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"
@@ -1173,6 +1175,7 @@ public class clsPago {
                     oListaTemporal.setIdPago(bd.resultado.getInt("idPago"));
                     //oListaTemporal.setIdCtaCobrar(bd.resultado.getInt("idCtaCobrar"));
                     oListaTemporal.setFechaCobro(bd.resultado.getString("fecha_cobro"));
+                    oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
