@@ -839,7 +839,7 @@ public class clsCabecera {
             bd.conectarBaseDeDatos();          
             sql = "UPDATE ck_notas_de_entrega"
                     + " SET id_usuario = "+idUser+", "
-                        //+ " codigo = " + idCliente + ", "
+                        + " codigo = " + idCliente + ", "
                         + " id_cajero = "+idCajero+", "
                         + " total = "+total + ", "
                         + " fecha = '" + fechaVenta + "', "
@@ -1520,7 +1520,8 @@ public class clsCabecera {
                             + " fecha, fact_referencia, comentario,  "
                             + " id_cajero, id_empresa, id_caja_operacion, "
                             + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor,"
-                            + " a.fecha_registro fecha_registro"              
+                            + " a.fecha_registro fecha_registro, "   
+                            + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes"
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
@@ -1545,6 +1546,11 @@ public class clsCabecera {
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
                 oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
                 oListaTemporal.setIdVendedor(bd.resultado.getInt("vendedor"));
+                
+                oListaTemporal.setTarifaCero1(bd.resultado.getDouble("base_tarifa_0_interes"));
+                oListaTemporal.setTarifaIVA1(bd.resultado.getDouble("base_tarifa_iva_interes"));                
+                oListaTemporal.setIVA1(bd.resultado.getDouble("iva_interes"));
+                oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
                 data.add(oListaTemporal);
             }
             //return data;

@@ -376,9 +376,15 @@ private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             
             /*frmEnviarCorreo formulario = new frmEnviarCorreo();
             mostrarJInternalCentrado(formulario); */
-            frmEnviarCorreo ventana = new frmEnviarCorreo(null, true, idCajaAbierta);
-            ventana.setLocationRelativeTo(null);
-            ventana.setVisible(true);
+            //ENVIAR CORREO
+            String email_habilitado = objParametros.consultaValor("email_habilitado");
+            if(email_habilitado.equals("1"))
+            {    
+                frmEnviarCorreo ventana = new frmEnviarCorreo(null, true, idCajaAbierta);
+                ventana.setLocationRelativeTo(null);
+                ventana.setVisible(true);
+            }
+            //ENVIAR CORREO - FIN
         }
         else
         {

@@ -1553,67 +1553,73 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
            
         /*}
         dispose();*/
-        try{
-            String texto = "EL USUARIO: " 
-            + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>"
-                        + "COMENTARIO: " + txtComentario.getText() + "</BR></BR>"
+        //ENVIAR EMAIL
+        String email_habilitado = objParametros.consultaValor("email_habilitado");
+        if(email_habilitado.equals("1"))
+        {    
+            try{
+                String texto = "EL USUARIO: " 
+                + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>"
+                            + "COMENTARIO: " + txtComentario.getText() + "</BR></BR>"
+                            + "<TABLE BORDER=\"1\">"
+                            + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                            + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
+                            + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"                        
+                            + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
+                if(this.chkCredito.isSelected())       
+                {
+                    texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
+                                + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
+                                + "<TR><TD>CUOTA INICIAL ($ " + cuotaInicial + "):</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
+                                + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
+                                + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>"                           
+                                + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
+                }
+                else
+                {
+                    texto = texto  + "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
+                            + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>";
+                }
+
+                texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
+                        + "</TABLE></BR></BR>"
                         + "<TABLE BORDER=\"1\">"
-                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
-                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
-                        + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"                        
-                        + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
-            if(this.chkCredito.isSelected())       
-            {
-                texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
-                            + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
-                            + "<TR><TD>CUOTA INICIAL ($ " + cuotaInicial + "):</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
-                            + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
-                            + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>"                           
-                            + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
+                        + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+
+                String descripcion = "";
+                for(int i=0; i<maxData; i++)
+                {                       
+                    //**************DETALLE*******************//
+                    //factura, idProducto
+                    //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
+                    descripcion = "" + dtmData.getValueAt(i, 3);
+                    cantidad = "" + dtmData.getValueAt(i, 4);
+                    //precio = "" + dtmData.getValueAt(i, 5);                        
+                    //iva = "" + dtmData.getValueAt(i, 7);
+                    //descuento = "" + dtmData.getValueAt(i, 8);
+                    //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
+
+
+                    //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
+                    //        precio, descuento, iva, costo);
+                    texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+
+                }  
+                texto = texto + "</TABLE>";
+
+                javaMail mail = new javaMail();
+                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        
+                for(int i=0;i<dataEmail.size();i=i+1)
+                {
+                    mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
+                }
             }
-            else
-            {
-                texto = texto  + "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
-                        + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>";
-            }
-            
-            texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
-                    + "</TABLE></BR></BR>"
-                    + "<TABLE BORDER=\"1\">"
-                    + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
-            
-            String descripcion = "";
-            for(int i=0; i<maxData; i++)
-            {                       
-                //**************DETALLE*******************//
-                //factura, idProducto
-                //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
-                descripcion = "" + dtmData.getValueAt(i, 3);
-                cantidad = "" + dtmData.getValueAt(i, 4);
-                //precio = "" + dtmData.getValueAt(i, 5);                        
-                //iva = "" + dtmData.getValueAt(i, 7);
-                //descuento = "" + dtmData.getValueAt(i, 8);
-                //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
-                
-                
-                //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
-                //        precio, descuento, iva, costo);
-                texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
-                
-            }  
-            texto = texto + "</TABLE>";
-                
-            javaMail mail = new javaMail();
-            ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        
-            for(int i=0;i<dataEmail.size();i=i+1)
-            {
-                mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
+            catch(Exception e){
+                //e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
             }
         }
-        catch(Exception e){
-            //e.printStackTrace();
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
-        }
+        //ENVIAR EMAIL - FIN
         vaciarDatos();
         return p_exito;     
     }
@@ -1874,24 +1880,30 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     }             
                 }
 
-                try{
-                    String texto = "EL USUARIO: " 
-                                    + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
-                                    + "COMENTARIO: " + txtComentario.getText() + "</BR>"
-                                    + "<TABLE BORDER=\"1\">"
-                                    + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
-                                    + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
-                    texto = texto + "</TABLE></BR>"; 
-                    javaMail mail = new javaMail();
-                    ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
-                    for(int i=0;i<dataEmail.size();i=i+1)
-                    {
-                        mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+                //ENVIAR CORREO
+                String email_habilitado = objParametros.consultaValor("email_habilitado");
+                if(email_habilitado.equals("1"))
+                {    
+                    try{
+                        String texto = "EL USUARIO: " 
+                                        + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
+                                        + "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                                        + "<TABLE BORDER=\"1\">"
+                                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
+                        texto = texto + "</TABLE></BR>"; 
+                        javaMail mail = new javaMail();
+                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
+                        for(int i=0;i<dataEmail.size();i=i+1)
+                        {
+                            mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
+                        }
                     }
-                }
-                catch(Exception e){
-                    //e.printStackTrace();
-                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
+                    catch(Exception e)
+                    {
+                        //e.printStackTrace();
+                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 vaciarDatos();
             } //if(txtComentario.getText().equals(""))               

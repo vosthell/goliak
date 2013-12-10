@@ -19,6 +19,7 @@ import clases.clsEmail;
 import clases.clsImpuestos;
 import clases.clsKardex;
 import clases.clsPago;
+import clases.clsParametros;
 import clases.clsPrecio;
 import clases.clsProducto;
 import clases.clsUtils;
@@ -47,6 +48,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
     clsKardex objKardex = new clsKardex();
     clsPago objPago = new clsPago();
     clsEmail objEmail = new clsEmail();
+    clsParametros objParametros = new clsParametros();
     
     MiModelo dtmData = new MiModelo();
     String idCajero="";
@@ -90,6 +92,12 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtIVA.setText("" + dataCabecera.get(0).getIVA());
             txtInteresPorcentaje.setText("" + dataCabecera.get(0).getPorcentajeInteres());
             txtDatoCredito.setText("NO");
+            
+            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
+            txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
+            txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
+            txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
+            txtTotal1.setText("" + dataCabecera.get(0).getTotal1());
             
             codigoCliente = dataCabecera.get(0).getCodigo();
             btnConfirmar.setEnabled(true);
@@ -804,55 +812,61 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
        JOptionPane.showMessageDialog(this, "Error al confirmar Nota de entrega", "Atención!", JOptionPane.ERROR_MESSAGE);  
    }
    
-   try{
-        String texto = "EL USUARIO: " 
-        + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
-                + "COMENTARIO: " + txtComentario.getText() + "</BR>"
-                + "<TABLE BORDER=\"1\">"
-                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
-                        + "<TR><TD>FECHA DE REGISTRO:</TD><TD>" + txtFechaRegistro.getText() + "</TD></TR>"
-                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + txtFechaVenta.getText() + "</TD></TR>"
-                        + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"
-                        + "<TR><TD>CREDITO:</TD><TD>" + txtDatoCredito.getText() + "</TD></TR>"
-                        + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
+   //ENVIO DE CORREO
+   String email_habilitado = objParametros.consultaValor("email_habilitado");
+   if(email_habilitado.equals("1"))
+   {
+        try{
+             String texto = "EL USUARIO: " 
+             + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
+                     + "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                     + "<TABLE BORDER=\"1\">"
+                             + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                             + "<TR><TD>FECHA DE REGISTRO:</TD><TD>" + txtFechaRegistro.getText() + "</TD></TR>"
+                             + "<TR><TD>FECHA DE VENTA:</TD><TD>" + txtFechaVenta.getText() + "</TD></TR>"
+                             + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"
+                             + "<TR><TD>CREDITO:</TD><TD>" + txtDatoCredito.getText() + "</TD></TR>"
+                             + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
 
-        if(txtDatoCredito.getText().equals("SI"))
-        {
-            texto = texto   + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
-                        + "<TR><TD>CUOTA INICIAL:</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
-                        + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
-                        + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>"                           
-                        + "<TR><TD>PLAZO:</TD><TD>" + txtPlazo.getText() + "</TD></TR>";
-        }
-        else
-        {
-            texto = texto  + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>";
-        }
-        texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
-                    + "</TABLE></BR></BR>"
-                    + "<TABLE BORDER=\"1\">"
-                    + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
-            
-        String descripcion = "";
-        for(int i=0; i<maxData; i++)        
-        {     
-            descripcion = "" + dtmData.getValueAt(i, 3);
-            cantidad = "" + dtmData.getValueAt(i, 4);           
-            texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
-        }  
-        texto = texto + "</TABLE>";
+             if(txtDatoCredito.getText().equals("SI"))
+             {
+                 texto = texto   + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
+                             + "<TR><TD>CUOTA INICIAL:</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
+                             + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
+                             + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>"                           
+                             + "<TR><TD>PLAZO:</TD><TD>" + txtPlazo.getText() + "</TD></TR>";
+             }
+             else
+             {
+                 texto = texto  + "<TR><TD>TOTAL:</TD><TD>" + txtTotal1.getText() + "</TD></TR>";
+             }
+             texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
+                         + "</TABLE></BR></BR>"
+                         + "<TABLE BORDER=\"1\">"
+                         + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
 
-        javaMail mail = new javaMail();
-        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
-        for(int i=0;i<dataEmail.size();i=i+1)
-        {
-            mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
-        }
-    }
-    catch(Exception e){
-        //e.printStackTrace();
-        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
-    }
+             String descripcion = "";
+             for(int i=0; i<maxData; i++)        
+             {     
+                 descripcion = "" + dtmData.getValueAt(i, 3);
+                 cantidad = "" + dtmData.getValueAt(i, 4);           
+                 texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+             }  
+             texto = texto + "</TABLE>";
+
+             javaMail mail = new javaMail();
+             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
+             for(int i=0;i<dataEmail.size();i=i+1)
+             {
+                 mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
+             }
+         }
+         catch(Exception e){
+             //e.printStackTrace();
+             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+         }
+   }
+   //ENVIO DE CORREO - FIN
    dispose();
    
 }//GEN-LAST:event_btnConfirmarActionPerformed

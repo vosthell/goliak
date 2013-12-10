@@ -1863,42 +1863,48 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             strDescuento = "DESCUENTO";
         if(saldo>0)
             strCredito = "CREDITO";
-        try{
-           String texto = "EL USUARIO: " 
-                   + main.nameUser+ ", REGISTRÓ UN " + strDescuento + " " + strCredito + ".</BR></BR>"
-                   + "COMENTARIO: " + comentario + "</BR>"
-                   + "<TABLE BORDER=\"1\">"
-                           + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
-                           + "<TR><TD>CLIENTE:</TD><TD>" + nombre + "</TD></TR>"
-                           + "<TR><TD>CREDITO:</TD><TD>" + xcredito + "</TD></TR>"
-                           + "<TR><TD>DESCUENTO:</TD><TD>" + descuento + "</TD></TR>"
-                           + "<TR><TD>TOTAL DE FACTURA:</TD><TD>" + totalFactura + "</TD></TR>"           
-                    + "</TABLE></BR>"; 
+        //ENVIO DE CORREO
+        String email_habilitado = objParametros.consultaValor("email_habilitado");
+        if(email_habilitado.equals("1"))
+        {    
+            try{
+               String texto = "EL USUARIO: " 
+                       + main.nameUser+ ", REGISTRÓ UN " + strDescuento + " " + strCredito + ".</BR></BR>"
+                       + "COMENTARIO: " + comentario + "</BR>"
+                       + "<TABLE BORDER=\"1\">"
+                               + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                               + "<TR><TD>CLIENTE:</TD><TD>" + nombre + "</TD></TR>"
+                               + "<TR><TD>CREDITO:</TD><TD>" + xcredito + "</TD></TR>"
+                               + "<TR><TD>DESCUENTO:</TD><TD>" + descuento + "</TD></TR>"
+                               + "<TR><TD>TOTAL DE FACTURA:</TD><TD>" + totalFactura + "</TD></TR>"           
+                        + "</TABLE></BR>"; 
 
-           javaMail mail = new javaMail();
-           //DESCUENTO
-           if(descuento>0)
-           {
-               ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("6");        
-               for(int i=0;i<dataEmail.size();i=i+1)
+               javaMail mail = new javaMail();
+               //DESCUENTO
+               if(descuento>0)
                {
-                   mail.send(dataEmail.get(i).getEmail(), "DESCUENTO - FACTURA", texto);
+                   ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("6");        
+                   for(int i=0;i<dataEmail.size();i=i+1)
+                   {
+                       mail.send(dataEmail.get(i).getEmail(), "DESCUENTO - FACTURA", texto);
+                   }
+               }
+               //CREDITO 
+               if(saldo>0)
+               {   
+                   ArrayList<clsEmail> dataEmail2 = objEmail.consultarEmails("7");        
+                   for(int i=0;i<dataEmail2.size();i=i+1)
+                   {
+                       mail.send(dataEmail2.get(i).getEmail(), "CREDITO - FACTURA", texto);
+                   }
                }
            }
-           //CREDITO 
-           if(saldo>0)
-           {   
-               ArrayList<clsEmail> dataEmail2 = objEmail.consultarEmails("7");        
-               for(int i=0;i<dataEmail2.size();i=i+1)
-               {
-                   mail.send(dataEmail2.get(i).getEmail(), "CREDITO - FACTURA", texto);
-               }
-           }
-       }
-       catch(Exception e){
-           //e.printStackTrace();
-           JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
-       }       
+           catch(Exception e){
+               //e.printStackTrace();
+               JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+           }       
+        }
+        //ENVIO DE CORREO - FIN
     }
 }//GEN-LAST:event_btnImprimirActionPerformed
 

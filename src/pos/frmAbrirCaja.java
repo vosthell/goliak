@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import clases.clsCaja;
 import clases.clsComboBox;
 import clases.clsFacturero;
+import clases.clsParametros;
 import clases.javaMail;
 import java.util.ArrayList;
 import stinventario.frmPrincipal;
@@ -32,6 +33,7 @@ public class frmAbrirCaja extends javax.swing.JDialog {
     clsCabecera objCabecera = new clsCabecera();
     clsFacturero objFacturero = new clsFacturero();
     String facturacionManual;
+    clsParametros objParametros = new clsParametros();
     //String primeraVezManual;
     //String primerValorManual;
     /** Creates new form frmAbrirCaja */
@@ -342,10 +344,16 @@ private void btnAbrirCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                     + txtUsuario.getText().toString()
                     + ", ABRIO CAJA CON: $ " + txtValor.getText().toString() + "</BR>"
                     + " OBSERVACION: " + txtObservacion.getText().toString());*/
-            frmEnviarCorreoAbrir ventana = new frmEnviarCorreoAbrir(null, true, txtValor.getText().toString(), txtObservacion.getText().toString());
-            ventana.setLocationRelativeTo(null);
-            ventana.setVisible(true);
-  
+            
+            //ENVIAR CORREO
+            String email_habilitado = objParametros.consultaValor("email_habilitado");
+            if(email_habilitado.equals("1"))
+            {    
+                frmEnviarCorreoAbrir ventana = new frmEnviarCorreoAbrir(null, true, txtValor.getText().toString(), txtObservacion.getText().toString());
+                ventana.setLocationRelativeTo(null);
+                ventana.setVisible(true);
+            }           
+            //ENVIAR CORREO FIN
             //********************//
             exito = objCaja.consultarCajaAbierta(index.main.idUser);
             if(exito)

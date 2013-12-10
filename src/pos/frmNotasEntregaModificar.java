@@ -48,7 +48,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import static pos.frmNotasEntrega1.codigoCliente;
+
 
 
 /**
@@ -131,11 +131,11 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
             txtIVA.setText("" + dataCabecera.get(0).getIVA());
             
-            /*txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
+            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
             txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
             txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
-            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());*/
+            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
             
             txtTarifaIVA1.setText("0.00");
             txtTarifaCero1.setText("0.00");
@@ -499,7 +499,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        btnMostrarArturo = new javax.swing.JButton();
+        btnMostrarListado = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
@@ -514,6 +514,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         cmbVendedor = new javax.swing.JComboBox();
         txtFechaVenta = new com.toedter.calendar.JDateChooser();
         jLabel27 = new javax.swing.JLabel();
+        btnModificarCliente = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtCodigoProducto = new javax.swing.JTextField();
@@ -587,12 +588,13 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
-        btnMostrarArturo.setIcon(resourceMap.getIcon("btnMostrarArturo.icon")); // NOI18N
-        btnMostrarArturo.setText(resourceMap.getString("btnMostrarArturo.text")); // NOI18N
-        btnMostrarArturo.setName("btnMostrarArturo"); // NOI18N
-        btnMostrarArturo.addActionListener(new java.awt.event.ActionListener() {
+        btnMostrarListado.setIcon(resourceMap.getIcon("btnMostrarListado.icon")); // NOI18N
+        btnMostrarListado.setText(resourceMap.getString("btnMostrarListado.text")); // NOI18N
+        btnMostrarListado.setEnabled(false);
+        btnMostrarListado.setName("btnMostrarListado"); // NOI18N
+        btnMostrarListado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMostrarArturoActionPerformed(evt);
+                btnMostrarListadoActionPerformed(evt);
             }
         });
 
@@ -602,6 +604,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
+        txtCedula.setEditable(false);
         txtCedula.setText(resourceMap.getString("txtCedula.text")); // NOI18N
         txtCedula.setName("txtCedula"); // NOI18N
         txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -615,6 +618,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         txtNombreCliente.setName("txtNombreCliente"); // NOI18N
 
         btnBuscar.setText(resourceMap.getString("btnBuscar.text")); // NOI18N
+        btnBuscar.setEnabled(false);
         btnBuscar.setName("btnBuscar"); // NOI18N
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -650,13 +654,21 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         jLabel27.setText(resourceMap.getString("jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
 
+        btnModificarCliente.setText(resourceMap.getString("btnModificarCliente.text")); // NOI18N
+        btnModificarCliente.setName("btnModificarCliente"); // NOI18N
+        btnModificarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarClienteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnMostrarArturo)
+                .addComponent(btnMostrarListado)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel26)
@@ -665,11 +677,13 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCedula, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar))
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                    .addComponent(cmbVendedor, 0, 290, Short.MAX_VALUE))
+                        .addComponent(btnBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnModificarCliente))
+                    .addComponent(txtNombreCliente)
+                    .addComponent(cmbVendedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel23)
@@ -689,22 +703,23 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnMostrarArturo, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                    .addComponent(btnMostrarListado, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtNotaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel27)
-                                    .addComponent(jLabel23)
-                                    .addComponent(btnBuscar))
+                                    .addComponent(jLabel23))
                                 .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, 0, 52, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
-                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnBuscar)
+                                .addComponent(btnModificarCliente))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1130,7 +1145,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMostrarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -1197,11 +1212,11 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                                 .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                            .addComponent(txtIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                            .addComponent(txtDescuento1, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))))
+                            .addComponent(txtTotalFinal)
+                            .addComponent(txtIVA1)
+                            .addComponent(txtDescuento1)
+                            .addComponent(txtTarifaCero1)
+                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -1323,7 +1338,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                         .addComponent(jLabel22)
                         .addGap(18, 18, 18)
                         .addComponent(lblUsuario)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(chkAnulada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnGuardar)
@@ -1343,7 +1358,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 22, Short.MAX_VALUE)
+                .addGap(18, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)
@@ -1371,7 +1386,10 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         }
         else
         {
+            //VACIO DATOS PORQUE SI LE CAMBIO CLIENTE ME PUEDE AFECTAR LSO DESCUENTOS DE RIZZO
             //vaciarDatos();
+            objUtils.vaciarTabla(dtmData);   
+            
             txtCedula.setText(dataCliente.get(0).getCedula());
             codigoCliente = dataCliente.get(0).getCodigo();            
             this.txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
@@ -2033,12 +2051,18 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         
     }
 
-    private void btnMostrarArturoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarArturoActionPerformed
+    private void btnMostrarListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarListadoActionPerformed
+        //VACIO DATOS PORQUE SI LE CAMBIO CLIENTE ME PUEDE AFECTAR LSO DESCUENTOS DE RIZZO
+        //vaciarDatos();
+        objUtils.vaciarTabla(dtmData);   
+        txtCedula.setText("");
+        txtNombreCliente.setText("");
+        
         frmListClientes ventana = new frmListClientes(null, true, "12");
         //new inventariopdf.JDEscoger(this, true);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
-    }//GEN-LAST:event_btnMostrarArturoActionPerformed
+    }//GEN-LAST:event_btnMostrarListadoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
         frmListProductos ventana = new frmListProductos(null, true, "11", codigoCliente);        
@@ -2773,6 +2797,38 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
     }
 }//GEN-LAST:event_cmbCuotaItemStateChanged
 
+    private void btnModificarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarClienteActionPerformed
+         int seleccion = JOptionPane.showOptionDialog(
+                                        this, // Componente padre
+                                        "Si Modifica el cliente, se eliminara el listado de productos. ¿Desea continuar?", //Mensaje
+                                        "Atención", // Título
+                                        JOptionPane.YES_NO_CANCEL_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,    // null para icono por defecto.
+                                        new Object[] { "Si", "No"},    // null para YES, NO y CANCEL
+                                        "Si");
+        if (seleccion != -1)
+        {
+            if((seleccion + 1)==1)
+            {
+                try
+                {   
+                    btnBuscar.setEnabled(true);
+                    btnMostrarListado.setEnabled(true);
+                    txtCedula.setEditable(true);
+                }
+                catch(Exception e)
+                {
+                    System.out.println("ERROR: " + e.toString());
+                }
+            }
+            else
+            {
+                //JOptionPane.showMessageDialog(this, "NO", "Atención!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnModificarClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2782,7 +2838,8 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnImprimir;
-    private javax.swing.JButton btnMostrarArturo;
+    private javax.swing.JButton btnModificarCliente;
+    private javax.swing.JButton btnMostrarListado;
     public static javax.swing.JButton btnMostrarProductos;
     private javax.swing.JCheckBox chkAnulada;
     private javax.swing.JCheckBox chkCredito;
