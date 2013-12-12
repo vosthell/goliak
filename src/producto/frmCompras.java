@@ -14,11 +14,14 @@ import clases.clsAuditoria;
 import clases.clsCabecera;
 import clases.clsComboBox;
 import clases.clsDetalle;
+import clases.clsEmail;
 import clases.clsImpuestos;
+import clases.clsParametros;
 import clases.clsProducto;
 import clases.clsProveedor;
 import clases.clsProvincia;
 import clases.clsUtils;
+import clases.javaMail;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
@@ -52,6 +55,8 @@ public class frmCompras extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsAuditoria objAuditoria = new clsAuditoria();
     clsProvincia objProvincia = new clsProvincia();
+    clsParametros objParametros = new clsParametros();
+    clsEmail objEmail = new clsEmail();
       
     MiModelo dtmData = new MiModelo();
     //NOMBRE USUARIO
@@ -915,12 +920,12 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 txtBaseTarifaCero.getText(), txtFacturaReferencia.getText(), documento, 
                 txtIRBP.getText(), txtBaseICE.getText(), txtICE.getText(), fechaCompra,
                 txtAutorizacion.getText(), objGastoSelect.getCodigo());
-        
+        int maxData = 0;
         if(exito)
         {
             try
             {                          
-                int maxData = dtmData.getRowCount();
+                maxData = dtmData.getRowCount();
                 int ultmFactura = objCabecera.obtenerUltimaFacturaCompras(main.idUser);
                 //System.out.println("S: " + ultmFactura);
                 
@@ -993,6 +998,61 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             JOptionPane.showMessageDialog(this, "Error al ingresar la información", "Atención!", JOptionPane.ERROR_MESSAGE);      
             p_exito = false;
         }
+        
+        //ENVIAR EMAIL
+        String email_habilitado = objParametros.consultaValor("email_habilitado");
+        if(email_habilitado.equals("1"))
+        {    
+            try{
+                String texto = "EL USUARIO: " 
+                + main.nameUser+ ", REGISTRÓ LA COMPRA: " + txtCodigoFactura.getText() + "</BR>"
+                            //+ "COMENTARIO: " + txtComentario.getText() + "</BR></BR>"
+                            + "<TABLE BORDER=\"1\">"
+                                + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                                + "<TR><TD>FECHA DE COMPRA:</TD><TD>" + fechaCompra + "</TD></TR>"
+                                + "<TR><TD>PROVEEDOR:</TD><TD>" + txtNombreProveedor.getText() + "</TD></TR>"                        
+                                //+ "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";               
+                                //+ "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
+                                + "<TR><TD>TOTAL:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
+                                //texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
+                            + "</TABLE></BR></BR>"
+                            + "<TABLE BORDER=\"1\">"
+                            + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+
+                String descripcion = "";
+                for(int i=0; i<maxData; i++)
+                {                       
+                    //**************DETALLE*******************//
+                    //factura, idProducto
+                    //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
+                    descripcion = "" + dtmData.getValueAt(i, 3);
+                    cantidad = Double.parseDouble(""+dtmData.getValueAt(i, 4));
+                    //precio = "" + dtmData.getValueAt(i, 5);                        
+                    //iva = "" + dtmData.getValueAt(i, 7);
+                    //descuento = "" + dtmData.getValueAt(i, 8);
+                    //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
+
+
+                    //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
+                    //        precio, descuento, iva, costo);
+                    texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+
+                }  
+                texto = texto + "</TABLE>";
+
+                javaMail mail = new javaMail();
+                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("8");        
+                for(int i=0;i<dataEmail.size();i=i+1)
+                {
+                    mail.send(dataEmail.get(i).getEmail(), "REGISTRO COMPRA", texto);
+                }
+            }
+            catch(Exception e){
+                //e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        //ENVIAR EMAIL - FIN
         return p_exito;     
     }
     

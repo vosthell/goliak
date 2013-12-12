@@ -28,7 +28,8 @@ public class clsCompras {
     private double base_tarifa_0;
     private double descuento;
     private double iva;
-    private String fecha;    
+    private String fecha;   
+    private String fecha_registro;  
     private String fecha_recibe;  
     private double irbp;
     private double baseIce;
@@ -185,6 +186,16 @@ public class clsCompras {
     public void setFecha(String fecha)
     {
         this.fecha = fecha;
+    }
+    
+    public String getFechaRegistro()
+    {
+        return fecha_registro;
+    }
+    
+    public void setFechaRegistro(String fecha_registro)
+    {
+        this.fecha_registro = fecha_registro;
     }
     
     public String getFechaRecibe()
@@ -745,7 +756,7 @@ public class clsCompras {
                         + " saldo, efectivo, fecha::date fecha, fact_referencia, comentario, id_cajero, "
                         + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
                         + " base_tarifa_iva, tipo_documento, estado_tramite,"
-                        + " irbp, baseice, ice, autorizacion, id_cuenta "
+                        + " irbp, baseice, ice, autorizacion, id_cuenta, fecha_registro "
                     + " FROM ck_cabecera_movi_compras AS a "
                     + " JOIN ck_proveedor AS b ON a.id_proveedor = b.id_proveedor"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
@@ -775,6 +786,7 @@ public class clsCompras {
                     oListaTemporal.setBaseIce(bd.resultado.getDouble("baseice"));
                     oListaTemporal.setIce(bd.resultado.getDouble("ice"));
                     oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
                     oListaTemporal.setAutorizacion(bd.resultado.getString("autorizacion"));
                     oListaTemporal.setIdCuenta(bd.resultado.getInt("id_cuenta"));
                     data.add(oListaTemporal);

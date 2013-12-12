@@ -15,12 +15,15 @@ import clases.clsCabecera;
 import clases.clsComboBox;
 import clases.clsCompras;
 import clases.clsDetalle;
+import clases.clsEmail;
 import clases.clsImpuestos;
 import clases.clsKardex;
+import clases.clsParametros;
 import clases.clsProducto;
 import clases.clsProveedor;
 import clases.clsProvincia;
 import clases.clsUtils;
+import clases.javaMail;
 import index.main;
 import java.awt.Dimension;
 import java.text.DecimalFormat;
@@ -46,6 +49,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
     clsCompras objCompras = new clsCompras();
     clsKardex objKardex = new clsKardex();
     clsProvincia objProvincia = new clsProvincia();
+    clsParametros objParametros = new clsParametros();
+    clsEmail objEmail = new clsEmail();
     
     int idCabeceraCompra = 0;
       
@@ -76,7 +81,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtIRBP.setText("" + dataCompra.get(0).getIrbp());
         txtBaseICE.setText("" + dataCompra.get(0).getBaseIce());
         txtICE.setText("" + dataCompra.get(0).getIce());
-        txtFecha.setText(dataCompra.get(0).getFecha());   
+        txtFecha.setText(dataCompra.get(0).getFecha());  
+        txtFechaRegistro.setText(dataCompra.get(0).getFechaRegistro()); 
         txtAutorizacion.setText(dataCompra.get(0).getAutorizacion());
         
         if(dataCompra.get(0).getTipoDocumento().equals("V"))
@@ -196,6 +202,8 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
         txtBaseICE = new javax.swing.JTextField();
         txtIRBP = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtFechaRegistro = new javax.swing.JTextField();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmComprasRecibir.class);
         setBackground(resourceMap.getColor("Form.background")); // NOI18N
@@ -306,10 +314,9 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNombreProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 15, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(txtAutorizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -539,6 +546,12 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        txtFechaRegistro.setText(resourceMap.getString("txtFechaRegistro.text")); // NOI18N
+        txtFechaRegistro.setName("txtFechaRegistro"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -546,14 +559,17 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGuardar))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 12, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -564,7 +580,10 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGuardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(jLabel4)
+                    .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -572,20 +591,21 @@ public class frmComprasRecibir extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
+      int maxData = 0; 
+      double cantidad = 0.00;
       try
         {             
              
             if(objCompras.recibirMercaderia(idCabeceraCompra, main.idUser))
             {
-                int maxData = dtmData.getRowCount();
+                maxData = dtmData.getRowCount();
                 //int ultmFactura = objCabecera.obtenerUltimaFacturaCompras(main.idUser);
                 //System.out.println("S: " + ultmFactura);
                 for(int i=0; i<maxData; i++)
                 {                       
                     //factura, idProducto
                     int idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
-                    double cantidad = Double.parseDouble(""+dtmData.getValueAt(i, 4));
+                    cantidad = Double.parseDouble(""+dtmData.getValueAt(i, 4));
                     double precio = Double.parseDouble(""+dtmData.getValueAt(i, 5));
                     //String iva = ""+dtmData.getValueAt(i, 7);
                     //String descuento = ""+dtmData.getValueAt(i, 8);
@@ -643,6 +663,50 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             System.out.println(e.getMessage());
 
         }
+        
+        //ENVIO DE CORREO
+        String email_habilitado = objParametros.consultaValor("email_habilitado");
+        if(email_habilitado.equals("1"))
+        {
+             try{
+                  String texto = "EL USUARIO: " 
+                  + main.nameUser+ ", CONFIRMO LA COMPRA: " + txtCodigoFactura.getText() + "</BR></BR>"
+                          //+ "COMENTARIO: " + txtComentario.getText() + "</BR>"
+                          + "<TABLE BORDER=\"1\">"
+                                  + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
+                                  + "<TR><TD>FECHA DE REGISTRO:</TD><TD>" + txtFechaRegistro.getText() + "</TD></TR>"
+                                  + "<TR><TD>FECHA DE FACTURA:</TD><TD>" + txtFecha.getText() + "</TD></TR>"
+                                  + "<TR><TD>PROVEEDOR:</TD><TD>" + txtNombreProveedor.getText() + "</TD></TR>"
+                                  //+ "<TR><TD>CREDITO:</TD><TD>" + txtDatoCredito.getText() + "</TD></TR>"
+                                  //+ "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";                 
+                                  + "<TR><TD>TOTAL:</TD><TD>" + txtTotal.getText() + "</TD></TR>"                  
+                  //texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
+                              + "</TABLE></BR></BR>"
+                              + "<TABLE BORDER=\"1\">"
+                              + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+
+                  String descripcion = "";
+                  for(int i=0; i<maxData; i++)        
+                  {     
+                      descripcion = "" + dtmData.getValueAt(i, 3);
+                      cantidad = Double.parseDouble(""+dtmData.getValueAt(i, 4));      
+                      texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+                  }  
+                  texto = texto + "</TABLE>";
+
+                  javaMail mail = new javaMail();
+                  ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("9");        
+                  for(int i=0;i<dataEmail.size();i=i+1)
+                  {
+                      mail.send(dataEmail.get(i).getEmail(), "COMPRA - CONFIRMACION", texto);
+                  }
+              }
+              catch(Exception e){
+                  //e.printStackTrace();
+                  JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+              }
+        }
+        //ENVIO DE CORREO - FIN
 }//GEN-LAST:event_btnGuardarActionPerformed
 
     public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
@@ -709,6 +773,7 @@ private void tblDataKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -722,6 +787,7 @@ private void tblDataKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl
     private javax.swing.JTextField txtDescuento;
     private javax.swing.JTextField txtFacturaReferencia;
     private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtFechaRegistro;
     private javax.swing.JTextField txtICE;
     private javax.swing.JTextField txtIRBP;
     private javax.swing.JTextField txtIVA;
