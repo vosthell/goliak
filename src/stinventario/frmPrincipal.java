@@ -48,6 +48,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Timer;
+import nomina.frmAdelantos;
 import pago.frmEstadoDeCuenta;
 import pago.frmPagoAdd;
 import pago.frmPagoAddOtros;
@@ -648,6 +649,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu11 = new javax.swing.JMenu();
         jMenuItem25 = new javax.swing.JMenuItem();
         jMenuItem24 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu12 = new javax.swing.JMenu();
         jMenuItem30 = new javax.swing.JMenuItem();
         mnGrupoProductoAdd = new javax.swing.JMenuItem();
@@ -1635,7 +1637,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu9);
 
         jMenu11.setText(resourceMap.getString("jMenu11.text")); // NOI18N
-        jMenu11.setEnabled(false);
         jMenu11.setName("jMenu11"); // NOI18N
 
         jMenuItem25.setText(resourceMap.getString("jMenuItem25.text")); // NOI18N
@@ -1645,6 +1646,15 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem24.setText(resourceMap.getString("jMenuItem24.text")); // NOI18N
         jMenuItem24.setName("jMenuItem24"); // NOI18N
         jMenu11.add(jMenuItem24);
+
+        jMenuItem17.setText(resourceMap.getString("jMenuItem17.text")); // NOI18N
+        jMenuItem17.setName("jMenuItem17"); // NOI18N
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
+        jMenu11.add(jMenuItem17);
 
         jMenuBar1.add(jMenu11);
 
@@ -2530,6 +2540,11 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         mostrarJInternalCentrado(formulario);  
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        frmAdelantos formulario = new frmAdelantos();
+        mostrarJInternalCentrado(formulario);
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
+
    void mostrarAuditoria()
    {
         permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmAuditoria");
@@ -2671,6 +2686,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
