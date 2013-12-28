@@ -391,7 +391,9 @@ public class clsCompras {
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE fecha::date >= '" + fechaInicio + "'"
-                    + " AND fecha::date <= '" + fechaFin + "'";
+                    + " AND fecha::date <= '" + fechaFin + "'"
+                    //+ " AND transferencia = 'N'"
+                    ;
             if(anuladas.equals("T"))//MOSTRAR TODAS
             {
                 sql = sql + " AND a.estado = 'A' OR a.estado='N'";
@@ -468,7 +470,9 @@ public class clsCompras {
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE fecha_confirmacion::date >= '" + fechaInicio + "'"
-                    + " AND fecha_confirmacion::date <= '" + fechaFin + "'";
+                    + " AND fecha_confirmacion::date <= '" + fechaFin + "'"
+                    //+ " AND transferencia = 'N'"
+                     ;
              if(anuladas.equals("T"))//MOSTRAR TODAS
             {
                 sql = sql + " AND a.estado = 'A' OR a.estado='N'";
@@ -542,7 +546,8 @@ public class clsCompras {
                         + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
                     + " FROM ck_notas_de_entrega AS a "
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
-                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario ";
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
+                     ;
                    
             
             if(anuladas.equals("T"))//MOSTRAR TODAS
@@ -562,7 +567,8 @@ public class clsCompras {
             {
               sql = sql + " AND b.cedula = '" + cedula + "'";  
             }
-            sql = sql + " ORDER BY fecha DESC";
+            sql = sql //+ " AND transferencia = 'N'"
+                    + " ORDER BY fecha DESC";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
                
@@ -944,6 +950,7 @@ public class clsCompras {
                     + " ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE a.estado = 'A'"
+                    //+ " AND transferencia = 'N'"
                     + " ORDER BY fecha DESC";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);

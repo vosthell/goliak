@@ -1684,6 +1684,7 @@ public class clsCabecera {
                     + " WHERE fecha::date >= '" + fechaInicio + "'" 
                     + " AND fecha::date <= '" + fechaFin + "'" 
                     + " AND a.estado = 'A'" 
+                    + " AND a.transferencia = 'N'"
                     + " AND id_usuario <> 1 ";
             if (soloCredito.equals("S"))
             {
@@ -1739,7 +1740,9 @@ public class clsCabecera {
                   + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
                   + " JOIN ck_personal AS c ON vendedor = id_personal" 
                   + " WHERE a.estado = 'A' " 
-                  + " And id_usuario <> 1";
+                  + " And id_usuario <> 1"
+                   + " AND a.transferencia = 'N'"
+                    ;
             if (soloCredito.equals("S"))
             {
                 sql = sql + " AND saldo > 0";
