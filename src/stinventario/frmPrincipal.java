@@ -665,6 +665,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnOperacionesCaja = new javax.swing.JMenuItem();
         jSeparator14 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
+        mnTranferencias = new javax.swing.JMenu();
+        jMenuItem27 = new javax.swing.JMenuItem();
+        jMenu20 = new javax.swing.JMenu();
+        jMenu21 = new javax.swing.JMenu();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem26 = new javax.swing.JMenuItem();
 
@@ -1777,6 +1781,23 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
+        mnTranferencias.setText(resourceMap.getString("mnTranferencias.text")); // NOI18N
+        mnTranferencias.setName("mnTranferencias"); // NOI18N
+
+        jMenuItem27.setText(resourceMap.getString("jMenuItem27.text")); // NOI18N
+        jMenuItem27.setName("jMenuItem27"); // NOI18N
+        mnTranferencias.add(jMenuItem27);
+
+        jMenu20.setText(resourceMap.getString("jMenu20.text")); // NOI18N
+        jMenu20.setName("jMenu20"); // NOI18N
+        mnTranferencias.add(jMenu20);
+
+        jMenu21.setText(resourceMap.getString("jMenu21.text")); // NOI18N
+        jMenu21.setName("jMenu21"); // NOI18N
+        mnTranferencias.add(jMenu21);
+
+        jMenuBar1.add(mnTranferencias);
+
         jMenu10.setText(resourceMap.getString("jMenu10.text")); // NOI18N
         jMenu10.setName("jMenu10"); // NOI18N
 
@@ -2670,6 +2691,8 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenu jMenu18;
     private javax.swing.JMenu jMenu19;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu20;
+    private javax.swing.JMenu jMenu21;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -2697,6 +2720,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem24;
     private javax.swing.JMenuItem jMenuItem25;
     private javax.swing.JMenuItem jMenuItem26;
+    private javax.swing.JMenuItem jMenuItem27;
     private javax.swing.JMenuItem jMenuItem28;
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
@@ -2764,6 +2788,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem mnProvDel;
     private javax.swing.JMenuItem mnProvMod;
     private javax.swing.JMenuItem mnReimpresion;
+    private javax.swing.JMenu mnTranferencias;
     private javax.swing.JMenuItem mnUsuario;
     private org.jdesktop.swingx.JXHyperlink prodAdd;
     private org.jdesktop.swingx.JXHyperlink prodDel;

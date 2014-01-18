@@ -796,6 +796,32 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="mnTranferencias">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="mnTranferencias.text"/>
+            <Property name="name" type="java.lang.String" value="mnTranferencias" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem27">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItem27.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItem27" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="jMenu20">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenu20.text"/>
+                <Property name="name" type="java.lang.String" value="jMenu20" noResource="true"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu21">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenu21.text"/>
+                <Property name="name" type="java.lang.String" value="jMenu21" noResource="true"/>
+              </Properties>
+            </Menu>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu10">
           <Properties>
             <Property name="text" type="java.lang.String" resourceKey="jMenu10.text"/>

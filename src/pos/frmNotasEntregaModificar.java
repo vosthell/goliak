@@ -743,6 +743,11 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         txtCodigoProducto.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtCodigoProducto.setText(resourceMap.getString("txtCodigoProducto.text")); // NOI18N
         txtCodigoProducto.setName("txtCodigoProducto"); // NOI18N
+        txtCodigoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoProductoActionPerformed(evt);
+            }
+        });
         txtCodigoProducto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCodigoProductoKeyTyped(evt);
@@ -1358,7 +1363,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 26, Short.MAX_VALUE)
+                .addGap(18, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)
@@ -2089,9 +2094,12 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                 String costo = dataProducto.get(0).getCosto().toString();
                 txtCosto.setText(costo);
                 //CARGAR PRECIOS DEL PRODUCTO
-                //SI ES PARA BETTY RODAS COLOCAR COSTO
+                
                 cmbPrecio.removeAllItems();   
+                //SI ES PARA BETTY RODAS COLOCAR COSTO
                 if((codigoCliente==202)||(codigoCliente==3054))
+                //SI ES PARA JORGE RIZZO MUÑOZ COLOCAR COSTO
+                //if((codigoCliente==114))
                 {
                      clsComboBox oItem = new clsComboBox(costo, "1 - " + costo);
                      cmbPrecio.addItem(oItem);
@@ -2828,6 +2836,10 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
             }
         }
     }//GEN-LAST:event_btnModificarClienteActionPerformed
+
+    private void txtCodigoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoProductoActionPerformed
 
     /**
      * @param args the command line arguments
