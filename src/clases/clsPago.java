@@ -264,7 +264,7 @@ public class clsPago {
     
     public boolean insertarRegistroReciboCobro(String idUser, String factRef, String valor, 
             String idCajaOperacion, String codigoRecibo, String idCliente, String cuotaInicial,
-            String tipoRecibo)
+            String tipoRecibo, String ne_contado)
     {       
         boolean exito;
         try
@@ -272,9 +272,9 @@ public class clsPago {
             bd.conectarBaseDeDatos();          
             sql = "INSERT INTO ck_pagos_recibo"
                     + " (id_usuario, referencia, fecha_pago, valor, id_caja_operacion, "
-                    + " codigo_recibo, estado, codigo, cuota_inicial, tipo_recibo)"
+                    + " codigo_recibo, estado, codigo, cuota_inicial, tipo_recibo, ne_contado)"
                     + " VALUES(" + idUser + ", '" + factRef + "', now(), " + valor + ", " + idCajaOperacion + ", "
-                    + codigoRecibo + ", 'P', " + idCliente+ ", '" + cuotaInicial + "', '" + tipoRecibo + "')";           
+                    + codigoRecibo + ", 'P', " + idCliente+ ", '" + cuotaInicial + "', '" + tipoRecibo + "', '" + ne_contado + "')";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -987,6 +987,60 @@ public class clsPago {
                     + " JOIN ck_cliente AS e ON a.codigo = e.codigo"
                     + " WHERE a.estado = 'A'"
                     + " AND a.cuota_inicial = 'S'"
+                    + " AND a.estado_asignado = 'N'"
+                    + " AND a.codigo = " + codigoCli;   
+            
+            System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsPago oListaTemporal = new clsPago();
+                   
+                    oListaTemporal.setReferencia(bd.resultado.getString("referencia"));
+                    oListaTemporal.setFechaPago(bd.resultado.getString("fecha_pago"));
+                    oListaTemporal.setNombreUsuario(bd.resultado.getString("name_usuario"));
+                    oListaTemporal.setNombreCliente(bd.resultado.getString("nombre_cliente"));
+                    oListaTemporal.setValor(bd.resultado.getDouble("valor_pago"));
+                    oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
+                    oListaTemporal.setIdPago(bd.resultado.getInt("idPago"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+    
+     //CONSULTA DE PAGOS DE NE CONTADO, NO ASIGNADOS
+    public ArrayList<clsPago> consultaDataPagosNEContado(int codigoCli)
+    {       
+        ArrayList<clsPago> data = new ArrayList<clsPago>(); 
+        try{
+            bd.conectarBaseDeDatos();
+             sql = " SELECT a.id_pagos_recibo idPago, a.id_usuario, b.name name_usuario, "
+                        + " a.referencia referencia, "
+                        + " a.fecha_pago fecha_pago, a.estado, "
+                        + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente, "
+                        + " a.fecha_pago fecha_registro"
+                    + " FROM ck_pagos_recibo AS a"
+                    + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
+                    + " JOIN ck_cliente AS e ON a.codigo = e.codigo"
+                    + " WHERE a.estado = 'A'"
+                    + " AND a.ne_contado = 'S'"
                     + " AND a.estado_asignado = 'N'"
                     + " AND a.codigo = " + codigoCli;   
             

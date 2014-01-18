@@ -28,8 +28,9 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
     clsUtils objUtils = new clsUtils();
     Double totalEfectivo = 0.00;    
     int idCabeceraMovi = 0;
+    //String creditox ="";
     /** Creates new form frmPagosCuotaInicial */
-    public frmPagosCuotaInicial(java.awt.Frame parent, boolean modal, int codigoCli, int idCabecera) {
+    public frmPagosCuotaInicial(java.awt.Frame parent, boolean modal, int codigoCli, int idCabecera, String credito) {
         super(parent, modal);
         initComponents();
         
@@ -50,8 +51,8 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
         tblData.getColumnModel().getColumn(3).setCellRenderer(tcr);        
         
         tblData.setAutoCreateRowSorter(true);       
-        
-        buscar_informacion(codigoCli);
+        lblCredito.setText(credito);
+        buscar_informacion(codigoCli, credito);
     }
 
     /** This method is called from within the constructor to
@@ -68,6 +69,8 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
         tblData = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+        lblCredito = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -123,11 +126,22 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        lblCredito.setText(resourceMap.getString("lblCredito.text")); // NOI18N
+        lblCredito.setName("lblCredito"); // NOI18N
+
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 805, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(44, 44, 44)
+                .addComponent(lblCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(620, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -136,7 +150,12 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCredito)
+                    .addComponent(jLabel1))
+                .addContainerGap(435, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(40, 40, 40)
@@ -147,10 +166,18 @@ public class frmPagosCuotaInicial extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void buscar_informacion(int codigoCli)
+    public void buscar_informacion(int codigoCli, String credito)
     {
         try{
-            ArrayList<clsPago> dataPagoOtros = objPago.consultaDataPagosCuotaInicial(codigoCli);
+            ArrayList<clsPago> dataPagoOtros =null;
+            if(credito.equals("SI"))
+            {
+                dataPagoOtros = objPago.consultaDataPagosCuotaInicial(codigoCli);
+            }
+            else
+            {
+                dataPagoOtros = objPago.consultaDataPagosNEContado(codigoCli);
+            }
         
             int maxData3 = dataPagoOtros.size();
             if (maxData3==0)
@@ -275,7 +302,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                frmPagosCuotaInicial dialog = new frmPagosCuotaInicial(new javax.swing.JFrame(), true, 0, 0);
+                frmPagosCuotaInicial dialog = new frmPagosCuotaInicial(new javax.swing.JFrame(), true, 0, 0, "");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
@@ -288,9 +315,11 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCredito;
     private javax.swing.JTable tblData;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables

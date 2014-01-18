@@ -72,6 +72,8 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
         
         if(dataCabecera.isEmpty())
         {
+            Double cuotaInicialAsignada = 0.00;
+            
             //LA NOTA DE ENTREGA FUE A CONTADO
             dataCabecera = objCabecera.consultarDataCabeceraNotaEntrega(idCabecera);
             
@@ -100,7 +102,17 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtTotal1.setText("" + dataCabecera.get(0).getTotal1());
             
             codigoCliente = dataCabecera.get(0).getCodigo();
-            btnConfirmar.setEnabled(true);
+            //btnConfirmar.setEnabled(true);
+            
+            //OBTENER VALOR DE PAGOS ASIGNADOS
+            cuotaInicialAsignada = objUtils.redondear(objPago.obtenerValorAsignado(idCabecera));
+            txtAsignado.setText("" + cuotaInicialAsignada);
+            
+            if(txtEfectivo.getText().equals(txtAsignado.getText()))
+            {    
+                btnConfirmar.setEnabled(true);
+                btnAsignar.setEnabled(false);
+            }  
         }
         else
         {
@@ -872,7 +884,8 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_btnConfirmarActionPerformed
 
 private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
-    frmPagosCuotaInicial ventana = new frmPagosCuotaInicial(null, true, codigoCliente, idCabecera);        
+    String credito = txtDatoCredito.getText();
+    frmPagosCuotaInicial ventana = new frmPagosCuotaInicial(null, true, codigoCliente, idCabecera, credito);        
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
     this.dispose();

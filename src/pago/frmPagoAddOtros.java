@@ -412,10 +412,16 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
             clsComboBox objGrupoSelect = (clsComboBox)cmbTipoRecibo.getSelectedItem();
             objGrupoSelect.getCodigo();
             String cuotaIni = "";
+            String ne_contado = "";
             if(objGrupoSelect.getCodigo().equals("2"))
                 cuotaIni = "S";
             else
                 cuotaIni = "N";
+            
+            if(objGrupoSelect.getCodigo().equals("5"))
+                ne_contado = "S";
+            else
+                ne_contado = "N";
             //INSERTAR PAGO
             objPago.insertarRegistroReciboCobro(main.idUser, 
                     factRef, 
@@ -424,7 +430,8 @@ private void btnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GE
                     txtReciboDePago.getText(), 
                     codigoCliente, 
                     cuotaIni, 
-                    objGrupoSelect.getCodigo());
+                    objGrupoSelect.getCodigo(),
+                    ne_contado);
             //ACTUALIZAR RECIBO ACTUAL
             objCaja.actualizarReciboPago();
             JOptionPane.showMessageDialog(this, "Pago ingresado con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
