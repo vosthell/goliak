@@ -89,6 +89,7 @@ import reportes.frmListVentas;
 import reportes.frmListVentasNE;
 import reportes.frmListVentasNEVendedor;
 import reportes.frmReporteSemanal;
+import transferencias.frmPendientes;
 import usuarios.frmNuevoUsuario;
 
 /**
@@ -666,9 +667,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         jSeparator14 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
         mnTranferencias = new javax.swing.JMenu();
+        jMenuItem40 = new javax.swing.JMenuItem();
+        jSeparator15 = new javax.swing.JPopupMenu.Separator();
         jMenuItem27 = new javax.swing.JMenuItem();
-        jMenu20 = new javax.swing.JMenu();
-        jMenu21 = new javax.swing.JMenu();
+        jMenuItem31 = new javax.swing.JMenuItem();
+        jMenuItem37 = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem26 = new javax.swing.JMenuItem();
 
@@ -1784,17 +1787,39 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnTranferencias.setText(resourceMap.getString("mnTranferencias.text")); // NOI18N
         mnTranferencias.setName("mnTranferencias"); // NOI18N
 
+        jMenuItem40.setText(resourceMap.getString("jMenuItem40.text")); // NOI18N
+        jMenuItem40.setName("jMenuItem40"); // NOI18N
+        jMenuItem40.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem40ActionPerformed(evt);
+            }
+        });
+        mnTranferencias.add(jMenuItem40);
+
+        jSeparator15.setName("jSeparator15"); // NOI18N
+        mnTranferencias.add(jSeparator15);
+
         jMenuItem27.setText(resourceMap.getString("jMenuItem27.text")); // NOI18N
         jMenuItem27.setName("jMenuItem27"); // NOI18N
+        jMenuItem27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem27ActionPerformed(evt);
+            }
+        });
         mnTranferencias.add(jMenuItem27);
 
-        jMenu20.setText(resourceMap.getString("jMenu20.text")); // NOI18N
-        jMenu20.setName("jMenu20"); // NOI18N
-        mnTranferencias.add(jMenu20);
+        jMenuItem31.setText(resourceMap.getString("jMenuItem31.text")); // NOI18N
+        jMenuItem31.setName("jMenuItem31"); // NOI18N
+        mnTranferencias.add(jMenuItem31);
 
-        jMenu21.setText(resourceMap.getString("jMenu21.text")); // NOI18N
-        jMenu21.setName("jMenu21"); // NOI18N
-        mnTranferencias.add(jMenu21);
+        jMenuItem37.setText(resourceMap.getString("jMenuItem37.text")); // NOI18N
+        jMenuItem37.setName("jMenuItem37"); // NOI18N
+        jMenuItem37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem37ActionPerformed(evt);
+            }
+        });
+        mnTranferencias.add(jMenuItem37);
 
         jMenuBar1.add(mnTranferencias);
 
@@ -2488,7 +2513,7 @@ private void mnListadoProductosActionPerformed(java.awt.event.ActionEvent evt) {
 }//GEN-LAST:event_mnListadoProductosActionPerformed
 
 private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-    frmListNotasEntrega formulario = new frmListNotasEntrega();
+    frmListNotasEntrega formulario = new frmListNotasEntrega("NORMAL");
     mostrarJInternalCentrado(formulario); 
 }//GEN-LAST:event_jMenuItem8ActionPerformed
 
@@ -2565,6 +2590,21 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         frmAdelantos formulario = new frmAdelantos();
         mostrarJInternalCentrado(formulario);
     }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jMenuItem27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem27ActionPerformed
+        frmPendientes formulario = new frmPendientes();
+        mostrarJInternalCentrado(formulario); 
+    }//GEN-LAST:event_jMenuItem27ActionPerformed
+
+    private void jMenuItem40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem40ActionPerformed
+        frmNotasEntrega1 formulario = new frmNotasEntrega1();
+        mostrarJInternalCentrado(formulario); 
+    }//GEN-LAST:event_jMenuItem40ActionPerformed
+
+    private void jMenuItem37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem37ActionPerformed
+        frmListNotasEntrega formulario = new frmListNotasEntrega("TRANSFERENCIAS");
+        mostrarJInternalCentrado(formulario); 
+    }//GEN-LAST:event_jMenuItem37ActionPerformed
 
    void mostrarAuditoria()
    {
@@ -2691,8 +2731,6 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenu jMenu18;
     private javax.swing.JMenu jMenu19;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu20;
-    private javax.swing.JMenu jMenu21;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -2725,14 +2763,17 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem30;
+    private javax.swing.JMenuItem jMenuItem31;
     private javax.swing.JMenuItem jMenuItem32;
     private javax.swing.JMenuItem jMenuItem33;
     private javax.swing.JMenuItem jMenuItem34;
     private javax.swing.JMenuItem jMenuItem35;
     private javax.swing.JMenuItem jMenuItem36;
+    private javax.swing.JMenuItem jMenuItem37;
     private javax.swing.JMenuItem jMenuItem38;
     private javax.swing.JMenuItem jMenuItem39;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem40;
     private javax.swing.JMenuItem jMenuItem41;
     private javax.swing.JMenuItem jMenuItem42;
     private javax.swing.JMenuItem jMenuItem47;
@@ -2751,6 +2792,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JPopupMenu.Separator jSeparator12;
     private javax.swing.JPopupMenu.Separator jSeparator13;
     private javax.swing.JPopupMenu.Separator jSeparator14;
+    private javax.swing.JPopupMenu.Separator jSeparator15;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;

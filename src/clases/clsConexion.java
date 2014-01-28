@@ -101,6 +101,28 @@ public class clsConexion {
         }
     }  
     
+    public void conectarBaseDeDatos_externo(String ip) {
+        try {
+            final String CONTROLADOR = "org.postgresql.Driver";
+            Class.forName( CONTROLADOR );
+            //System.getProperty( "user.dir" )+"/CarpetaBD/NombredelaBasedeDatos.mdb";
+            conexion = DriverManager.getConnection("jdbc:postgresql://" + ip + "/" + objUtils.nameBD, user, pass);
+            sentencia = conexion.createStatement();
+            /*JOptionPane.showMessageDialog(null, "si conecta");*/
+        }
+        catch (ClassNotFoundException ex1) {
+            //ex1.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,"Error Carga Driver." + ex1.getMessage());
+            System.exit(1);
+        }
+        catch (SQLException ex) {
+            //ex.printStackTrace();
+             javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage()
+                   + " / " + url +" / " +user +" / " +pass);
+            System.exit(1);
+        }
+    }  
+    
     //AQUI VOYA  OBTENER EL SERVDUIOR QUEMADO EN UN ARCHIVO DE TEXTO
     public void conectarBaseDeDatos2() {
         try {

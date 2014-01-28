@@ -889,7 +889,7 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
     this.dispose();
-    frmListNotasEntrega formulario = new frmListNotasEntrega();
+    frmListNotasEntrega formulario = new frmListNotasEntrega("NORMAL");
     mostrarJInternalCentrado(formulario); 
 }//GEN-LAST:event_btnAsignarActionPerformed
     

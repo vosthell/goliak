@@ -802,24 +802,44 @@
             <Property name="name" type="java.lang.String" value="mnTranferencias" noResource="true"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem40">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItem40.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItem40" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem40ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator15">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator15" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem27">
               <Properties>
                 <Property name="text" type="java.lang.String" resourceKey="jMenuItem27.text"/>
                 <Property name="name" type="java.lang.String" value="jMenuItem27" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem27ActionPerformed"/>
+              </Events>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="jMenu20">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem31">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jMenu20.text"/>
-                <Property name="name" type="java.lang.String" value="jMenu20" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItem31.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItem31" noResource="true"/>
               </Properties>
-            </Menu>
-            <Menu class="javax.swing.JMenu" name="jMenu21">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem37">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jMenu21.text"/>
-                <Property name="name" type="java.lang.String" value="jMenu21" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="jMenuItem37.text"/>
+                <Property name="name" type="java.lang.String" value="jMenuItem37" noResource="true"/>
               </Properties>
-            </Menu>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem37ActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu10">

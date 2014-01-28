@@ -41,7 +41,7 @@ public class frmIngreso extends javax.swing.JFrame {
         this.rootPane.setDefaultButton(btnAceptar);
         lblVersion.setText(objUtils.version);  
         
-         //CARGAR PROVINCIAS
+        //CARGAR EMPRESAS
         ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas();        
         for(int i=0;i<dataEmpresas.size();i=i+1)
         {
@@ -198,7 +198,7 @@ private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();
     main.ipSeleccionada = objEmpresa.consultaIPEmpresaSeleccionada(objEmpresaSelect.getCodigo());
     
-    System.out.println(main.ipSeleccionada);
+    //System.out.println(main.ipSeleccionada);
     
     char passArray[] = txtClave.getPassword();
     String pass = new String(passArray);

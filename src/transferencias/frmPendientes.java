@@ -4,8 +4,12 @@
  */
 package transferencias;
 
+import clases.clsComboBox;
 import clases.clsCompras;
+import clases.clsEmpresa;
 import clases.clsUtils;
+import index.main;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,6 +23,7 @@ public class frmPendientes extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
     clsUtils objUtils = new clsUtils();
     clsCompras objCompras = new clsCompras();
+    clsEmpresa objEmpresa = new clsEmpresa(); 
     /**
      * Creates new form frmPendientes
      */
@@ -47,8 +52,72 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         //OCULTAR
         objUtils.setOcultarColumnasJTable(this.tblData, new int[]{0});
         
-        ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntrega(); 
-        llenarData(dataCompras);
+        //CARGAR EMPRESAS
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas_externas();        
+        for(int i=0;i<dataEmpresas.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
+            cmbEmpresa.addItem(oItem);            
+        }    
+    }
+    
+    public void llenarData(ArrayList<clsCompras> dataCompras)
+    {
+        Double total = 0.00;
+        
+        DecimalFormat df1 = new DecimalFormat("##0.00"); 
+        int maxData = dataCompras.size();
+        String etiqueta="";
+        String etiqueta2="";
+        String etiqueta3="";
+        String etiquetaTipo="";
+        String fecha_realizada = "";
+        String fecha_recibida = "";
+        for(int i=0; i<maxData; i++)
+        {
+            if(dataCompras.get(i).getEstadoTramite().equals("S"))
+            {    
+                etiqueta = "CONFIRMADA";
+                etiqueta2 = "";
+                etiqueta3 = "";
+            }
+            else
+            {    
+                etiqueta = "SIN CONFIRMAR";
+                etiqueta2 = "MODIFICAR";
+                etiqueta3 = "RECIBIR";
+            }
+            if(dataCompras.get(i).getTipo().equals("D"))
+            {   
+                etiquetaTipo = "CONTADO";
+                
+            }
+            else
+            {    
+                etiquetaTipo = "CREDITO";
+                 
+            }
+            fecha_realizada = dataCompras.get(i).getFecha().substring(0 , 16);
+            fecha_recibida = dataCompras.get(i).getFechaRecibe();            
+            Object[] nuevaFila = {dataCompras.get(i).getIdCompras(),
+                                    i+1, 
+                                    dataCompras.get(i).getFacturaReferencia(),
+                                    dataCompras.get(i).getNombreProveedor(),                                    
+                                    etiqueta,
+                                    etiqueta2,
+                                    etiqueta3,
+                                    fecha_realizada,
+                                    fecha_recibida,
+                                    dataCompras.get(i).getIdCompras(),
+                                    df1.format(dataCompras.get(i).getTotal()),
+                                    etiquetaTipo
+             };       
+             total = total + dataCompras.get(i).getTotal();
+             dtmData.addRow(nuevaFila); 
+        } 
+        txtTotal.setText(""+objUtils.redondear(total));
+        
+        //tblData.setDefaultRenderer (Object.class, new colorFilaTable());
     }
 
     /**
@@ -62,6 +131,11 @@ public class frmPendientes extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        cmbEmpresa = new javax.swing.JComboBox();
+        btnBuscar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
 
         setName("Form"); // NOI18N
 
@@ -76,21 +150,67 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblData);
 
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmPendientes.class);
+        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        cmbEmpresa.setName("cmbEmpresa"); // NOI18N
+
+        btnBuscar.setText(resourceMap.getString("btnBuscar.text")); // NOI18N
+        btnBuscar.setName("btnBuscar"); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        txtTotal.setFont(resourceMap.getFont("txtTotal.font")); // NOI18N
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotal.setText(resourceMap.getString("txtTotal.text")); // NOI18N
+        txtTotal.setName("txtTotal"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79)
+                .addComponent(btnBuscar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -132,6 +252,14 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tblDataMouseClicked
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();
+        String ip = objEmpresa.consultaIPEmpresaSeleccionada(objEmpresaSelect.getCodigo());
+    
+        ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntrega_externo(ip); 
+        llenarData(dataCompras);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     public class MiModelo extends DefaultTableModel
     {
             @Override
@@ -146,7 +274,12 @@ public class frmPendientes extends javax.swing.JInternalFrame {
        }
     } 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JComboBox cmbEmpresa;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

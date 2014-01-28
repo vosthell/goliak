@@ -50,7 +50,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
     String idCajaAbierta = "";
     
     /** Creates new form frmPagosRealizados */
-    public frmListNotasEntrega() {
+    public frmListNotasEntrega(String tipo) {
         initComponents();        
         
         dtmData.addColumn("id");
@@ -79,7 +79,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         //ArrayList<clases.clsCaja> dataCaja = objCaja.consultarDataCajaAbierta(main.idUser);
         //idCajaAbierta = dataCaja.get(0).getIdCajaOperacion(); 
         
-        ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntrega(); 
+        ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntrega(tipo); 
         llenarData(dataCompras);
         
         Date fechaActual = new Date();

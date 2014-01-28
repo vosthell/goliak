@@ -936,7 +936,7 @@ public class clsCompras {
         return data;
      }
    
-   public ArrayList<clsCompras> consultaDataNotasEntrega()
+   public ArrayList<clsCompras> consultaDataNotasEntrega(String tipo)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
@@ -949,8 +949,75 @@ public class clsCompras {
                     + " FROM ck_notas_de_entrega AS a JOIN ck_cliente AS b"
                     + " ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
+                    + " WHERE a.estado = 'A'";
+            if(tipo.equals("NORMAL"))
+            {
+                sql = sql + " AND transferencia = 'N'";
+            }
+            else if(tipo.equals("TRANSFERENCIAS"))
+            {        
+                sql = sql + " AND transferencia = 'S'";
+            }   
+            sql = sql + " ORDER BY fecha DESC";
+            System.out.println(sql);
+            System.out.println(tipo);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCompras oListaTemporal = new clsCompras();
+                    oListaTemporal.setNombreProveedor(bd.resultado.getString("nombre_proveedor"));
+                    oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    oListaTemporal.setEstadoTramite(bd.resultado.getString("estado_tramite"));
+                    oListaTemporal.setIdCompras(bd.resultado.getInt("id_cabecera_movi"));
+                    oListaTemporal.setFacturaReferencia(bd.resultado.getString("fact_referencia"));
+                    oListaTemporal.setBaseTarifaIva(bd.resultado.getDouble("base_tarifa_iva"));
+                    oListaTemporal.setBaseTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                    oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                    oListaTemporal.setIva(bd.resultado.getDouble("iva"));
+                    
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRecibe(bd.resultado.getString("fecha_confirmacion"));
+                    oListaTemporal.setTipo(bd.resultado.getString("tipo"));
+                    
+                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+   
+    public ArrayList<clsCompras> consultaDataNotasEntrega_externo(String ip)
+    {       
+        ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
+        try{
+            bd.conectarBaseDeDatos_externo(ip);
+            sql = "SELECT id_cabecera_movi, a.codigo, b.name_completo nombre_proveedor, "
+                        + " a.id_usuario, c.name, a.estado, total_interes total, "
+                        + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+                        + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
+                    + " FROM ck_notas_de_entrega AS a JOIN ck_cliente AS b"
+                    + " ON a.codigo = b.codigo"
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE a.estado = 'A'"
-                    //+ " AND transferencia = 'N'"
+                    + " AND transferencia = 'S'"
+                    + " AND tranferencia_exportada = 'N'"
                     + " ORDER BY fecha DESC";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);
