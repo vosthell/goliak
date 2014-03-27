@@ -1174,7 +1174,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_btnMostrarArturoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "13", 0);        
+        frmListProductos ventana = new frmListProductos(null, true, "13", "N");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed

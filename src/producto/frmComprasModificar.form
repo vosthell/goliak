@@ -175,7 +175,7 @@
                                   <Component id="txtAutorizacion" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
                   </Group>

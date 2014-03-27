@@ -1386,7 +1386,7 @@ private void rbtnIVAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:
 }//GEN-LAST:event_rbtnIVAItemStateChanged
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    frmListProductos ventana = new frmListProductos(null, true, "5", 0);        
+    frmListProductos ventana = new frmListProductos(null, true, "5", "N");        
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
 }//GEN-LAST:event_jButton1ActionPerformed

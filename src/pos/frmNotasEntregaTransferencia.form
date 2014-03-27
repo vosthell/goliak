@@ -9,6 +9,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
@@ -135,7 +136,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="cmbFacturero" pref="62" max="32767" attributes="1"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtNotaEntrega" min="-2" pref="124" max="-2" attributes="0"/>
@@ -775,7 +775,6 @@
           <SubComponents>
             <Component class="javax.swing.JCheckBox" name="chkCredito">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="chkCredito.text"/>
                 <Property name="name" type="java.lang.String" value="chkCredito" noResource="true"/>
               </Properties>
               <Events>
@@ -785,7 +784,6 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel12.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel12" noResource="true"/>
               </Properties>
             </Component>
@@ -803,7 +801,6 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel13">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel13.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel13" noResource="true"/>
               </Properties>
             </Component>
@@ -811,7 +808,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtCuota.text"/>
                 <Property name="name" type="java.lang.String" value="txtCuota" noResource="true"/>
               </Properties>
               <Events>
@@ -820,7 +816,6 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel14">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel14.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel14" noResource="true"/>
               </Properties>
             </Component>
@@ -828,7 +823,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtEfectivo.text"/>
                 <Property name="name" type="java.lang.String" value="txtEfectivo" noResource="true"/>
               </Properties>
               <Events>
@@ -837,7 +831,6 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel15">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel15.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel15" noResource="true"/>
               </Properties>
             </Component>
@@ -845,28 +838,22 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtSaldo.text"/>
                 <Property name="name" type="java.lang.String" value="txtSaldo" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel24">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel24.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel24" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtFechaCancelacion">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-                <Property name="foreground" type="java.awt.Color" resourceKey="txtFechaCancelacion.foreground"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtFechaCancelacion.text"/>
-                <Property name="disabledTextColor" type="java.awt.Color" resourceKey="txtFechaCancelacion.disabledTextColor"/>
                 <Property name="name" type="java.lang.String" value="txtFechaCancelacion" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel25">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel25.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel25" noResource="true"/>
               </Properties>
             </Component>
@@ -884,7 +871,6 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel28">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel28.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel28" noResource="true"/>
               </Properties>
             </Component>
@@ -892,19 +878,16 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtInteresPorcentaje.text"/>
                 <Property name="name" type="java.lang.String" value="txtInteresPorcentaje" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel29">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel29.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel29" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel30">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jLabel30.text"/>
                 <Property name="name" type="java.lang.String" value="jLabel30" noResource="true"/>
               </Properties>
             </Component>
@@ -912,7 +895,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtSaldoDeuda.text"/>
                 <Property name="name" type="java.lang.String" value="txtSaldoDeuda" noResource="true"/>
               </Properties>
             </Component>
@@ -920,7 +902,6 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" resourceKey="txtInteresValor.text"/>
                 <Property name="name" type="java.lang.String" value="txtInteresValor" noResource="true"/>
               </Properties>
             </Component>
@@ -1128,13 +1109,11 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="chkAnulada">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="chkAnulada.text"/>
         <Property name="name" type="java.lang.String" value="chkAnulada" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
         <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
       </Properties>
       <Events>
@@ -1143,7 +1122,6 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
-        <Property name="text" type="java.lang.String" resourceKey="jButton2.text"/>
         <Property name="name" type="java.lang.String" value="jButton2" noResource="true"/>
       </Properties>
       <Events>

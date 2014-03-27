@@ -369,7 +369,7 @@ public class frmKardex extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnBuscarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNombreActionPerformed
-     frmListProductos ventana = new frmListProductos(null, true, "3", 0);        
+     frmListProductos ventana = new frmListProductos(null, true, "3", "N");        
      ventana.setLocationRelativeTo(null);
      ventana.setVisible(true);
 }//GEN-LAST:event_btnBuscarNombreActionPerformed

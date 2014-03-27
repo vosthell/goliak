@@ -24,6 +24,7 @@ import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,9 @@ import java.util.List;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pago.frmPagoNuevoAdd;
+import reportes.frmListEntradasAsignadas2;
+import stinventario.frmPrincipal;
 
 /**
  *
@@ -235,6 +239,7 @@ public class frmFactHistoShow extends javax.swing.JDialog {
         jLabel19 = new javax.swing.JLabel();
         txtSaldoMasInteres = new javax.swing.JTextField();
         btnImprimir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -673,21 +678,28 @@ public class frmFactHistoShow extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setBackground(resourceMap.getColor("jButton1.background")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(666, 666, 666)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -698,7 +710,9 @@ public class frmFactHistoShow extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnImprimir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnImprimir)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -731,6 +745,13 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      objReporte.ejecutarReporteParametroInt(idCabecera, "rptNotaEntrega");         // TODO add your handling code here:
      this.dispose();
 }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera);
+        //mostrarJInternalCentrado(formulario); 
+        formulario.setLocationRelativeTo(null);
+        formulario.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -775,8 +796,20 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             }
         });
     }
+    
+    public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+    {
+        Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
+        Dimension jInternalFrameSize = formulario.getSize();
+        formulario.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+        (desktopSize.height- jInternalFrameSize.height)/2);
+
+        frmPrincipal.jDesktopPane1.add(formulario);
+        formulario.show(); 
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

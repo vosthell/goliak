@@ -63,7 +63,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" pref="372" max="-2" attributes="0"/>
-              <EmptySpace type="separate" pref="30" max="32767" attributes="0"/>
+              <EmptySpace type="separate" pref="46" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblCajero" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -735,7 +735,12 @@
                                   <Component id="jLabel28" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel13" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="chkCredito" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="txtInteresPorcentaje" max="32767" attributes="1"/>
                                   <Component id="txtCuota" alignment="0" max="32767" attributes="1"/>
@@ -761,7 +766,7 @@
                                   <Component id="txtSaldo" max="32767" attributes="1"/>
                               </Group>
                           </Group>
-                          <Component id="chkCredito" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="17" max="32767" attributes="0"/>
                   </Group>
@@ -802,7 +807,8 @@
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                               <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -982,6 +988,15 @@
                 <Property name="text" type="java.lang.String" resourceKey="txtSaldoDeuda.text"/>
                 <Property name="name" type="java.lang.String" value="txtSaldoDeuda" noResource="true"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton1">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
+                <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -1017,7 +1017,7 @@ public class clsCompras {
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE a.estado = 'A'"
                     + " AND transferencia = 'S'"
-                    + " AND tranferencia_exportada = 'N'"
+                    + " AND transferencia_exportada = 'N'"
                     + " ORDER BY fecha DESC";
             System.out.println(sql);
             bd.resultado = bd.sentencia.executeQuery(sql);

@@ -17,11 +17,12 @@ public class clsPago {
     String sql;
     
     private String id_cabecera_movi;
+    private String cedula;
     private String referencia;
     private String fecha_pago;
     private String fecha_cobro;
     private Double valor;
-    private Double codigo_recibo;
+    private int codigo_recibo;
     private int id_pago;
     private int id_cta_cobrar;
     private String nombre_usuario;
@@ -38,6 +39,14 @@ public class clsPago {
     
     public void setIdCabeceraMovi(String idCabeceraMovi) {
         this.id_cabecera_movi = idCabeceraMovi;
+    }
+    
+     public String getCedula() {
+        return cedula;
+    }
+    
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
     }
     
     public String getReferencia() {
@@ -80,11 +89,11 @@ public class clsPago {
         this.valor = valor;
     }
     
-    public Double getCodigoRecibo() {
+    public int getCodigoRecibo() {
         return codigo_recibo;
     }
     
-    public void setCodigoRecibo(Double codigo_recibo) {
+    public void setCodigoRecibo(int codigo_recibo) {
         this.codigo_recibo = codigo_recibo;
     }
     
@@ -403,7 +412,97 @@ public class clsPago {
                 oListaTemporal.setReferencia(bd.resultado.getString("referencia"));                
                 oListaTemporal.setFechaPago(bd.resultado.getString("fecha_pago"));
                 oListaTemporal.setValor(bd.resultado.getDouble("valor"));   
-                oListaTemporal.setCodigoRecibo(bd.resultado.getDouble("codigo_recibo"));     
+                oListaTemporal.setCodigoRecibo(bd.resultado.getInt("codigo_recibo"));     
+                
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }  
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+     
+     
+     public ArrayList<clsPago>  consulta_entradas_no_asignadas(){            
+        ArrayList<clsPago> data = new ArrayList<clsPago>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "select id_pagos_recibo, cedula, b.name_completo, referencia, fecha_pago::date fecha, "
+                    + "valor, c.name usu_registra, d.name usu_cobra, codigo_recibo " +
+                    "from ck_pagos_recibo AS a " +
+                    "JOIN ck_cliente AS b " +
+                    "ON a.codigo = b.codigo " +
+                    "JOIN ck_usuario AS c " +
+                    "ON a.id_usuario = c.id_usuario " +
+                    "JOIN ck_usuario AS d " +
+                    "ON a.id_usuario_cobra = d.id_usuario " +
+                    "where a.cuota_inicial='S' " +
+                    "AND a.estado_asignado = 'N' " +
+                    "AND a.estado ='A'";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            while(bd.resultado.next()){
+                clsPago oListaTemporal = new clsPago();
+                oListaTemporal.setIdPago(bd.resultado.getInt("id_pagos_recibo")); 
+                oListaTemporal.setCedula(bd.resultado.getString("cedula"));
+                oListaTemporal.setNombreCliente(bd.resultado.getString("name_completo"));
+                oListaTemporal.setReferencia(bd.resultado.getString("referencia"));
+                oListaTemporal.setValor(bd.resultado.getDouble("valor"));   
+                oListaTemporal.setFechaCobro(bd.resultado.getString("fecha"));     
+                oListaTemporal.setNombreUsuario(bd.resultado.getString("usu_registra"));
+                oListaTemporal.setNombreCobrador(bd.resultado.getString("usu_cobra"));
+                oListaTemporal.setCodigoRecibo(bd.resultado.getInt("codigo_recibo"));
+                
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }  
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+     
+     public ArrayList<clsPago>  consulta_entradas_asignadas(int id_cabecera){            
+        ArrayList<clsPago> data = new ArrayList<clsPago>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "select id_pagos_recibo, cedula, b.name_completo, referencia, fecha_pago::date fecha, "
+                    + "valor, c.name usu_registra, d.name usu_cobra, codigo_recibo " +
+                    "from ck_pagos_recibo AS a " +
+                    "JOIN ck_cliente AS b " +
+                    "ON a.codigo = b.codigo " +
+                    "JOIN ck_usuario AS c " +
+                    "ON a.id_usuario = c.id_usuario " +
+                    "JOIN ck_usuario AS d " +
+                    "ON a.id_usuario_cobra = d.id_usuario " +
+                    "where a.cuota_inicial='S' " +
+                    "AND a.estado_asignado = 'S' " +
+                    "AND a.estado ='A'" +
+                    "AND id_cabecera_movi = " + id_cabecera;
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            while(bd.resultado.next()){
+                clsPago oListaTemporal = new clsPago();
+                oListaTemporal.setIdPago(bd.resultado.getInt("id_pagos_recibo")); 
+                oListaTemporal.setCedula(bd.resultado.getString("cedula"));
+                oListaTemporal.setNombreCliente(bd.resultado.getString("name_completo"));
+                oListaTemporal.setReferencia(bd.resultado.getString("referencia"));
+                oListaTemporal.setValor(bd.resultado.getDouble("valor"));   
+                oListaTemporal.setFechaCobro(bd.resultado.getString("fecha"));     
+                oListaTemporal.setNombreUsuario(bd.resultado.getString("usu_registra"));
+                oListaTemporal.setNombreCobrador(bd.resultado.getString("usu_cobra"));
+                oListaTemporal.setCodigoRecibo(bd.resultado.getInt("codigo_recibo"));
                 
                 data.add(oListaTemporal);
             }

@@ -120,7 +120,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
             {    
                 etiqueta = "SIN CONFIRMAR";
                 etiqueta2 = "MODIFICAR";
-                etiqueta3 = "RECIBIR";
+                etiqueta3 = "CONFIRMAR";
             }
             if(dataCompras.get(i).getTipo().equals("D"))
             {   

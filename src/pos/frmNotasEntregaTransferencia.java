@@ -55,7 +55,7 @@ import stinventario.frmPrincipal;
  *
  * @author Kaiser
  */
-public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
+public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
     clsCliente objCliente = new clsCliente();
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
@@ -102,7 +102,7 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
     Double imp_iva = objImpuestos.obtenerPorcentajeIVA();
     Double cuotaInicial = 0.00;
     /** Creates new form frmFacturar */
-    public frmNotasEntrega_transferencia() {
+    public frmNotasEntregaTransferencia() {
         initComponents();  
         this.setTitle(objUtils.nombreSistema + "NOTA DE  ENTREGA");
         
@@ -345,7 +345,7 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntrega_transferencia.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntregaTransferencia.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
@@ -417,7 +417,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(cmbFacturero, 0, 62, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNotaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -576,7 +575,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel3.setName("jPanel3"); // NOI18N
 
-        chkCredito.setText(resourceMap.getString("chkCredito.text")); // NOI18N
         chkCredito.setName("chkCredito"); // NOI18N
         chkCredito.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -589,7 +587,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
         jLabel12.setName("jLabel12"); // NOI18N
 
         cmbCuota.setEnabled(false);
@@ -600,12 +597,10 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel13.setText(resourceMap.getString("jLabel13.text")); // NOI18N
         jLabel13.setName("jLabel13"); // NOI18N
 
         txtCuota.setEditable(false);
         txtCuota.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtCuota.setText(resourceMap.getString("txtCuota.text")); // NOI18N
         txtCuota.setName("txtCuota"); // NOI18N
         txtCuota.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -613,12 +608,10 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel14.setText(resourceMap.getString("jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
 
         txtEfectivo.setEditable(false);
         txtEfectivo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtEfectivo.setText(resourceMap.getString("txtEfectivo.text")); // NOI18N
         txtEfectivo.setName("txtEfectivo"); // NOI18N
         txtEfectivo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -626,24 +619,17 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel15.setText(resourceMap.getString("jLabel15.text")); // NOI18N
         jLabel15.setName("jLabel15"); // NOI18N
 
         txtSaldo.setEditable(false);
         txtSaldo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtSaldo.setText(resourceMap.getString("txtSaldo.text")); // NOI18N
         txtSaldo.setName("txtSaldo"); // NOI18N
 
-        jLabel24.setText(resourceMap.getString("jLabel24.text")); // NOI18N
         jLabel24.setName("jLabel24"); // NOI18N
 
         txtFechaCancelacion.setEditable(false);
-        txtFechaCancelacion.setForeground(resourceMap.getColor("txtFechaCancelacion.foreground")); // NOI18N
-        txtFechaCancelacion.setText(resourceMap.getString("txtFechaCancelacion.text")); // NOI18N
-        txtFechaCancelacion.setDisabledTextColor(resourceMap.getColor("txtFechaCancelacion.disabledTextColor")); // NOI18N
         txtFechaCancelacion.setName("txtFechaCancelacion"); // NOI18N
 
-        jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
 
         cmbPlazo.setEnabled(false);
@@ -654,28 +640,22 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
         jLabel28.setName("jLabel28"); // NOI18N
 
         txtInteresPorcentaje.setEditable(false);
         txtInteresPorcentaje.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteresPorcentaje.setText(resourceMap.getString("txtInteresPorcentaje.text")); // NOI18N
         txtInteresPorcentaje.setName("txtInteresPorcentaje"); // NOI18N
 
-        jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
         jLabel29.setName("jLabel29"); // NOI18N
 
-        jLabel30.setText(resourceMap.getString("jLabel30.text")); // NOI18N
         jLabel30.setName("jLabel30"); // NOI18N
 
         txtSaldoDeuda.setEditable(false);
         txtSaldoDeuda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtSaldoDeuda.setText(resourceMap.getString("txtSaldoDeuda.text")); // NOI18N
         txtSaldoDeuda.setName("txtSaldoDeuda"); // NOI18N
 
         txtInteresValor.setEditable(false);
         txtInteresValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteresValor.setText(resourceMap.getString("txtInteresValor.text")); // NOI18N
         txtInteresValor.setName("txtInteresValor"); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -1038,10 +1018,8 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         lblUsuario.setText(resourceMap.getString("lblUsuario.text")); // NOI18N
         lblUsuario.setName("lblUsuario"); // NOI18N
 
-        chkAnulada.setText(resourceMap.getString("chkAnulada.text")); // NOI18N
         chkAnulada.setName("chkAnulada"); // NOI18N
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1049,7 +1027,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1508,7 +1485,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                             + "<TABLE BORDER=\"1\">"
                             + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
                             + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
-                            + "<TR><TD>CLIENTE:</TD><TD>" + "TRANFERENCIA" + "</TD></TR>"                        
+                            + "<TR><TD>CLIENTE:</TD><TD>" + "TRANSFERENCIA" + "</TD></TR>"                        
                             + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
                 if(this.chkCredito.isSelected())       
                 {
@@ -1555,7 +1532,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        
                 for(int i=0;i<dataEmail.size();i=i+1)
                 {
-                    mail.send(dataEmail.get(i).getEmail(), "TRANFERENCIA REGISTRADA", texto);
+                    mail.send(dataEmail.get(i).getEmail(), "TRANSFERENCIA REGISTRADA", texto);
                 }
             }
             catch(Exception e){
@@ -1688,7 +1665,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "9", codigoCliente);        
+        frmListProductos ventana = new frmListProductos(null, true, "14", "S");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed

@@ -48,6 +48,7 @@ public class clsCabecera {
     private int numero_total_notas_entrega;
     private int vendedor;
     private double porcentaje_interes;
+    private String transferencia;
     
     public int getIdCabeceraMovi() {
         return idCabeceraMovi;
@@ -95,6 +96,14 @@ public class clsCabecera {
     
     public void setFactReferencia(String fact_referencia) {
         this.fact_referencia = fact_referencia;
+    }
+    
+    public String getTransferencia() {
+        return transferencia;
+    }
+    
+    public void setTransferencia(String transferencia) {
+        this.transferencia = transferencia;
     }
     
     public String getComentario() {
@@ -1159,7 +1168,7 @@ public class clsCabecera {
                         + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
                         + " f.descripcion descripcion_plazo, fecha_cancelacion_sistema, "
                         + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor, "
-                        + " porcentaje_interes"
+                        + " porcentaje_interes, transferencia"
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
                     + " inner join ck_rel_cabecera_cuota AS d on a.id_cabecera_movi = d.id_cabecera_movi"
@@ -1201,6 +1210,8 @@ public class clsCabecera {
                 
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                 oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));
+                
+                oListaTemporal.setTransferencia(bd.resultado.getString("transferencia"));
                  
                 data.add(oListaTemporal);
             }
@@ -1521,7 +1532,8 @@ public class clsCabecera {
                             + " id_cajero, id_empresa, id_caja_operacion, "
                             + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor,"
                             + " a.fecha_registro fecha_registro, "   
-                            + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes"
+                            + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
+                            + " transferencia"
                     + " FROM ck_notas_de_entrega AS a inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
@@ -1551,6 +1563,8 @@ public class clsCabecera {
                 oListaTemporal.setTarifaIVA1(bd.resultado.getDouble("base_tarifa_iva_interes"));                
                 oListaTemporal.setIVA1(bd.resultado.getDouble("iva_interes"));
                 oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
+                
+                oListaTemporal.setTransferencia(bd.resultado.getString("transferencia"));
                 data.add(oListaTemporal);
             }
             //return data;

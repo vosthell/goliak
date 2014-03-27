@@ -422,7 +422,7 @@ public class frmCotizador extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "7", 0);        
+        frmListProductos ventana = new frmListProductos(null, true, "7", "N");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
 }//GEN-LAST:event_btnMostrarProductosActionPerformed

@@ -30,6 +30,7 @@ import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
+import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import reportes.frmListEntradasAsignadas2;
+import stinventario.frmPrincipal;
 
 
 
@@ -554,6 +557,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         jLabel30 = new javax.swing.JLabel();
         txtInteresValor = new javax.swing.JTextField();
         txtSaldoDeuda = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         txtTarifaCero = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
@@ -949,6 +953,14 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
         txtSaldoDeuda.setText(resourceMap.getString("txtSaldoDeuda.text")); // NOI18N
         txtSaldoDeuda.setName("txtSaldoDeuda"); // NOI18N
 
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -973,8 +985,11 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(chkCredito))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtInteresPorcentaje)
                             .addComponent(txtCuota)
@@ -993,7 +1008,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                             .addComponent(txtInteresValor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                             .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSaldo)))
-                    .addComponent(chkCredito))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -1025,7 +1040,8 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                                     .addComponent(jLabel12)
                                     .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel29)
@@ -1363,7 +1379,7 @@ public class frmNotasEntregaModificar extends javax.swing.JInternalFrame{
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 30, Short.MAX_VALUE)
+                .addGap(18, 38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)
@@ -2070,7 +2086,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_btnMostrarListadoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "11", codigoCliente);        
+        frmListProductos ventana = new frmListProductos(null, true, "11", "N");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
@@ -2841,6 +2857,24 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoProductoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera);
+        //mostrarJInternalCentrado(formulario); 
+        formulario.setLocationRelativeTo(null);
+        formulario.setVisible(true);    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
+     public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+    {
+        Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
+        Dimension jInternalFrameSize = formulario.getSize();
+        formulario.setLocation((desktopSize.width - jInternalFrameSize.width)/2,
+        (desktopSize.height- jInternalFrameSize.height)/2);
+
+        frmPrincipal.jDesktopPane1.add(formulario);
+        formulario.show(); 
+    }
     /**
      * @param args the command line arguments
      */
@@ -2859,6 +2893,7 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
     private javax.swing.JComboBox cmbPlazo;
     public static javax.swing.JComboBox cmbPrecio;
     private javax.swing.JComboBox cmbVendedor;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

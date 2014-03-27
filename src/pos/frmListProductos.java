@@ -36,14 +36,17 @@ public class frmListProductos extends javax.swing.JDialog {
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
     String p_tipo;
-    int codigoClienteX = 0;
+    //int codigoClienteX = 0;
+    //SI VA A MOSTRAR COSTO O PRECIO DE VENTA
+    String bandera_costo = "N";
     MiModelo dtmData = new MiModelo();
     /** Creates new form frmListProductos */
-    public frmListProductos(java.awt.Dialog parent, boolean modal, String tipo, int codigoCliente) {
+    public frmListProductos(java.awt.Dialog parent, boolean modal, String tipo, String costo) {
         super(parent, modal);
         initComponents();
         
-        codigoClienteX = codigoCliente;
+        //codigoClienteX = codigoCliente;
+        bandera_costo = costo;
         p_tipo = tipo;
         dtmData.addColumn("Nº");
         dtmData.addColumn("Codigo");
@@ -330,6 +333,16 @@ public class frmListProductos extends javax.swing.JDialog {
                 frmGuiaRemision.controlExistencia = control_existencia;
                 frmGuiaRemision.txtCosto.setText(costo);
             }
+            else if(p_tipo.equals("14"))
+            {
+                frmNotasEntregaTransferencia.codigoProducto = Integer.parseInt(codigo);
+                frmNotasEntregaTransferencia.txtCodigoProducto.setText(codProducto);
+                frmNotasEntregaTransferencia.txtNombreProducto.setText(descripcion);
+                frmNotasEntregaTransferencia.txtStock.setText(stock);
+                frmNotasEntregaTransferencia.txtDescuentoUnidad.setText(descuento);
+                frmNotasEntregaTransferencia.controlExistencia = control_existencia;
+                frmNotasEntregaTransferencia.txtCosto.setText(costo);
+            }
             //CARGAR PRECIOS DEL PRODUCTO
            
             ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(codigo);        
@@ -367,6 +380,10 @@ public class frmListProductos extends javax.swing.JDialog {
                 {
                     frmGuiaRemision.cmbPrecio.removeAllItems();
                 }
+                else if(p_tipo.equals("14"))
+                {
+                    frmNotasEntregaTransferencia.cmbPrecio.removeAllItems();
+                }
                 
                 for(int i=0; i<dataPrecios.size(); i++)
                 {
@@ -389,7 +406,8 @@ public class frmListProductos extends javax.swing.JDialog {
                     }
                     else if(p_tipo.equals("9"))
                     {
-                        if((codigoClienteX==202)||(codigoClienteX==3054))
+                        //if((codigoClienteX==202)||(codigoClienteX==3054))
+                        if(bandera_costo.equals("S"))
                         {
                             oItem = new clsComboBox(costo, "1 - " + costo);  
                             frmNotasEntrega1.cmbPrecio.addItem(oItem);
@@ -401,7 +419,8 @@ public class frmListProductos extends javax.swing.JDialog {
                     }
                     else if(p_tipo.equals("11"))
                     {
-                        if((codigoClienteX==202)||(codigoClienteX==3054))
+                        //if((codigoClienteX==202)||(codigoClienteX==3054))
+                        if(bandera_costo.equals("S"))
                         {
                             oItem = new clsComboBox(costo, "1 - " + costo); 
                             frmNotasEntregaModificar.cmbPrecio.addItem(oItem);
@@ -419,6 +438,19 @@ public class frmListProductos extends javax.swing.JDialog {
                     else if(p_tipo.equals("13"))
                     {
                         frmGuiaRemision.cmbPrecio.addItem(oItem);
+                    }
+                    else if(p_tipo.equals("14"))
+                    {
+                        //if((codigoClienteX==202)||(codigoClienteX==3054))
+                        if(bandera_costo.equals("S"))
+                        {
+                            oItem = new clsComboBox(costo, "1 - " + costo);  
+                            frmNotasEntregaTransferencia.cmbPrecio.addItem(oItem);
+                        }
+                        else
+                        {
+                            frmNotasEntregaTransferencia.cmbPrecio.addItem(oItem);
+                        }
                     }
                 }
             }
@@ -456,6 +488,11 @@ public class frmListProductos extends javax.swing.JDialog {
             {                
                 frmGuiaRemision.txtCantidad.setEditable(true);
                 frmGuiaRemision.txtCantidad.requestFocus();
+            }
+            else if(p_tipo.equals("14"))
+            {                
+                frmNotasEntregaTransferencia.txtCantidad.setEditable(true);
+                frmNotasEntregaTransferencia.txtCantidad.requestFocus();
             }
                 
             dispose();
@@ -563,7 +600,7 @@ private void txtNombreProductoFocusGained(java.awt.event.FocusEvent evt) {//GEN-
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                frmListProductos dialog = new frmListProductos(new javax.swing.JDialog(), true, new String(), 0);
+                frmListProductos dialog = new frmListProductos(new javax.swing.JDialog(), true, new String(), new String());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override

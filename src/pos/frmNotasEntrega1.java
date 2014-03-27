@@ -257,6 +257,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         btnMostrarArturo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -339,6 +340,8 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         chkAnulada = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+
+        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
         setClosable(true);
         setIconifiable(true);
@@ -512,8 +515,8 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
-        txtCantidad.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtCantidad.setEditable(false);
+        txtCantidad.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtCantidad.setFont(resourceMap.getFont("txtCodigoProducto.font")); // NOI18N
         txtCantidad.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtCantidad.setText(resourceMap.getString("txtCantidad.text")); // NOI18N
@@ -533,8 +536,8 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel5.setText(resourceMap.getString("jLabel5.text")); // NOI18N
         jLabel5.setName("jLabel5"); // NOI18N
 
-        txtPrecio.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtPrecio.setEditable(false);
+        txtPrecio.setBackground(resourceMap.getColor("txtCodigoProducto.background")); // NOI18N
         txtPrecio.setFont(resourceMap.getFont("txtCodigoProducto.font")); // NOI18N
         txtPrecio.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtPrecio.setText(resourceMap.getString("txtPrecio.text")); // NOI18N
@@ -1751,7 +1754,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }//GEN-LAST:event_btnMostrarArturoActionPerformed
 
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "9", codigoCliente);        
+        frmListProductos ventana = new frmListProductos(null, true, "9", "N");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
@@ -2610,6 +2613,7 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCajero;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblData;

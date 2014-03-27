@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import reportes.frmListEntradasAsignadas2;
 import stinventario.frmPrincipal;
 
 /**
@@ -108,7 +109,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             cuotaInicialAsignada = objUtils.redondear(objPago.obtenerValorAsignado(idCabecera));
             txtAsignado.setText("" + cuotaInicialAsignada);
             
-            if(txtEfectivo.getText().equals(txtAsignado.getText()))
+            if(txtEfectivo.getText().equals(txtAsignado.getText())||dataCabecera.get(0).getTransferencia().equals("S"))
             {    
                 btnConfirmar.setEnabled(true);
                 btnAsignar.setEnabled(false);
@@ -153,7 +154,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             codigoCliente = dataCabecera.get(0).getCodigo();
             
             //if(cuotaInicial == cuotaInicialAsignada)
-            if(txtEfectivo.getText().equals(txtAsignado.getText()))
+            if(txtEfectivo.getText().equals(txtAsignado.getText())||dataCabecera.get(0).getTransferencia().equals("S"))
             {    
                 btnConfirmar.setEnabled(true);
                 btnAsignar.setEnabled(false);
@@ -283,6 +284,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
         txtFechaRegistro = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtDatoCredito = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -723,6 +725,14 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
         txtDatoCredito.setText(resourceMap.getString("txtDatoCredito.text")); // NOI18N
         txtDatoCredito.setName("txtDatoCredito"); // NOI18N
 
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -739,6 +749,8 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConfirmar))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -757,8 +769,9 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -892,6 +905,13 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     frmListNotasEntrega formulario = new frmListNotasEntrega("NORMAL");
     mostrarJInternalCentrado(formulario); 
 }//GEN-LAST:event_btnAsignarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera);
+        //mostrarJInternalCentrado(formulario); 
+        formulario.setLocationRelativeTo(null);
+        formulario.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     
  public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
@@ -909,6 +929,7 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;
     private javax.swing.JButton btnConfirmar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -1105,7 +1105,7 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 // TODO add your handling code here:
-    frmListProductos ventana = new frmListProductos(null, true, "10", 0);        
+    frmListProductos ventana = new frmListProductos(null, true, "10", "N");        
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
 }//GEN-LAST:event_jButton2ActionPerformed
