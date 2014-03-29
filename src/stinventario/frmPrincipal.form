@@ -357,10 +357,10 @@
                 <Property name="name" type="java.lang.String" value="jSeparator12" noResource="true"/>
               </Properties>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="jMenu19">
+            <Menu class="javax.swing.JMenu" name="mnNE">
               <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jMenu19.text"/>
-                <Property name="name" type="java.lang.String" value="jMenu19" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="mnNE.text"/>
+                <Property name="name" type="java.lang.String" value="mnNE" noResource="true"/>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
@@ -381,8 +381,22 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem8ActionPerformed"/>
                   </Events>
                 </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnModTipoPago">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="mnModTipoPago.text"/>
+                    <Property name="name" type="java.lang.String" value="mnModTipoPago" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnModTipoPagoActionPerformed"/>
+                  </Events>
+                </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator16">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator16" noResource="true"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
@@ -916,11 +930,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jDesktopPane1" pref="403" max="32767" attributes="0"/>
+                      <Component id="jDesktopPane1" pref="405" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jXTaskPaneContainer2" alignment="0" pref="438" max="32767" attributes="0"/>
+                  <Component id="jXTaskPaneContainer2" alignment="0" pref="440" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>

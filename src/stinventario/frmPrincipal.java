@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 import nomina.frmAdelantos;
 import pago.frmEstadoDeCuenta;
+import pago.frmModificaPago;
 import pago.frmPagoAdd;
 import pago.frmPagoAddOtros;
 import pago.frmPagoNuevoAdd;
@@ -212,7 +213,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnListPagos.setVisible(false);
         btnRecibo.setVisible(false);
         mnReimpresion.setVisible(false);
-            
+        mnModTipoPago.setVisible(false);    
         //colocar visibles las q  tiene permisos
         for(int i=0;i<dataPermisos.size();i=i+1)
         {
@@ -257,7 +258,8 @@ public class frmPrincipal extends javax.swing.JFrame {
             if(nombreFormulario.equals("frmListProductosInventario"))mnListadoProductos.setVisible(true);
             if(nombreFormulario.equals("frmListPagos"))             mnListPagos.setVisible(true);
             if(nombreFormulario.equals("frmPagoAddOtros"))          btnRecibo.setVisible(true);
-            if(nombreFormulario.equals("frmReimpresionReciboPago")) mnReimpresion.setVisible(true);         
+            if(nombreFormulario.equals("frmReimpresionReciboPago")) mnReimpresion.setVisible(true);        
+            if(nombreFormulario.equals("frmModificaPago"))           mnModTipoPago.setVisible(true);        
      
         
         }
@@ -616,9 +618,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnFrmListVentasNEVendedor = new javax.swing.JMenuItem();
         mnFrmListDescuentos = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JPopupMenu.Separator();
-        jMenu19 = new javax.swing.JMenu();
+        mnNE = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
+        mnModTipoPago = new javax.swing.JMenuItem();
+        jSeparator16 = new javax.swing.JPopupMenu.Separator();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         mnProdMod = new javax.swing.JMenuItem();
@@ -1389,8 +1393,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         jSeparator12.setName("jSeparator12"); // NOI18N
         jMenu14.add(jSeparator12);
 
-        jMenu19.setText(resourceMap.getString("jMenu19.text")); // NOI18N
-        jMenu19.setName("jMenu19"); // NOI18N
+        mnNE.setText(resourceMap.getString("mnNE.text")); // NOI18N
+        mnNE.setName("mnNE"); // NOI18N
 
         jMenuItem7.setText(resourceMap.getString("jMenuItem7.text")); // NOI18N
         jMenuItem7.setName("jMenuItem7"); // NOI18N
@@ -1399,7 +1403,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 jMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu19.add(jMenuItem7);
+        mnNE.add(jMenuItem7);
 
         jMenuItem8.setText(resourceMap.getString("jMenuItem8.text")); // NOI18N
         jMenuItem8.setName("jMenuItem8"); // NOI18N
@@ -1408,9 +1412,21 @@ public class frmPrincipal extends javax.swing.JFrame {
                 jMenuItem8ActionPerformed(evt);
             }
         });
-        jMenu19.add(jMenuItem8);
+        mnNE.add(jMenuItem8);
 
-        jMenu14.add(jMenu19);
+        mnModTipoPago.setText(resourceMap.getString("mnModTipoPago.text")); // NOI18N
+        mnModTipoPago.setName("mnModTipoPago"); // NOI18N
+        mnModTipoPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnModTipoPagoActionPerformed(evt);
+            }
+        });
+        mnNE.add(mnModTipoPago);
+
+        jMenu14.add(mnNE);
+
+        jSeparator16.setName("jSeparator16"); // NOI18N
+        jMenu14.add(jSeparator16);
 
         jMenuBar1.add(jMenu14);
 
@@ -1870,10 +1886,10 @@ public class frmPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jXTaskPaneContainer2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)))
+                    .addComponent(jXTaskPaneContainer2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)))
         );
 
         pack();
@@ -2618,9 +2634,14 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     }//GEN-LAST:event_jMenuItem37ActionPerformed
 
     private void jMenuItem43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem43ActionPerformed
-         frmListEntradasNoAsignadas formulario = new frmListEntradasNoAsignadas();
+        frmListEntradasNoAsignadas formulario = new frmListEntradasNoAsignadas();
         mostrarJInternalCentrado(formulario);
     }//GEN-LAST:event_jMenuItem43ActionPerformed
+
+    private void mnModTipoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnModTipoPagoActionPerformed
+        frmModificaPago formulario = new frmModificaPago();
+        mostrarJInternalCentrado(formulario);
+    }//GEN-LAST:event_mnModTipoPagoActionPerformed
 
    void mostrarAuditoria()
    {
@@ -2745,7 +2766,6 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenu jMenu16;
     private javax.swing.JMenu jMenu17;
     private javax.swing.JMenu jMenu18;
-    private javax.swing.JMenu jMenu19;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -2810,6 +2830,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JPopupMenu.Separator jSeparator13;
     private javax.swing.JPopupMenu.Separator jSeparator14;
     private javax.swing.JPopupMenu.Separator jSeparator15;
+    private javax.swing.JPopupMenu.Separator jSeparator16;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -2840,6 +2861,8 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem mnInventario;
     private javax.swing.JMenuItem mnListPagos;
     private javax.swing.JMenuItem mnListadoProductos;
+    private javax.swing.JMenuItem mnModTipoPago;
+    private javax.swing.JMenu mnNE;
     private javax.swing.JMenuItem mnOperacionesCaja;
     private javax.swing.JMenuItem mnPermisos;
     private javax.swing.JMenuItem mnProdDel;

@@ -76,6 +76,9 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkAddCliente.setSelected(false);
         chkReimpresion.setSelected(false);
         chkRecibirCompras.setSelected(false);
+        chkModTipoPago.setSelected(false);
+        chkModNE.setSelected(false);
+        chkConfirmarNE.setSelected(false);
     }
     /** This method fis called from within the constructor to
      * initialize the form.
@@ -107,6 +110,9 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkPagoNuevo = new javax.swing.JCheckBox();
         chkPagoRecibo = new javax.swing.JCheckBox();
         chkReimpresion = new javax.swing.JCheckBox();
+        chkModTipoPago = new javax.swing.JCheckBox();
+        chkModNE = new javax.swing.JCheckBox();
+        chkConfirmarNE = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         chkPagosHistorico = new javax.swing.JCheckBox();
         chkFactHistorico = new javax.swing.JCheckBox();
@@ -255,6 +261,15 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
         chkReimpresion.setText(resourceMap.getString("chkReimpresion.text")); // NOI18N
         chkReimpresion.setName("chkReimpresion"); // NOI18N
 
+        chkModTipoPago.setText(resourceMap.getString("chkModTipoPago.text")); // NOI18N
+        chkModTipoPago.setName("chkModTipoPago"); // NOI18N
+
+        chkModNE.setText(resourceMap.getString("chkModNE.text")); // NOI18N
+        chkModNE.setName("chkModNE"); // NOI18N
+
+        chkConfirmarNE.setText(resourceMap.getString("chkConfirmarNE.text")); // NOI18N
+        chkConfirmarNE.setName("chkConfirmarNE"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -270,13 +285,18 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkPagoRecibo)
-                    .addComponent(chkNotasEntrega)
-                    .addComponent(chkEliminarPagos)
-                    .addComponent(chkFlujo)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(chkAnularFacturas)
-                        .addGap(108, 108, 108)
-                        .addComponent(chkReimpresion)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkAnularFacturas)
+                            .addComponent(chkFlujo)
+                            .addComponent(chkEliminarPagos)
+                            .addComponent(chkNotasEntrega))
+                        .addGap(54, 54, 54)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkConfirmarNE)
+                            .addComponent(chkModNE)
+                            .addComponent(chkModTipoPago)
+                            .addComponent(chkReimpresion))))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -290,15 +310,18 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkCerrarCaja)
-                    .addComponent(chkFlujo))
+                    .addComponent(chkFlujo)
+                    .addComponent(chkModTipoPago))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkFacturar)
-                    .addComponent(chkEliminarPagos))
+                    .addComponent(chkEliminarPagos)
+                    .addComponent(chkModNE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkPagos)
-                    .addComponent(chkNotasEntrega))
+                    .addComponent(chkNotasEntrega)
+                    .addComponent(chkConfirmarNE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkPagoNuevo)
@@ -826,7 +849,30 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
             idFormulario = "37";
             objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
         }
-        
+        if(this.chkModTipoPago.isSelected())
+        {
+            idModulo = "1";
+            idFormulario = "38";
+            objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
+        }
+        if(this.chkModTipoPago.isSelected())
+        {
+            idModulo = "1";
+            idFormulario = "38";
+            objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
+        }
+        if(this.chkModNE.isSelected())
+        {
+            idModulo = "1";
+            idFormulario = "39";
+            objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
+        }
+        if(this.chkConfirmarNE.isSelected())
+        {
+            idModulo = "1";
+            idFormulario = "40";
+            objPermisos.insertarRegistro(objUsuarioSelect.getCodigo(), idModulo, idFormulario);
+        }        
         
         objAuditoria.insertarAuditoria("frmUsuarioPermisos", "CAMBIO DE PERMISOS AL USUARIO:" + objUsuarioSelect.getDescripcion(), "4");
         JOptionPane.showMessageDialog(this, "Datos almacenados con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
@@ -994,13 +1040,21 @@ public class frmUsuarioPermisos extends javax.swing.JInternalFrame {
             {
                 chkRecibirCompras.setSelected(true);
             } 
+            if(nombreFormulario.equals("frmModificaPago"))
+            {
+                chkModTipoPago.setSelected(true);
+            } 
+            if(nombreFormulario.equals("frmNotasEntregaModificar"))
+            {
+                chkModNE.setSelected(true);
+            } 
+            if(nombreFormulario.equals("frmNotasEntregaConfirmar"))
+            {
+                chkConfirmarNE.setSelected(true);
+            } 
         }
         this.btnGuardar.setEnabled(true);
     }//GEN-LAST:event_btnMostrarActionPerformed
-
-private void chkPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPagosActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_chkPagosActionPerformed
 
 private void chkKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkKardexActionPerformed
 // TODO add your handling code here:
@@ -1009,6 +1063,10 @@ private void chkKardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 private void cmbUsuariosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbUsuariosItemStateChanged
     reinicio();
 }//GEN-LAST:event_cmbUsuariosItemStateChanged
+
+    private void chkPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPagosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkPagosActionPerformed
 
 public void reinicio()
 {
@@ -1031,6 +1089,7 @@ public void reinicio()
     private javax.swing.JCheckBox chkCerrarCaja;
     private javax.swing.JCheckBox chkChequear;
     private javax.swing.JCheckBox chkClienteDel;
+    private javax.swing.JCheckBox chkConfirmarNE;
     private javax.swing.JCheckBox chkCreacionUsuario;
     private javax.swing.JCheckBox chkDescuentos;
     private javax.swing.JCheckBox chkEliminarPagos;
@@ -1043,6 +1102,8 @@ public void reinicio()
     private javax.swing.JCheckBox chkListProductosDel;
     private javax.swing.JCheckBox chkMantenimientoGrupo;
     private javax.swing.JCheckBox chkModClientes;
+    private javax.swing.JCheckBox chkModNE;
+    private javax.swing.JCheckBox chkModTipoPago;
     private javax.swing.JCheckBox chkModificarProductos;
     private javax.swing.JCheckBox chkNotasEntrega;
     private javax.swing.JCheckBox chkPagoNuevo;

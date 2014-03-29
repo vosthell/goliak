@@ -32,6 +32,7 @@ public class clsPago {
     private String descripcion_deuda;
     private Double valor_actual;
     private int codigo;
+    private int tipo_recibo;
     
     public String getIdCabeceraMovi() {
         return id_cabecera_movi;
@@ -160,6 +161,14 @@ public class clsPago {
     
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+    
+    public int getTipoRecibo() {
+        return tipo_recibo;
+    }
+    
+    public void setTipoRecibo(int tipo_recibo) {
+        this.tipo_recibo = tipo_recibo;
     }
     
     public boolean insertarRegistroHistorico(String idCtaCobrar, String idUser, String factRef, String fechaPago, String valor)
@@ -1773,7 +1782,7 @@ public class clsPago {
         return exito;
     }  
      
-     public boolean asignarPago(int idCabecera, int idPago)
+    public boolean asignarPago(int idCabecera, int idPago)
     {
         boolean exito;
         try
@@ -1904,5 +1913,69 @@ public class clsPago {
         }     
         bd.desconectarBaseDeDatos();
         return totalDeuda;
+    }
+     
+     public ArrayList<clsPago>  consultaDataPagoPendienteAsignar(String txtIdPago){            
+        ArrayList<clsPago> data = new ArrayList<clsPago>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT a.id_pagos_recibo id_pagos_recibo, a.tipo_recibo tipo_recibo " +
+                    "FROM ck_pagos_recibo AS a " +                   
+                    //"WHERE a.ne_contado = 'N' " +
+                    "WHERE a.estado_asignado = 'N' " +
+                    "AND a.estado = 'A' " +
+                    "AND a.codigo_recibo = " + txtIdPago;
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            while(bd.resultado.next()){
+                clsPago oListaTemporal = new clsPago();
+                oListaTemporal.setIdPago(bd.resultado.getInt("id_pagos_recibo")); 
+                oListaTemporal.setTipoRecibo(bd.resultado.getInt("tipo_recibo")); 
+                /*oListaTemporal.setCedula(bd.resultado.getString("cedula"));
+                oListaTemporal.setNombreCliente(bd.resultado.getString("name_completo"));
+                oListaTemporal.setReferencia(bd.resultado.getString("referencia"));
+                oListaTemporal.setValor(bd.resultado.getDouble("valor"));   
+                oListaTemporal.setFechaCobro(bd.resultado.getString("fecha"));     
+                oListaTemporal.setNombreUsuario(bd.resultado.getString("usu_registra"));
+                oListaTemporal.setNombreCobrador(bd.resultado.getString("usu_cobra"));
+                oListaTemporal.setCodigoRecibo(bd.resultado.getInt("codigo_recibo"));*/
+                
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }  
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+     
+     public boolean modificarPago(int idPago, String cuota_inicial, String ne_contado, String tipo_recibo)
+    {
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();
+            sql = "UPDATE ck_pagos_recibo"
+                    + " SET cuota_inicial = '" + cuota_inicial + "', "
+                    + " ne_contado = '" + ne_contado + "',"
+                    + " tipo_recibo = '" + tipo_recibo + "'"
+                    + " WHERE id_pagos_recibo = " + idPago;      
+           
+            System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true;
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
     }
 }

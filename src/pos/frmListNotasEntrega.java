@@ -13,11 +13,13 @@ package pos;
 import clases.clsCaja;
 import clases.clsCompras;
 import clases.clsPago;
+import clases.clsPermisos;
 import clases.clsProveedor;
 import clases.clsReporte;
 import clases.clsUtils;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
+import index.main;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -46,6 +49,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsCompras objCompras = new clsCompras();
     clsProveedor objProveedor = new clsProveedor();
+    clsPermisos objPermisos = new clsPermisos();
     
     String idCajaAbierta = "";
     
@@ -489,7 +493,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -515,18 +519,33 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     }
     else
     {
+        String idUsuario = main.idUser;
         if (columna == 6)
         {
-            frmNotasEntregaConfirmar formulario = new frmNotasEntregaConfirmar(idCabecera);
-            mostrarJInternalCentrado(formulario);  
-            dispose();
+            if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaConfirmar"))
+            {
+                frmNotasEntregaConfirmar formulario = new frmNotasEntregaConfirmar(idCabecera);
+                mostrarJInternalCentrado(formulario);  
+                dispose();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para confirmar Notas de Entrega", "Atención!", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         
         if (columna == 5)
         {
-            frmNotasEntregaModificar formulario = new frmNotasEntregaModificar(idCabecera);
-            mostrarJInternalCentrado(formulario);
-            dispose();
+            if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaModificar"))
+            {
+                frmNotasEntregaModificar formulario = new frmNotasEntregaModificar(idCabecera);
+                mostrarJInternalCentrado(formulario);
+                dispose();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para modificar Notas de Entrega", "Atención!", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }//GEN-LAST:event_tblDataMouseClicked

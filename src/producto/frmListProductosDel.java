@@ -221,7 +221,7 @@ private void txtNombreProductoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FI
         {
             dtmData.removeRow(0);
         }    
-        ArrayList<clsProducto> dataProducto = objProducto.consultarDataProductoPorNombre(txtNombreProducto.getText().toUpperCase().toString()); 
+        ArrayList<clsProducto> dataProducto = objProducto.consultarDataProductoPorNombre(txtNombreProducto.getText().toUpperCase().toString(), "N"); 
         for(int i=0;i<dataProducto.size();i=i+1)
         {
              /*      

@@ -868,14 +868,17 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
              texto = texto  + "<TR><TD>VENDEDOR:</TD><TD>" + txtVendedor.getText() + "</TD></TR>"
                          + "</TABLE></BR></BR>"
                          + "<TABLE BORDER=\"1\">"
-                         + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+                         + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD><TD>PVP</TD></TR>" ;
 
              String descripcion = "";
+             String pvp = "";
+             
              for(int i=0; i<maxData; i++)        
              {     
                  descripcion = "" + dtmData.getValueAt(i, 3);
-                 cantidad = "" + dtmData.getValueAt(i, 4);           
-                 texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+                 cantidad = "" + dtmData.getValueAt(i, 4);    
+                 pvp = "" + dtmData.getValueAt(i, 5);    
+                 texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD><TD>" + pvp + "</TD></TR>";
              }  
              texto = texto + "</TABLE>";
 

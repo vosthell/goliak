@@ -10,6 +10,7 @@
  */
 package pos;
 
+import email.frmEnviarCorreo;
 import clases.clsAuditoria;
 import clases.clsCabecera;
 import index.main;

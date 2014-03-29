@@ -1587,7 +1587,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
                         + "</TABLE></BR></BR>"
                         + "<TABLE BORDER=\"1\">"
-                        + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD></TR>" ;
+                        + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD><TD>PVP</TD></TR>" ;
 
                 String descripcion = "";
                 for(int i=0; i<maxData; i++)
@@ -1597,7 +1597,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
                     descripcion = "" + dtmData.getValueAt(i, 3);
                     cantidad = "" + dtmData.getValueAt(i, 4);
-                    //precio = "" + dtmData.getValueAt(i, 5);                        
+                    precio = "" + dtmData.getValueAt(i, 5);                        
                     //iva = "" + dtmData.getValueAt(i, 7);
                     //descuento = "" + dtmData.getValueAt(i, 8);
                     //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
@@ -1605,7 +1605,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
                     //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
                     //        precio, descuento, iva, costo);
-                    texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD></TR>";
+                    texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD><TD>" + precio + "</TD></TR>";
 
                 }  
                 texto = texto + "</TABLE>";

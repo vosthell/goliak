@@ -267,7 +267,7 @@ public class clsProducto {
         return exito;
     }
     
-    public ArrayList<clsProducto>  consultarDataProductoPorNombre(String nombre){            
+    public ArrayList<clsProducto>  consultarDataProductoPorNombre(String nombre, String p_sinStock){            
          ArrayList<clsProducto> data = new ArrayList<clsProducto>();  
          try{
             bd.conectarBaseDeDatos();
@@ -275,8 +275,16 @@ public class clsProducto {
                     + " control_existencia, precio1, costo"
                     + " FROM ck_items"
                     + " WHERE upper(des_item) like '%" + nombre + "%'"
-                    + " AND estado='A'"
-                    + " ORDER BY des_item";
+                    + " AND estado='A'";
+            if(p_sinStock.equals("S"))
+            {
+                
+            }
+            else
+            {
+                sql = sql + "AND cant_stock > 0 ";
+            }
+            sql = sql + " ORDER BY des_item";
             bd.resultado = bd.sentencia.executeQuery(sql);
             
             while(bd.resultado.next()){
