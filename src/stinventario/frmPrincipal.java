@@ -69,8 +69,10 @@ import pos.frmFacturero;
 import pos.frmIngresoDinero;
 import pos.frmInventario;
 import pos.frmListNotasEntrega;
+import pos.frmListNotasEntregaTransferencia;
 import pos.frmNotasEntrega;
 import pos.frmNotasEntrega1;
+import pos.frmNotasEntrega_transferencia;
 import pos.frmRecibosPago;
 import pos.frmRecibosPagoGenerados;
 import producto.frmCompras;
@@ -713,11 +715,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         setLocationByPlatform(true);
         setName("Form"); // NOI18N
 
+        jToolBar1.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         jToolBar1.setRollover(true);
         jToolBar1.setName("jToolBar1"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getActionMap(frmPrincipal.class, this);
         btnCajaAntes.setAction(actionMap.get("productos")); // NOI18N
+        btnCajaAntes.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
         btnCajaAntes.setText(resourceMap.getString("btnCajaAntes.text")); // NOI18N
         btnCajaAntes.setFocusable(false);
         btnCajaAntes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -730,6 +734,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnCajaAntes);
 
+        btnAbrir.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
         btnAbrir.setIcon(resourceMap.getIcon("btnAbrir.icon")); // NOI18N
         btnAbrir.setText(resourceMap.getString("btnAbrir.text")); // NOI18N
         btnAbrir.setFocusable(false);
@@ -743,6 +748,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnAbrir);
 
+        btnFacturar.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
         btnFacturar.setIcon(resourceMap.getIcon("btnFacturar.icon")); // NOI18N
         btnFacturar.setText(resourceMap.getString("btnFacturar.text")); // NOI18N
         btnFacturar.setEnabled(false);
@@ -757,6 +763,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnFacturar);
 
+        btnCerrar.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
         btnCerrar.setIcon(resourceMap.getIcon("btnCerrar.icon")); // NOI18N
         btnCerrar.setText(resourceMap.getString("btnCerrar.text")); // NOI18N
         btnCerrar.setEnabled(false);
@@ -774,6 +781,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jSeparator9.setName("jSeparator9"); // NOI18N
         jToolBar1.add(jSeparator9);
 
+        btnIngreso.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnIngreso.setIcon(resourceMap.getIcon("btnIngreso.icon")); // NOI18N
         btnIngreso.setText(resourceMap.getString("btnIngreso.text")); // NOI18N
         btnIngreso.setEnabled(false);
@@ -788,6 +796,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnIngreso);
 
+        btnPagos.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnPagos.setIcon(resourceMap.getIcon("btnPagos.icon")); // NOI18N
         btnPagos.setText(resourceMap.getString("btnPagos.text")); // NOI18N
         btnPagos.setEnabled(false);
@@ -802,6 +811,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnPagos);
 
+        btnEgreso.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnEgreso.setIcon(resourceMap.getIcon("btnEgreso.icon")); // NOI18N
         btnEgreso.setText(resourceMap.getString("btnEgreso.text")); // NOI18N
         btnEgreso.setEnabled(false);
@@ -816,6 +826,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnEgreso);
 
+        jButton7.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         jButton7.setIcon(resourceMap.getIcon("jButton7.icon")); // NOI18N
         jButton7.setText(resourceMap.getString("jButton7.text")); // NOI18N
         jButton7.setFocusable(false);
@@ -829,6 +840,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton7);
 
+        btnNE.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnNE.setIcon(resourceMap.getIcon("btnNE.icon")); // NOI18N
         btnNE.setText(resourceMap.getString("btnNE.text")); // NOI18N
         btnNE.setFocusable(false);
@@ -845,6 +857,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jSeparator6.setName("jSeparator6"); // NOI18N
         jToolBar1.add(jSeparator6);
 
+        btnFacturarHistorico.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnFacturarHistorico.setIcon(resourceMap.getIcon("btnFacturarHistorico.icon")); // NOI18N
         btnFacturarHistorico.setText(resourceMap.getString("btnFacturarHistorico.text")); // NOI18N
         btnFacturarHistorico.setFocusable(false);
@@ -858,6 +871,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnFacturarHistorico);
 
+        btnPagosHistoricos.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnPagosHistoricos.setIcon(resourceMap.getIcon("btnPagosHistoricos.icon")); // NOI18N
         btnPagosHistoricos.setText(resourceMap.getString("btnPagosHistoricos.text")); // NOI18N
         btnPagosHistoricos.setFocusable(false);
@@ -871,6 +885,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnPagosHistoricos);
 
+        btnRecibo.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnRecibo.setIcon(resourceMap.getIcon("btnRecibo.icon")); // NOI18N
         btnRecibo.setText(resourceMap.getString("btnRecibo.text")); // NOI18N
         btnRecibo.setFocusable(false);
@@ -884,6 +899,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnRecibo);
 
+        btnPagoNuevo.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnPagoNuevo.setIcon(resourceMap.getIcon("btnPagoNuevo.icon")); // NOI18N
         btnPagoNuevo.setText(resourceMap.getString("btnPagoNuevo.text")); // NOI18N
         btnPagoNuevo.setFocusable(false);
@@ -900,6 +916,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jSeparator1.setName("jSeparator1"); // NOI18N
         jToolBar1.add(jSeparator1);
 
+        btnKardex.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnKardex.setIcon(resourceMap.getIcon("btnKardex.icon")); // NOI18N
         btnKardex.setText(resourceMap.getString("btnKardex.text")); // NOI18N
         btnKardex.setFocusable(false);
@@ -913,6 +930,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnKardex);
 
+        btnCompras.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         btnCompras.setIcon(resourceMap.getIcon("btnCompras.icon")); // NOI18N
         btnCompras.setText(resourceMap.getString("btnCompras.text")); // NOI18N
         btnCompras.setFocusable(false);
@@ -933,6 +951,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jToolBar1.add(jSeparator8);
 
         jButton2.setAction(actionMap.get("quit")); // NOI18N
+        jButton2.setBackground(resourceMap.getColor("jToolBar1.background")); // NOI18N
         jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setFocusable(false);
@@ -1827,6 +1846,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnTransferencias.add(jSeparator15);
 
         jMenuItem27.setText(resourceMap.getString("jMenuItem27.text")); // NOI18N
+        jMenuItem27.setEnabled(false);
         jMenuItem27.setName("jMenuItem27"); // NOI18N
         jMenuItem27.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1836,6 +1856,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnTransferencias.add(jMenuItem27);
 
         jMenuItem31.setText(resourceMap.getString("jMenuItem31.text")); // NOI18N
+        jMenuItem31.setEnabled(false);
         jMenuItem31.setName("jMenuItem31"); // NOI18N
         mnTransferencias.add(jMenuItem31);
 
@@ -2624,12 +2645,12 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     }//GEN-LAST:event_jMenuItem27ActionPerformed
 
     private void jMenuItem40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem40ActionPerformed
-        frmNotasEntrega1 formulario = new frmNotasEntrega1();
+        frmNotasEntrega_transferencia formulario = new frmNotasEntrega_transferencia();
         mostrarJInternalCentrado(formulario); 
     }//GEN-LAST:event_jMenuItem40ActionPerformed
 
     private void jMenuItem37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem37ActionPerformed
-        frmListNotasEntrega formulario = new frmListNotasEntrega("TRANSFERENCIAS");
+        frmListNotasEntregaTransferencia formulario = new frmListNotasEntregaTransferencia();
         mostrarJInternalCentrado(formulario); 
     }//GEN-LAST:event_jMenuItem37ActionPerformed
 

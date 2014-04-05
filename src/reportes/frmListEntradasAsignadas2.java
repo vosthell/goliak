@@ -22,14 +22,17 @@ public class frmListEntradasAsignadas2 extends javax.swing.JDialog {
     //clsCliente objCliente = new clsCliente();
     clsPago objPago = new clsPago();
     MiModelo dtmData = new MiModelo();
+    String tipo_venta = "";
     /** Creates new form frmReporteVentas */
     
     /**
      * Creates new form frmListEntradasAsignadas2
      */
-    public frmListEntradasAsignadas2(java.awt.Frame parent, boolean modal, int p_idCabecera) {
+    public frmListEntradasAsignadas2(java.awt.Frame parent, boolean modal, int p_idCabecera, String p_tipo_venta) {
         super(parent, modal);
         initComponents();
+        
+        tipo_venta = p_tipo_venta;
         
         dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
         dtmData.addColumn("ID");
@@ -98,7 +101,7 @@ public class frmListEntradasAsignadas2 extends javax.swing.JDialog {
     public void buscar_informacion(int id_cabecera)
     {
         //objUtils.vaciarTabla(dtmData);  
-        ArrayList<clsPago> dataPago = objPago.consulta_entradas_asignadas(id_cabecera); 
+        ArrayList<clsPago> dataPago = objPago.consulta_entradas_asignadas(id_cabecera, tipo_venta); 
         //System.out.println(dataPago.size());
         llenarData(dataPago);      
     }        
@@ -232,7 +235,7 @@ public class frmListEntradasAsignadas2 extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmListEntradasAsignadas2 dialog = new frmListEntradasAsignadas2(new javax.swing.JFrame(), true, 0);
+                frmListEntradasAsignadas2 dialog = new frmListEntradasAsignadas2(new javax.swing.JFrame(), true, 0, "");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

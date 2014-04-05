@@ -49,6 +49,7 @@ public class clsCabecera {
     private int vendedor;
     private double porcentaje_interes;
     private String transferencia;
+    private int id_empresa;
     
     public int getIdCabeceraMovi() {
         return idCabeceraMovi;
@@ -56,6 +57,14 @@ public class clsCabecera {
     
     public void setIdCabeceraMovi(int idCabeceraMovi) {
         this.idCabeceraMovi = idCabeceraMovi;
+    }
+    
+    public int getIdEmpresa() {
+        return id_empresa;
+    }
+    
+    public void setIdEmpresa(int id_Empresa) {
+        this.id_empresa = id_empresa;
     }
     
     public int getIdVendedor() {
@@ -807,7 +816,7 @@ public class clsCabecera {
             Double saldo, String efectivo, String descuento, String iva, String factura, 
             String tarifaIva, String tarifaCero, 
             String tarifaIva2, String iva2, String total2, String codigo_vendedor,
-            String fechaVenta, String tipo, String porcentaje_interes, String baseTarifaCero_Interes)
+            String fechaVenta, String tipo, String porcentaje_interes, String baseTarifaCero_Interes, String transferencia)
     {       
         boolean exito = false;
         try
@@ -817,11 +826,12 @@ public class clsCabecera {
                     + " fecha, id_empresa, id_caja_operacion, "
                     + " comentario, saldo, efectivo, descuento, iva, fact_referencia, base_tarifa_0, base_tarifa_iva, "
                     + " total_interes, iva_interes, base_tarifa_iva_interes, vendedor, tipo, porcentaje_interes,"
-                    + " base_tarifa_0_interes)"                   
+                    + " base_tarifa_0_interes, transferencia)"                   
                     + " VALUES(" + idCliente + ", "+idUser+", "+idCajero+", "+total
                     + " , '" + fechaVenta + "', "+idEmpresa+", "+cajaAbierta+", "
                     + " '"+comentario+"', "+saldo+", "+efectivo+", "+descuento+", "+iva+", '"+factura+"', "+tarifaCero+", "+tarifaIva+","
-                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "', " + porcentaje_interes + ", " + baseTarifaCero_Interes + ")";           
+                    + " "+total2+" , " + iva2+ ", " + tarifaIva2+", " + codigo_vendedor + ", '" + tipo + "', " + porcentaje_interes + ", " 
+                    + baseTarifaCero_Interes + ", '" + transferencia + "')";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -1227,6 +1237,81 @@ public class clsCabecera {
         return data;
     }
     
+     public ArrayList<clsCabecera>  consultarDataCabeceraCredito_transferencia(int idCabecera){            
+        ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo codigo, b.nombre_empresa, "
+                        + " b.ruc_empresa, b.id_empresa, a.id_usuario, c.name,  "
+                        + " a.estado, total, saldo, efectivo,  "
+                        + " fecha, a.fecha_registro fecha_registro, fact_referencia, comentario,  "
+                        + " id_cajero, a.id_empresa, id_caja_operacion, "
+                        + " d.valor valor, e.descripcion descripcion, "
+                        + " base_tarifa_0, base_tarifa_iva, descuento, iva, "
+                        + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
+                        + " f.descripcion descripcion_plazo, fecha_cancelacion_sistema, "
+                        + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, a.vendedor id_vendedor, "
+                        + " porcentaje_interes, a.transferencia trans"
+                    + " FROM ck_notas_de_entrega AS a "
+                    + " inner join ck_empresa AS b on a.codigo = b.id_empresa "
+                    + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
+                    + " inner join ck_rel_cabecera_cuota AS d on a.id_cabecera_movi = d.id_cabecera_movi"
+                    + " inner join ck_cuota as e on d.id_cuota = e.id_cuota"
+                    + " inner join ck_cta_cobrar as ee on a.id_cabecera_movi = ee.id_cabecera_movi"
+                    + " inner join ck_plazo as f on ee.id_plazo = f.id_plazo"
+                    + " inner join ck_personal as g on a.vendedor = g.id_personal"
+                    + " WHERE a.id_cabecera_movi=" + idCabecera;
+            System.out.println("consultarDataCabeceraCredito_transferencia: " + sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            while(bd.resultado.next()){
+                clsCabecera oListaTemporal = new clsCabecera();
+                
+                oListaTemporal.setCedula(bd.resultado.getString("ruc_empresa"));                
+                oListaTemporal.setNameCompleto(bd.resultado.getString("nombre_empresa"));
+                oListaTemporal.setFactReferencia(bd.resultado.getString("fact_referencia"));
+                oListaTemporal.setComentario(bd.resultado.getString("comentario"));
+                oListaTemporal.setEfectivo(bd.resultado.getDouble("efectivo"));
+                oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                oListaTemporal.setSaldo(bd.resultado.getDouble("saldo"));
+                oListaTemporal.setDescripcion(bd.resultado.getString("descripcion"));
+                oListaTemporal.setValor(bd.resultado.getDouble("valor"));
+                oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
+                oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));
+                oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
+                oListaTemporal.setDescripcionPlazo(bd.resultado.getString("descripcion_plazo"));
+                oListaTemporal.setNombreVendedor(bd.resultado.getString("nombre_vendedor"));
+                oListaTemporal.setIdVendedor(bd.resultado.getInt("id_vendedor"));
+                
+                oListaTemporal.setTarifaCero1(bd.resultado.getDouble("base_tarifa_0_interes"));
+                oListaTemporal.setTarifaIVA1(bd.resultado.getDouble("base_tarifa_iva_interes"));                
+                oListaTemporal.setIVA1(bd.resultado.getDouble("iva_interes"));
+                oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
+                oListaTemporal.setFechaCancelacionSistema(bd.resultado.getString("fecha_cancelacion_sistema"));
+                
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));
+                
+                oListaTemporal.setTransferencia(bd.resultado.getString("trans"));
+                 
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }         
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+   
+    
     public ArrayList<clsCabecera>  consultarDataCabeceraCreditoFactura(int idCabecera){            
         ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
         try{
@@ -1565,6 +1650,67 @@ public class clsCabecera {
                 oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
                 
                 oListaTemporal.setTransferencia(bd.resultado.getString("transferencia"));
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }  
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+        
+         public ArrayList<clsCabecera>  consultarDataCabeceraNotaEntrega_transferencia(int idCabecera){            
+        ArrayList<clsCabecera> data = new ArrayList<clsCabecera>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT a.id_cabecera_movi id_cabecera_movi, a.codigo codigo, b.nombre_empresa, "
+                            + " b.id_empresa, a.id_usuario, c.name,  "
+                            + " a.estado, total, saldo, efectivo,  "
+                            + " fecha, fact_referencia, comentario,  "
+                            + " id_cajero, a.id_empresa id_emp, id_caja_operacion, "
+                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor,"
+                            + " a.fecha_registro fecha_registro, "   
+                            + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
+                            + " a.transferencia transf"
+                    + " FROM ck_notas_de_entrega AS a "
+                    + " inner join ck_empresa AS b on a.codigo = b.id_empresa "
+                    + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
+                    + " WHERE a.id_cabecera_movi=" + idCabecera;
+            System.out.println("consultarDataCabeceraNotaEntrega_transferencia: " + sql);
+            
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            while(bd.resultado.next()){
+                clsCabecera oListaTemporal = new clsCabecera();
+                
+                oListaTemporal.setIdEmpresa(bd.resultado.getInt("id_empresa"));                
+                oListaTemporal.setNameCompleto(bd.resultado.getString("nombre_empresa"));
+                oListaTemporal.setFactReferencia(bd.resultado.getString("fact_referencia"));
+                oListaTemporal.setComentario(bd.resultado.getString("comentario"));
+                oListaTemporal.setEfectivo(bd.resultado.getDouble("efectivo"));
+                oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                oListaTemporal.setSaldo(bd.resultado.getDouble("saldo"));
+                oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
+                oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
+                oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));      
+                oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
+                oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
+                oListaTemporal.setIdVendedor(bd.resultado.getInt("vendedor"));
+                
+                oListaTemporal.setTarifaCero1(bd.resultado.getDouble("base_tarifa_0_interes"));
+                oListaTemporal.setTarifaIVA1(bd.resultado.getDouble("base_tarifa_iva_interes"));                
+                oListaTemporal.setIVA1(bd.resultado.getDouble("iva_interes"));
+                oListaTemporal.setTotal1(bd.resultado.getDouble("total_interes"));
+                
+                oListaTemporal.setTransferencia(bd.resultado.getString("transf"));
                 data.add(oListaTemporal);
             }
             //return data;

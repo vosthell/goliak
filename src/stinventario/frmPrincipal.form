@@ -842,6 +842,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem27">
               <Properties>
                 <Property name="text" type="java.lang.String" resourceKey="jMenuItem27.text"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="jMenuItem27" noResource="true"/>
               </Properties>
               <Events>
@@ -851,6 +852,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem31">
               <Properties>
                 <Property name="text" type="java.lang.String" resourceKey="jMenuItem31.text"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="jMenuItem31" noResource="true"/>
               </Properties>
             </MenuItem>
@@ -943,6 +945,7 @@
   <SubComponents>
     <Container class="javax.swing.JToolBar" name="jToolBar1">
       <Properties>
+        <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
         <Property name="rollover" type="boolean" value="true"/>
         <Property name="name" type="java.lang.String" value="jToolBar1" noResource="true"/>
       </Properties>
@@ -954,6 +957,7 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="stinventario.frmPrincipal" id="productos" methodName="productos"/>
             </Property>
+            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
             <Property name="text" type="java.lang.String" resourceKey="btnCajaAntes.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -969,6 +973,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAbrir">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnAbrir.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnAbrir.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -985,6 +990,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnFacturar">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnFacturar.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnFacturar.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1002,6 +1008,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCerrar">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnCerrar.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnCerrar.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1024,6 +1031,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnIngreso">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnIngreso.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnIngreso.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1041,6 +1049,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnPagos">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnPagos.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnPagos.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1058,6 +1067,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnEgreso">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnEgreso.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnEgreso.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1075,6 +1085,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="jButton7.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="jButton7.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1088,6 +1099,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnNE">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnNE.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnNE.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1106,6 +1118,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnFacturarHistorico">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnFacturarHistorico.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnFacturarHistorico.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1119,6 +1132,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnPagosHistoricos">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnPagosHistoricos.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnPagosHistoricos.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1132,6 +1146,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRecibo">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnRecibo.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnRecibo.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1145,6 +1160,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnPagoNuevo">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnPagoNuevo.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnPagoNuevo.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1163,6 +1179,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnKardex">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnKardex.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnKardex.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1176,6 +1193,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCompras">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnCompras.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnCompras.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -1202,6 +1220,7 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
             </Property>
+            <Property name="background" type="java.awt.Color" resourceKey="jToolBar1.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="jButton2.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="jButton2.text"/>
             <Property name="focusable" type="boolean" value="false"/>

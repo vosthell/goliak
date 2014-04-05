@@ -11,7 +11,9 @@
 package pos;
 
 import clases.clsCaja;
+import clases.clsComboBox;
 import clases.clsCompras;
+import clases.clsEmpresa;
 import clases.clsPago;
 import clases.clsPermisos;
 import clases.clsProveedor;
@@ -40,7 +42,7 @@ import stinventario.frmPrincipal;
  *
  * @author CKaiser
  */
-public class frmListNotasEntrega extends javax.swing.JInternalFrame {
+public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
     
     clsReporte objReporte = new clsReporte(); 
@@ -50,11 +52,12 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
     clsCompras objCompras = new clsCompras();
     clsProveedor objProveedor = new clsProveedor();
     clsPermisos objPermisos = new clsPermisos();
+    clsEmpresa objEmpresa = new clsEmpresa();
     
     String idCajaAbierta = "";
     
     /** Creates new form frmPagosRealizados */
-    public frmListNotasEntrega(String tipo) {
+    public frmListNotasEntregaTransferencia() {
         initComponents();        
         
         dtmData.addColumn("id");
@@ -83,14 +86,14 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         //ArrayList<clases.clsCaja> dataCaja = objCaja.consultarDataCajaAbierta(main.idUser);
         //idCajaAbierta = dataCaja.get(0).getIdCajaOperacion(); 
         ArrayList<clsCompras> dataCompras = new ArrayList<clsCompras>();
-        if(tipo.equals("NORMAL"))
+        /*if(tipo.equals("NORMAL"))
         {
              dataCompras = objCompras.consultaDataNotasEntrega(); 
         }
         else if(tipo.equals("TRANSFERENCIAS"))
-        {        
+        {   */     
             dataCompras = objCompras.consultaDataNotasEntregaTransferencias(); 
-        }   
+        //}   
        
         llenarData(dataCompras);
         
@@ -102,10 +105,17 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         
         tblData.setAutoCreateRowSorter(true);  
         
-        List<String> dataCodigo = objProveedor.consultarCodigos(); 
+        /*List<String> dataCodigo = objProveedor.consultarCodigos(); 
         SelectAllUtils.install(txtCedula);
         ListDataIntelliHints intellihints = new ListDataIntelliHints(txtCedula, dataCodigo);        
-        intellihints.setCaseSensitive(false);
+        intellihints.setCaseSensitive(false);*/
+        //CARGAR EMPRESAS
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasTransferencia();        
+        for(int i=0;i<dataEmpresas.size();i=i+1)
+        {
+            clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
+            cmbEmpresa.addItem(oItem);            
+        }    
     }
     
     public void llenarData(ArrayList<clsCompras> dataCompras)
@@ -206,11 +216,10 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         txtFechaFinRecibe = new com.toedter.calendar.JDateChooser();
         chkProveedor = new javax.swing.JCheckBox();
-        txtCedula = new javax.swing.JTextField();
-        btnBuscarProveedor = new javax.swing.JButton();
         rbtnTodas = new javax.swing.JRadioButton();
         rbtnActivas = new javax.swing.JRadioButton();
         rbtnAnuladas = new javax.swing.JRadioButton();
+        cmbEmpresa = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblData = new javax.swing.JTable();
@@ -220,7 +229,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmListNotasEntrega.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmListNotasEntregaTransferencia.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
         setPreferredSize(new java.awt.Dimension(802, 523));
@@ -314,19 +323,6 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
             }
         });
 
-        txtCedula.setText(resourceMap.getString("txtCedula.text")); // NOI18N
-        txtCedula.setEnabled(false);
-        txtCedula.setName("txtCedula"); // NOI18N
-
-        btnBuscarProveedor.setText(resourceMap.getString("btnBuscarProveedor.text")); // NOI18N
-        btnBuscarProveedor.setEnabled(false);
-        btnBuscarProveedor.setName("btnBuscarProveedor"); // NOI18N
-        btnBuscarProveedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarProveedorActionPerformed(evt);
-            }
-        });
-
         buttonGroup1.add(rbtnTodas);
         rbtnTodas.setText(resourceMap.getString("rbtnTodas.text")); // NOI18N
         rbtnTodas.setName("rbtnTodas"); // NOI18N
@@ -340,6 +336,9 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
         rbtnAnuladas.setText(resourceMap.getString("rbtnAnuladas.text")); // NOI18N
         rbtnAnuladas.setName("rbtnAnuladas"); // NOI18N
 
+        cmbEmpresa.setEnabled(false);
+        cmbEmpresa.setName("cmbEmpresa"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -350,12 +349,8 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                     .addComponent(chkFechaRegistro)
                     .addComponent(chkFechaRecibe)
                     .addComponent(chkProveedor))
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBuscarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(txtCedula))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -375,7 +370,8 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(cmbEmpresa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rbtnTodas)
@@ -415,10 +411,9 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkProveedor)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnBuscarProveedor)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(rbtnTodas)))
-                .addGap(6, 6, 6))
+                        .addComponent(rbtnTodas)
+                        .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -501,7 +496,7 @@ public class frmListNotasEntrega extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -521,7 +516,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     ventana.setVisible(true);*/
     if(tblData.getValueAt(i, 4).equals("CONFIRMADA"))
     {   
-        frmFactHistoShow ventana = new frmFactHistoShow(null, true, idCabecera);
+        frmFactHistoShow_transferencia ventana = new frmFactHistoShow_transferencia(null, true, idCabecera);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }
@@ -532,7 +527,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         {
             if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaConfirmar"))
             {
-                frmNotasEntregaConfirmar formulario = new frmNotasEntregaConfirmar(idCabecera);
+                frmNotasEntregaConfirmar_transferencia formulario = new frmNotasEntregaConfirmar_transferencia(idCabecera);
                 mostrarJInternalCentrado(formulario);  
                 dispose();
             }
@@ -546,7 +541,7 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         {
             if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaModificar"))
             {
-                frmNotasEntregaModificar formulario = new frmNotasEntregaModificar(idCabecera);
+                frmNotasEntregaModificar_transferencia formulario = new frmNotasEntregaModificar_transferencia(idCabecera);
                 mostrarJInternalCentrado(formulario);
                 dispose();
             }
@@ -572,6 +567,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         String fechaFin = "";
         String soloCliente = "";
         String anuladas = "";
+        clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();   
         
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         
@@ -605,7 +601,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Date date2 = txtFechaFin.getDate();
             fechaFin = df1.format(date2);
 
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoRegistro(fechaInicio, fechaFin, soloCliente, txtCedula.getText(), anuladas); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoRegistro_transferencia(fechaInicio, fechaFin, soloCliente, Integer.parseInt(objEmpresaSelect.getCodigo()), anuladas); 
             llenarData(dataCompras);
         }
         else if(this.chkFechaRecibe.isSelected())
@@ -616,12 +612,12 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Date date2 = txtFechaFinRecibe.getDate();
             fechaFin = df1.format(date2);
 
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoConfirmacion(fechaInicio, fechaFin, soloCliente, txtCedula.getText(), anuladas); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoConfirmacion_transferencia(fechaInicio, fechaFin, soloCliente, Integer.parseInt(objEmpresaSelect.getCodigo()), anuladas); 
             llenarData(dataCompras);
         }
         else
         {
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaCliente(soloCliente, txtCedula.getText(), anuladas); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaCliente_transferencia(soloCliente, objEmpresaSelect.getCodigo(), anuladas); 
             llenarData(dataCompras);    
         }
     }        
@@ -708,28 +704,17 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 }//GEN-LAST:event_jButton1ActionPerformed
 
-private void btnBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProveedorActionPerformed
-    /*frmListProveedor ventana = new frmListProveedor(null, true, "5");
-    ventana.setLocationRelativeTo(null);
-    ventana.setVisible(true);*/
-    
-    frmListClientes ventana = new frmListClientes(null, true, "11");
-    //new inventariopdf.JDEscoger(this, true);
-    ventana.setLocationRelativeTo(null);
-    ventana.setVisible(true);
-}//GEN-LAST:event_btnBuscarProveedorActionPerformed
-
 private void chkProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkProveedorItemStateChanged
-    txtCedula.setText("");
+    //txtCedula.setText("");
     if(this.chkProveedor.isSelected())
     {
-        txtCedula.setEnabled(true);
-        btnBuscarProveedor.setEnabled(true);
+        cmbEmpresa.setEnabled(true);
+        //btnBuscarProveedor.setEnabled(true);
     }
     else
     {
-        txtCedula.setEnabled(false);
-        btnBuscarProveedor.setEnabled(false);
+        cmbEmpresa.setEnabled(false);
+        //btnBuscarProveedor.setEnabled(false);
     }
     
 }//GEN-LAST:event_chkProveedorItemStateChanged
@@ -763,11 +748,11 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     } 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnBuscarProveedor;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkFechaRecibe;
     private javax.swing.JCheckBox chkFechaRegistro;
     private javax.swing.JCheckBox chkProveedor;
+    private javax.swing.JComboBox cmbEmpresa;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -781,7 +766,6 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JRadioButton rbtnAnuladas;
     private javax.swing.JRadioButton rbtnTodas;
     private javax.swing.JTable tblData;
-    public static javax.swing.JTextField txtCedula;
     private com.toedter.calendar.JDateChooser txtFechaFin;
     private com.toedter.calendar.JDateChooser txtFechaFinRecibe;
     private com.toedter.calendar.JDateChooser txtFechaInicio;

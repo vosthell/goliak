@@ -2858,7 +2858,12 @@ private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST
     }//GEN-LAST:event_txtCodigoProductoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera);
+        String tipo_venta = "CREDITO";
+       if(this.chkCredito.isSelected())  
+            tipo_venta = "CREDITO";
+        else
+            tipo_venta = "CONTADO";
+        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera, tipo_venta);
         //mostrarJInternalCentrado(formulario); 
         formulario.setLocationRelativeTo(null);
         formulario.setVisible(true);    // TODO add your handling code here:

@@ -36,7 +36,7 @@ import stinventario.frmPrincipal;
  *
  * @author Kaiser
  */
-public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
+public class frmNotasEntregaConfirmar_transferencia extends javax.swing.JInternalFrame {
     clsCliente objCliente = new clsCliente();
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
@@ -57,28 +57,28 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
        
     int filas=0;
     //CODIGO DEL CLIENTE SELECCIONADO
-    public static int codigoCliente;
+    public static int codigoEmpresa;
     //CODIGO DEL PRODUCTO SELECCIONADO 
     public static int codigoProducto;
     int idCabecera; 
     /** Creates new form frmFacturar */
-    public frmNotasEntregaConfirmar(int p_idCabecera) {        
+    public frmNotasEntregaConfirmar_transferencia(int p_idCabecera) {        
         initComponents();  
         this.setTitle(objUtils.nombreSistema + "NOTA DE ENTREGA - CONFIRMAR");
         
         idCabecera = p_idCabecera; 
         
         ArrayList <clsCabecera> dataCabecera;
-        dataCabecera = objCabecera.consultarDataCabeceraCredito(idCabecera);
+        dataCabecera = objCabecera.consultarDataCabeceraCredito_transferencia(idCabecera);
         
         if(dataCabecera.isEmpty())
         {
             Double cuotaInicialAsignada = 0.00;
             
             //LA NOTA DE ENTREGA FUE A CONTADO
-            dataCabecera = objCabecera.consultarDataCabeceraNotaEntrega(idCabecera);
+            dataCabecera = objCabecera.consultarDataCabeceraNotaEntrega_transferencia(idCabecera);
             
-            txtCedula.setText(dataCabecera.get(0).getCedula());
+            //txtCedula.setText(dataCabecera.get(0).getCedula());
             txtNombreCliente.setText(dataCabecera.get(0).getNameCompleto());
             txtMonica.setText(dataCabecera.get(0).getFactReferencia());
             txtComentario.setText(dataCabecera.get(0).getComentario());
@@ -102,7 +102,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
             txtTotal1.setText("" + dataCabecera.get(0).getTotal1());
             
-            codigoCliente = dataCabecera.get(0).getCodigo();
+            codigoEmpresa = dataCabecera.get(0).getIdEmpresa();
             //btnConfirmar.setEnabled(true);
             
             //OBTENER VALOR DE PAGOS ASIGNADOS
@@ -121,7 +121,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             Double cuotaInicial = 0.00;
             Double cuotaInicialAsignada = 0.00;
             
-            txtCedula.setText(dataCabecera.get(0).getCedula());
+            //txtCedula.setText(dataCabecera.get(0).getCedula());
             txtNombreCliente.setText(dataCabecera.get(0).getNameCompleto());
             txtMonica.setText(dataCabecera.get(0).getFactReferencia());
             txtComentario.setText(dataCabecera.get(0).getComentario());
@@ -151,7 +151,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             cuotaInicialAsignada = objUtils.redondear(objPago.obtenerValorAsignado(idCabecera));
             txtAsignado.setText("" + cuotaInicialAsignada);
             
-            codigoCliente = dataCabecera.get(0).getCodigo();
+            codigoEmpresa = dataCabecera.get(0).getIdEmpresa();
             
             //if(cuotaInicial == cuotaInicialAsignada)
             if(txtEfectivo.getText().equals(txtAsignado.getText())||dataCabecera.get(0).getTransferencia().equals("S"))
@@ -231,9 +231,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
         txtNombreCliente = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtMonica = new javax.swing.JTextField();
@@ -288,22 +286,15 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntregaConfirmar.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntregaConfirmar_transferencia.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
-
-        txtCedula.setEditable(false);
-        txtCedula.setText(resourceMap.getString("txtCedula.text")); // NOI18N
-        txtCedula.setName("txtCedula"); // NOI18N
 
         txtNombreCliente.setEditable(false);
         txtNombreCliente.setText(resourceMap.getString("txtNombreCliente.text")); // NOI18N
@@ -346,19 +337,24 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMonica)
-                            .addComponent(txtCedula)
-                            .addComponent(txtNombreCliente, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel10))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombreCliente)
+                            .addComponent(txtMonica))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
@@ -369,38 +365,34 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                                 .addGap(10, 10, 10)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtVendedor))))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtVendedor)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMonica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel9)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMonica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel10))
+                    .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel11)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
@@ -740,7 +732,6 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
@@ -753,7 +744,8 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConfirmar))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -761,7 +753,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -771,7 +763,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8)
                     .addComponent(txtDatoCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -816,9 +808,9 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             //descuento = "" + dtmData.getValueAt(i, 8);
             costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
             objKardex.insertarKardex(idProducto, 
-                                "NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + idCabecera, 
+                                "TRANFERENCIA - NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + idCabecera, 
                                 "-" + cantidad,
-                                txtCedula.getText(),
+                                codigoEmpresa+"",
                                 txtNombreCliente.getText(),
                                 precio,
                                 costo,
@@ -886,7 +878,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
              ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
              for(int i=0;i<dataEmail.size();i=i+1)
              {
-                 mail.send(dataEmail.get(i).getEmail(), "CONFIRMACION - NOTA DE ENTREGA", texto);
+                 mail.send(dataEmail.get(i).getEmail(), "TRANSFERENCIA - CONFIRMACION - NOTA DE ENTREGA", texto);
              }
          }
          catch(Exception e){
@@ -901,7 +893,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
     String credito = txtDatoCredito.getText();
-    frmPagosCuotaInicial ventana = new frmPagosCuotaInicial(null, true, codigoCliente, idCabecera, credito);        
+    frmPagosCuotaInicial ventana = new frmPagosCuotaInicial(null, true, codigoEmpresa, idCabecera, credito);        
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);
     this.dispose();
@@ -922,7 +914,7 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         formulario.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
     
- public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+    public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
         Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
         Dimension jInternalFrameSize = formulario.getSize();
@@ -932,14 +924,11 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         frmPrincipal.jDesktopPane1.add(formulario);
         formulario.show(); 
     }
-
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsignar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -966,7 +955,6 @@ private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblData;
     private javax.swing.JTextField txtAsignado;
-    public static javax.swing.JTextField txtCedula;
     private javax.swing.JTextArea txtComentario;
     private javax.swing.JTextField txtCuota;
     private javax.swing.JTextField txtDatoCredito;

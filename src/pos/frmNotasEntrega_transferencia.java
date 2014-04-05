@@ -55,7 +55,7 @@ import stinventario.frmPrincipal;
  *
  * @author Kaiser
  */
-public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
+public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
     clsCliente objCliente = new clsCliente();
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
@@ -94,7 +94,7 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
     //control del chkboxcredito para q no de error al aplicar changue item
     int controlCmbCredito = 0;
     //CODIGO DEL CLIENTE SELECCIONADO
-    public static int codigoCliente;
+    //public static int codigoCliente;
     //CODIGO DEL PRODUCTO SELECCIONADO 
     public static int codigoProducto;
     public static String controlExistencia;
@@ -102,7 +102,7 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
     Double imp_iva = objImpuestos.obtenerPorcentajeIVA();
     Double cuotaInicial = 0.00;
     /** Creates new form frmFacturar */
-    public frmNotasEntregaTransferencia() {
+    public frmNotasEntrega_transferencia() {
         initComponents();  
         this.setTitle(objUtils.nombreSistema + "NOTA DE  ENTREGA");
         
@@ -201,7 +201,7 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
         }  
         
         //CARGAR EMPRESAS
-        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas_externas();        
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasTransferencia();        
         for(int i=0;i<dataEmpresas.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
@@ -340,12 +340,10 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
         jLabel22 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         chkAnulada = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntregaTransferencia.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntrega_transferencia.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
@@ -1020,20 +1018,6 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
 
         chkAnulada.setName("chkAnulada"); // NOI18N
 
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setName("jButton2"); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1061,12 +1045,7 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1076,11 +1055,7 @@ public class frmNotasEntregaTransferencia extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnImprimir)
@@ -1280,7 +1255,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         
         String descuentoF = txtDescuento.getText().toString();
         String ivaF = txtIVA.getText().toString();
-        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();        
+        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();    
+        clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();   
         
         int maxData = 0;
         /*if(!this.chkAnulada.isSelected())        
@@ -1313,7 +1289,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     if(this.chkCredito.isSelected())        
                     {
                         /**************CABECERA***************************/
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                        exito = objCabecera.insertarRegistroNotaDeEntrega(Integer.parseInt(objEmpresaSelect.getCodigo()), main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
                                     saldoIntereses, txtEfectivo.getText(), 
@@ -1327,7 +1303,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     fechaVenta, 
                                     "C", 
                                     txtInteresPorcentaje.getText(),
-                                    txtTarifaCero1.getText());   
+                                    txtTarifaCero1.getText(),
+                                    "S");   
                         /***********************************************/
                          int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
@@ -1405,7 +1382,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     else
                     {
                          /**************CABECERA CONTADO******************/
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                        exito = objCabecera.insertarRegistroNotaDeEntrega(Integer.parseInt(objEmpresaSelect.getCodigo()), main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
                                     saldoIntereses, txtTotal.getText(), 
@@ -1415,7 +1392,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "D", "0.00", "0.00");   
+                                    fechaVenta, "D", "0.00", "0.00", "S");   
                         /***********************************************/
                     
                     }
@@ -1691,11 +1668,11 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                 //SI ES PARA BETTY RODAS COLOCAR COSTO
                 cmbPrecio.removeAllItems();
                
-                if((codigoCliente==202)||(codigoCliente==3054))
-                {
+                /*if((codigoCliente==202)||(codigoCliente==3054))
+                {*/
                      clsComboBox oItem = new clsComboBox(costo, "1 - " + costo);
                      cmbPrecio.addItem(oItem);
-                }
+                /*}
                 else
                 {                              
                     ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
@@ -1709,7 +1686,7 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                             cmbPrecio.addItem(oItem);            
                         }
                     }
-                }
+                }*/
                 //****************//
                 txtCantidad.setEditable(true);
                 txtCantidad.requestFocus();
@@ -2005,91 +1982,6 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
 }//GEN-LAST:event_btnImprimirActionPerformed
 
-private void txtCuotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuotaKeyReleased
-    String x = txtCuota.getText();
-    if(!objUtils.isDouble(x)){
-        txtCuota.setText("");
-    }  
-    
-   /******************************************************/
-    
-    Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
-    //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
-    clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-    String idPlazo = objPlazoSelect.getCodigo();
-    //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
-    //Double interes = 0.00;
-    int meses = 0;
-    if(idPlazo.equals("1"))
-    {       
-        meses = 3;
-    }
-    else if(idPlazo.equals("2"))
-    {        
-        meses = 6;
-    }
-    else if(idPlazo.equals("3"))
-    {       
-        meses = 9;
-    }
-    else if(idPlazo.equals("4"))
-    {        
-        meses = 12;
-    }
-    else if(idPlazo.equals("9"))
-    {        
-        meses = 2;
-    }
-   
-    //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
-    //MENSUAL QUINCENAL SEMANAL
-    clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-    String idCuota = objCuotaSelect.getCodigo();
-    Double cuotaIndividual= Double.parseDouble(txtCuota.getText());
-    Double cantidadInteres = 0.00;
-    //2 semanal, 3 quincenal, 4 mensual    
-    if(idCuota.equals("2"))
-    {
-        if(idPlazo.equals("1"))
-        {
-            cuotaIndividual = cantidadInteres/13;
-        }
-        else if(idPlazo.equals("2"))
-        {
-            cuotaIndividual = cantidadInteres/26;
-        }
-        else if(idPlazo.equals("3"))
-        {
-            cuotaIndividual = cantidadInteres/39;
-        }
-        else if(idPlazo.equals("4"))
-        {
-            cuotaIndividual = cantidadInteres/52;
-        }  
-        else if(idPlazo.equals("9"))
-        {
-            cuotaIndividual = cantidadInteres/8;
-        }  
-    }
-    else if(idCuota.equals("3"))
-    {
-         cantidadInteres = cuotaIndividual*(meses*2);
-    }
-    else if(idCuota.equals("4"))
-    {
-        cantidadInteres = cuotaIndividual*meses;
-    }
-    
-    txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-    
-    txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
-    //CALCULAR LOS IMPUESTOS CON LOS INTERESES AUMENTADOS
-    calcularImpuestos();  
-    
-    /**************************************************/    
-    txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-}//GEN-LAST:event_txtCuotaKeyReleased
-
     public void calcularImpuestos()
     {
         Double valorTotal =  Double.parseDouble(txtTotalFinal.getText());
@@ -2101,114 +1993,6 @@ private void txtCuotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         txtTarifaIVA1.setText("" + objUtils.redondear(baseTarifa));
         
     }
-private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEfectivoKeyReleased
-    /*String x = txtEfectivo.getText();
-    if(!objUtils.isDouble(x)){
-        txtEfectivo.setText("0");
-    }  
-    Double minuendo = Double.parseDouble(txtTotal.getText().toString());
-    Double sustraendo = Double.parseDouble(txtEfectivo.getText().toString());
-    Double diferencia = minuendo - sustraendo;
-    if(diferencia<0)
-    {
-        txtEfectivo.setText("0");
-        txtSaldo.setText(this.txtTotal.getText());
-    }
-    txtSaldo.setText(""+objUtils.redondear(diferencia));*/
-    //calcularCuotas(); 
-    //txtFechaCancelacion.setText(calcular_fecha_cancelacion());   
-    
-    //Double cuotaInicial = valorContado * 30/100;
-    //txtEfectivo.setText(""+cuotaInicial);
-    Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
-    //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
-    clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-    String idPlazo = objPlazoSelect.getCodigo();
-    //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
-    Double interes = 0.00;
-    int meses = 0;
-    if(idPlazo.equals("1"))
-    {
-        interes = valorInteresTresMeses;
-        txtInteresPorcentaje.setText("" + interes);
-        meses = 3;
-    }
-    else if(idPlazo.equals("2"))
-    {
-        interes = valorInteresSeisMeses;
-        txtInteresPorcentaje.setText("" + interes);
-        meses = 6;
-    }
-    else if(idPlazo.equals("3"))
-    {
-        interes = valorInteresNueveMeses;
-        txtInteresPorcentaje.setText("" + interes);
-        meses = 9;
-    }
-    else if(idPlazo.equals("4"))
-    {
-        interes = valorInteresDoceMeses;
-        txtInteresPorcentaje.setText("" + interes);
-        meses = 12;
-    }
-    else if(idPlazo.equals("9"))
-    {
-        interes = 0.00;
-        txtInteresPorcentaje.setText("" + interes);
-        meses = 2;
-    }
-    double cantidadAdeudada = valorContado - cuotaInicial;
-    txtSaldoDeuda.setText("" + cantidadAdeudada);
-    
-    double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
-    double valorInteres = cantidadAdeudada * interes / 100;
-    txtInteresValor.setText("" + valorInteres);
-    
-    txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
-    //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
-    //MENSUAL QUINCENAL SEMANAL
-    clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-    String idCuota = objCuotaSelect.getCodigo();
-    Double cuotaIndividual= 0.00;
-    //2 semanal, 3 quincenal, 4 mensual
-    if(idCuota.equals("2"))//semanal
-    {
-         if(idPlazo.equals("1"))//3 meses tiene 12 semanas, pero le ponen 13
-        {
-            cuotaIndividual = cantidadInteres/13;
-        }
-        else if(idPlazo.equals("2"))//6 meses son 24 semanas, pero le ponen 26
-        {
-            cuotaIndividual = cantidadInteres/26;
-        }
-        else if(idPlazo.equals("3"))//9 meses son 36 semanas, pero le ponen 39
-        {
-            cuotaIndividual = cantidadInteres/39;
-        }
-        else if(idPlazo.equals("4"))//12 meses son 48 semanas, pero le ponen 52
-        {           
-            cuotaIndividual = cantidadInteres/52;
-        }
-        else if(idPlazo.equals("9"))//2 MESES son 8 semanas
-        {
-            cuotaIndividual = cantidadInteres/8;
-        }
-    }
-    else if(idCuota.equals("3"))//quincenal
-    {
-         cuotaIndividual = cantidadInteres/(meses*2); // los meses q son lo multiplico por 2 para que me de en quincenas, un mes tiene 2 quincenas
-    }
-    else if(idCuota.equals("4"))//mensual
-    {
-        cuotaIndividual = cantidadInteres/meses; // mes normal
-    }
-    txtCuota.setText(""+objUtils.redondear(cuotaIndividual));
-    txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-    
-    txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
-    calcularImpuestos();  
-}//GEN-LAST:event_txtEfectivoKeyReleased
-
 public String calcular_fecha_cancelacion()
 {
     //CALCULAR FECHA DE CANCELACION
@@ -2252,38 +2036,6 @@ public String calcular_fecha_cancelacion()
     return fechaCancelacion;
 }        
 
-
-private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
-    if(controlCmbCredito==0)
-    {
-        valorContado = Double.parseDouble(txtTotal.getText().toString());
-        btnAgregar.setEnabled(false);
-        txtCuota.setText("");
-        txtEfectivo.setText("0");
-        txtSaldo.setText("");
-        
-        calcularCuotas();
-        //txtEfectivo.setText(""+cuotaInicial);
-       // controlCmbCredito = 1;
-        if(this.chkCredito.isSelected())        
-        {
-            cmbCuota.setEnabled(true);
-            txtCuota.setEditable(true);
-            txtEfectivo.setEditable(true);
-            cmbPlazo.setEnabled(true);
-            //txtSaldo.setEditable(true);       
-        } 
-        else
-        {
-            cmbCuota.setEnabled(false);
-            txtCuota.setEditable(false);
-            txtEfectivo.setEditable(false);
-            cmbPlazo.setEnabled(false);
-            //txtSaldo.setEditable(false);     
-        }
-        //controlCmbCredito = 0;
-    }
-}//GEN-LAST:event_chkCreditoItemStateChanged
 
 
 void calcularCuotas()
@@ -2410,16 +2162,6 @@ private void txtDescuentoUnidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRS
 // TODO add your handling code here:
 }//GEN-LAST:event_txtDescuentoUnidadKeyTyped
 
-private void cmbPlazoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPlazoItemStateChanged
-    if(cmbPlazo.isEnabled())
-        calcularCuotas();    // TODO add your handling code here:
-}//GEN-LAST:event_cmbPlazoItemStateChanged
-
-private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCuotaItemStateChanged
-     if(cmbCuota.isEnabled())
-        calcularCuotas(); // TODO add your handling code here:
-}//GEN-LAST:event_cmbCuotaItemStateChanged
-
 private void cmbFactureroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFactureroItemStateChanged
     if(controlComboBox == 0)
     {
@@ -2429,28 +2171,244 @@ private void cmbFactureroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-F
     }
 }//GEN-LAST:event_cmbFactureroItemStateChanged
 
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    objReporte.ejecutarReporteParametroInt(codigoCliente, "solicitud_cliente");
-}//GEN-LAST:event_jButton1ActionPerformed
+    private void cmbPlazoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPlazoItemStateChanged
+        if(cmbPlazo.isEnabled())
+        calcularCuotas();    // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPlazoItemStateChanged
 
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-    String idPlazo = objPlazoSelect.getCodigo();
-    
-    clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-    String idCuota = objCuotaSelect.getCodigo(); 
-    
-    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-    Date date1= txtFechaVenta.getDate();
-    String fechaVenta = df2.format(date1);
-    
-    frmPagosDeuda formulario = new frmPagosDeuda(idPlazo, idCuota, txtCuota.getText(), txtSaldo.getText(), fechaVenta);
-    mostrarJInternalCentrado(formulario); 
-}//GEN-LAST:event_jButton2ActionPerformed
+    private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEfectivoKeyReleased
+        /*String x = txtEfectivo.getText();
+        if(!objUtils.isDouble(x)){
+            txtEfectivo.setText("0");
+        }
+        Double minuendo = Double.parseDouble(txtTotal.getText().toString());
+        Double sustraendo = Double.parseDouble(txtEfectivo.getText().toString());
+        Double diferencia = minuendo - sustraendo;
+        if(diferencia<0)
+        {
+            txtEfectivo.setText("0");
+            txtSaldo.setText(this.txtTotal.getText());
+        }
+        txtSaldo.setText(""+objUtils.redondear(diferencia));*/
+        //calcularCuotas();
+        //txtFechaCancelacion.setText(calcular_fecha_cancelacion());
 
-private void chkCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditoActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_chkCreditoActionPerformed
+        //Double cuotaInicial = valorContado * 30/100;
+        //txtEfectivo.setText(""+cuotaInicial);
+        Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
+        //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
+        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+        String idPlazo = objPlazoSelect.getCodigo();
+        //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
+        Double interes = 0.00;
+        int meses = 0;
+        if(idPlazo.equals("1"))
+        {
+            interes = valorInteresTresMeses;
+            txtInteresPorcentaje.setText("" + interes);
+            meses = 3;
+        }
+        else if(idPlazo.equals("2"))
+        {
+            interes = valorInteresSeisMeses;
+            txtInteresPorcentaje.setText("" + interes);
+            meses = 6;
+        }
+        else if(idPlazo.equals("3"))
+        {
+            interes = valorInteresNueveMeses;
+            txtInteresPorcentaje.setText("" + interes);
+            meses = 9;
+        }
+        else if(idPlazo.equals("4"))
+        {
+            interes = valorInteresDoceMeses;
+            txtInteresPorcentaje.setText("" + interes);
+            meses = 12;
+        }
+        else if(idPlazo.equals("9"))
+        {
+            interes = 0.00;
+            txtInteresPorcentaje.setText("" + interes);
+            meses = 2;
+        }
+        double cantidadAdeudada = valorContado - cuotaInicial;
+        txtSaldoDeuda.setText("" + cantidadAdeudada);
+
+        double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
+        double valorInteres = cantidadAdeudada * interes / 100;
+        txtInteresValor.setText("" + valorInteres);
+
+        txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
+        //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
+        //MENSUAL QUINCENAL SEMANAL
+        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+        String idCuota = objCuotaSelect.getCodigo();
+        Double cuotaIndividual= 0.00;
+        //2 semanal, 3 quincenal, 4 mensual
+        if(idCuota.equals("2"))//semanal
+        {
+            if(idPlazo.equals("1"))//3 meses tiene 12 semanas, pero le ponen 13
+            {
+                cuotaIndividual = cantidadInteres/13;
+            }
+            else if(idPlazo.equals("2"))//6 meses son 24 semanas, pero le ponen 26
+            {
+                cuotaIndividual = cantidadInteres/26;
+            }
+            else if(idPlazo.equals("3"))//9 meses son 36 semanas, pero le ponen 39
+            {
+                cuotaIndividual = cantidadInteres/39;
+            }
+            else if(idPlazo.equals("4"))//12 meses son 48 semanas, pero le ponen 52
+            {
+                cuotaIndividual = cantidadInteres/52;
+            }
+            else if(idPlazo.equals("9"))//2 MESES son 8 semanas
+            {
+                cuotaIndividual = cantidadInteres/8;
+            }
+        }
+        else if(idCuota.equals("3"))//quincenal
+        {
+            cuotaIndividual = cantidadInteres/(meses*2); // los meses q son lo multiplico por 2 para que me de en quincenas, un mes tiene 2 quincenas
+        }
+        else if(idCuota.equals("4"))//mensual
+        {
+            cuotaIndividual = cantidadInteres/meses; // mes normal
+        }
+        txtCuota.setText(""+objUtils.redondear(cuotaIndividual));
+        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
+
+        txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
+        calcularImpuestos();
+    }//GEN-LAST:event_txtEfectivoKeyReleased
+
+    private void txtCuotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuotaKeyReleased
+        String x = txtCuota.getText();
+        if(!objUtils.isDouble(x)){
+            txtCuota.setText("");
+        }
+
+        /******************************************************/
+
+        Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
+        //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
+        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+        String idPlazo = objPlazoSelect.getCodigo();
+        //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
+        //Double interes = 0.00;
+        int meses = 0;
+        if(idPlazo.equals("1"))
+        {
+            meses = 3;
+        }
+        else if(idPlazo.equals("2"))
+        {
+            meses = 6;
+        }
+        else if(idPlazo.equals("3"))
+        {
+            meses = 9;
+        }
+        else if(idPlazo.equals("4"))
+        {
+            meses = 12;
+        }
+        else if(idPlazo.equals("9"))
+        {
+            meses = 2;
+        }
+
+        //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
+        //MENSUAL QUINCENAL SEMANAL
+        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+        String idCuota = objCuotaSelect.getCodigo();
+        Double cuotaIndividual= Double.parseDouble(txtCuota.getText());
+        Double cantidadInteres = 0.00;
+        //2 semanal, 3 quincenal, 4 mensual
+        if(idCuota.equals("2"))
+        {
+            if(idPlazo.equals("1"))
+            {
+                cuotaIndividual = cantidadInteres/13;
+            }
+            else if(idPlazo.equals("2"))
+            {
+                cuotaIndividual = cantidadInteres/26;
+            }
+            else if(idPlazo.equals("3"))
+            {
+                cuotaIndividual = cantidadInteres/39;
+            }
+            else if(idPlazo.equals("4"))
+            {
+                cuotaIndividual = cantidadInteres/52;
+            }
+            else if(idPlazo.equals("9"))
+            {
+                cuotaIndividual = cantidadInteres/8;
+            }
+        }
+        else if(idCuota.equals("3"))
+        {
+            cantidadInteres = cuotaIndividual*(meses*2);
+        }
+        else if(idCuota.equals("4"))
+        {
+            cantidadInteres = cuotaIndividual*meses;
+        }
+
+        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
+
+        txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
+        //CALCULAR LOS IMPUESTOS CON LOS INTERESES AUMENTADOS
+        calcularImpuestos();
+
+        /**************************************************/
+        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
+    }//GEN-LAST:event_txtCuotaKeyReleased
+
+    private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCuotaItemStateChanged
+        if(cmbCuota.isEnabled())
+        calcularCuotas(); // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCuotaItemStateChanged
+
+    private void chkCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkCreditoActionPerformed
+
+    private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
+        if(controlCmbCredito==0)
+        {
+            valorContado = Double.parseDouble(txtTotal.getText().toString());
+            btnAgregar.setEnabled(false);
+            txtCuota.setText("");
+            txtEfectivo.setText("0");
+            txtSaldo.setText("");
+
+            calcularCuotas();
+            //txtEfectivo.setText(""+cuotaInicial);
+            // controlCmbCredito = 1;
+            if(this.chkCredito.isSelected())
+            {
+                cmbCuota.setEnabled(true);
+                txtCuota.setEditable(true);
+                txtEfectivo.setEditable(true);
+                cmbPlazo.setEnabled(true);
+                //txtSaldo.setEditable(true);
+            }
+            else
+            {
+                cmbCuota.setEnabled(false);
+                txtCuota.setEditable(false);
+                txtEfectivo.setEditable(false);
+                cmbPlazo.setEnabled(false);
+                //txtSaldo.setEditable(false);
+            }
+            //controlCmbCredito = 0;
+        }
+    }//GEN-LAST:event_chkCreditoItemStateChanged
 
 public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
@@ -2479,8 +2437,6 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JComboBox cmbPlazo;
     public static javax.swing.JComboBox cmbPrecio;
     private javax.swing.JComboBox cmbVendedor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

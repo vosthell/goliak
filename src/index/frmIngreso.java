@@ -42,7 +42,7 @@ public class frmIngreso extends javax.swing.JFrame {
         lblVersion.setText(objUtils.version);  
         
         //CARGAR EMPRESAS
-        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas();        
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasConexion();        
         for(int i=0;i<dataEmpresas.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());

@@ -455,25 +455,25 @@ public class clsCompras {
         return data;
      }
     
-    public ArrayList<clsCompras> consultaDataNotasEntregaRangoConfirmacion(String fechaInicio, String fechaFin, String soloCliente, String cedula, String anuladas)
+    public ArrayList<clsCompras> consultaDataNotasEntregaRangoRegistro_transferencia(String fechaInicio, String fechaFin, String soloCliente, Integer id_empresa, String anuladas)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
             bd.conectarBaseDeDatos();
                         
-             sql = "SELECT id_cabecera_movi, a.codigo, b.name_completo nombre_proveedor, "
+            sql = "SELECT id_cabecera_movi, a.codigo, b.nombre_empresa || ' ' || b.ciudad_empresa nombre_proveedor, "
                         + " a.id_usuario, c.name, a.estado, total_interes, "
                         + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
-                        + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " a.id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
                         + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
                     + " FROM ck_notas_de_entrega AS a "
-                    + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
+                    + " JOIN ck_empresa AS b ON a.codigo = b.id_empresa"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
-                    + " WHERE fecha_confirmacion::date >= '" + fechaInicio + "'"
-                    + " AND fecha_confirmacion::date <= '" + fechaFin + "'"
+                    + " WHERE fecha::date >= '" + fechaInicio + "'"
+                    + " AND fecha::date <= '" + fechaFin + "'"
                     //+ " AND transferencia = 'N'"
-                     ;
-             if(anuladas.equals("T"))//MOSTRAR TODAS
+                    ;
+            if(anuladas.equals("T"))//MOSTRAR TODAS
             {
                 sql = sql + " AND a.estado = 'A' OR a.estado='N'";
             }
@@ -485,10 +485,11 @@ public class clsCompras {
             {
                 sql = sql + " AND a.estado = 'A'";
             }
-             
+            
+            
             if(soloCliente.equals("S"))
             {
-              sql = sql + " AND b.cedula = '" + cedula + "'";  
+              sql = sql + " AND b.id_empresa = " + id_empresa;  
             }
             sql = sql + " ORDER BY fecha DESC";
             System.out.println(sql);
@@ -533,7 +534,239 @@ public class clsCompras {
         return data;
      }
     
-     public ArrayList<clsCompras> consultaDataNotasEntregaCliente(String soloCliente, String cedula, String anuladas)
+    public ArrayList<clsCompras> consultaDataNotasEntregaRangoConfirmacion_transferencia(String fechaInicio, String fechaFin, String soloCliente, int id_empresa, String anuladas)
+    {       
+        ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
+        try{
+            bd.conectarBaseDeDatos();
+                        
+             sql = "SELECT id_cabecera_movi, a.codigo, b.nombre_empresa || ' ' || b.ciudad_empresa nombre_proveedor, "
+                        + " a.id_usuario, c.name, a.estado, total_interes, "
+                        + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+                        + " a.id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
+                    + " FROM ck_notas_de_entrega AS a "
+                    + " JOIN ck_empresa AS b ON a.codigo = b.id_empresa"
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
+                    + " WHERE fecha_confirmacion::date >= '" + fechaInicio + "'"
+                    + " AND fecha_confirmacion::date <= '" + fechaFin + "'"
+                    //+ " AND transferencia = 'N'"
+                     ;
+             if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " AND a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " AND a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " AND a.estado = 'A'";
+            }
+             
+            if(soloCliente.equals("S"))
+            {
+              sql = sql + " AND b.id_empresa = " + id_empresa + "'";  
+            }
+            sql = sql + " ORDER BY fecha DESC";
+            System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCompras oListaTemporal = new clsCompras();
+                    oListaTemporal.setNombreProveedor(bd.resultado.getString("nombre_proveedor"));
+                    oListaTemporal.setTotal(bd.resultado.getDouble("total_interes"));
+                    oListaTemporal.setEstadoTramite(bd.resultado.getString("estado_tramite"));
+                    oListaTemporal.setIdCompras(bd.resultado.getInt("id_cabecera_movi"));
+                    oListaTemporal.setFacturaReferencia(bd.resultado.getString("fact_referencia"));
+                    oListaTemporal.setBaseTarifaIva(bd.resultado.getDouble("base_tarifa_iva"));
+                    oListaTemporal.setBaseTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                    oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                    oListaTemporal.setIva(bd.resultado.getDouble("iva"));
+                    
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRecibe(bd.resultado.getString("fecha_confirmacion"));
+                    oListaTemporal.setTipo(bd.resultado.getString("tipo"));
+                    
+                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+    
+     public ArrayList<clsCompras> consultaDataNotasEntregaRangoConfirmacion(String fechaInicio, String fechaFin, String soloCliente, String cedula, String anuladas)
+    {       
+        ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
+        try{
+            bd.conectarBaseDeDatos();
+                        
+             sql = "SELECT id_cabecera_movi, a.codigo,b.name_completo nombre_proveedor, "
+                        + " a.id_usuario, c.name, a.estado, total_interes, "
+                        + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+                        + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
+                    + " FROM ck_notas_de_entrega AS a "
+                    + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
+                    + " WHERE fecha_confirmacion::date >= '" + fechaInicio + "'"
+                    + " AND fecha_confirmacion::date <= '" + fechaFin + "'"
+                    //+ " AND transferencia = 'N'"
+                     ;
+             if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " AND a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " AND a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " AND a.estado = 'A'";
+            }
+             
+            if(soloCliente.equals("S"))
+            {
+              sql = sql + " AND b.cedula = " + cedula + "'";  
+            }
+            sql = sql + " ORDER BY fecha DESC";
+            System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCompras oListaTemporal = new clsCompras();
+                    oListaTemporal.setNombreProveedor(bd.resultado.getString("nombre_proveedor"));
+                    oListaTemporal.setTotal(bd.resultado.getDouble("total_interes"));
+                    oListaTemporal.setEstadoTramite(bd.resultado.getString("estado_tramite"));
+                    oListaTemporal.setIdCompras(bd.resultado.getInt("id_cabecera_movi"));
+                    oListaTemporal.setFacturaReferencia(bd.resultado.getString("fact_referencia"));
+                    oListaTemporal.setBaseTarifaIva(bd.resultado.getDouble("base_tarifa_iva"));
+                    oListaTemporal.setBaseTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                    oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                    oListaTemporal.setIva(bd.resultado.getDouble("iva"));
+                    
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRecibe(bd.resultado.getString("fecha_confirmacion"));
+                    oListaTemporal.setTipo(bd.resultado.getString("tipo"));
+                    
+                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+     
+     public ArrayList<clsCompras> consultaDataNotasEntregaCliente_transferencia(String soloCliente, String id_empresa, String anuladas)
+    {       
+        ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
+        try{
+            bd.conectarBaseDeDatos();
+                        
+             sql = "SELECT id_cabecera_movi, a.codigo, b.nombre_empresa || ' ' || b.ciudad_empresa nombre_proveedor, "
+                        + " a.id_usuario, c.name, a.estado, total_interes, "
+                        + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+                        + " a.id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
+                    + " FROM ck_notas_de_entrega AS a "
+                    + " JOIN ck_empresa AS b ON a.codigo = b.id_empresa"
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario ";                   
+            
+            if(anuladas.equals("T"))//MOSTRAR TODAS
+            {
+                sql = sql + " WHERE a.estado = 'A' OR a.estado='N'";
+            }
+            else if(anuladas.equals("N"))
+            {
+                sql = sql + " WHERE a.estado='N'";
+            }
+            else if(anuladas.equals("A"))
+            {
+                sql = sql + " WHERE a.estado = 'A'";
+            }
+             
+            if(soloCliente.equals("S"))
+            {
+              sql = sql + " AND b.id_empresa = '" + id_empresa + "'";  
+            }
+            sql = sql //+ " AND transferencia = 'N'"
+                    + " ORDER BY fecha DESC";
+            System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCompras oListaTemporal = new clsCompras();
+                    oListaTemporal.setNombreProveedor(bd.resultado.getString("nombre_proveedor"));
+                    oListaTemporal.setTotal(bd.resultado.getDouble("total_interes"));
+                    oListaTemporal.setEstadoTramite(bd.resultado.getString("estado_tramite"));
+                    oListaTemporal.setIdCompras(bd.resultado.getInt("id_cabecera_movi"));
+                    oListaTemporal.setFacturaReferencia(bd.resultado.getString("fact_referencia"));
+                    oListaTemporal.setBaseTarifaIva(bd.resultado.getDouble("base_tarifa_iva"));
+                    oListaTemporal.setBaseTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                    oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                    oListaTemporal.setIva(bd.resultado.getDouble("iva"));
+                    
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRecibe(bd.resultado.getString("fecha_confirmacion"));
+                    oListaTemporal.setTipo(bd.resultado.getString("tipo"));
+                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+     
+      
+       public ArrayList<clsCompras> consultaDataNotasEntregaCliente(String soloCliente, String cedula, String anuladas)
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
@@ -546,9 +779,7 @@ public class clsCompras {
                         + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
                     + " FROM ck_notas_de_entrega AS a "
                     + " JOIN ck_cliente AS b ON a.codigo = b.codigo"
-                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
-                     ;
-                   
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario ";                   
             
             if(anuladas.equals("T"))//MOSTRAR TODAS
             {
@@ -936,7 +1167,7 @@ public class clsCompras {
         return data;
      }
    
-   public ArrayList<clsCompras> consultaDataNotasEntrega(String tipo)
+   public ArrayList<clsCompras> consultaDataNotasEntrega()
     {       
         ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
         try{
@@ -950,14 +1181,80 @@ public class clsCompras {
                     + " ON a.codigo = b.codigo"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
                     + " WHERE a.estado = 'A'";
-            if(tipo.equals("NORMAL"))
-            {
+            /*if(tipo.equals("NORMAL"))
+            {*/
                 sql = sql + " AND transferencia = 'N'";
-            }
+            /*}
             else if(tipo.equals("TRANSFERENCIAS"))
             {        
                 sql = sql + " AND transferencia = 'S'";
-            }   
+            }  */ 
+            sql = sql + " ORDER BY fecha DESC";
+            System.out.println(sql);
+            System.out.println(tipo);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+               
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsCompras oListaTemporal = new clsCompras();
+                    oListaTemporal.setNombreProveedor(bd.resultado.getString("nombre_proveedor"));
+                    oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    oListaTemporal.setEstadoTramite(bd.resultado.getString("estado_tramite"));
+                    oListaTemporal.setIdCompras(bd.resultado.getInt("id_cabecera_movi"));
+                    oListaTemporal.setFacturaReferencia(bd.resultado.getString("fact_referencia"));
+                    oListaTemporal.setBaseTarifaIva(bd.resultado.getDouble("base_tarifa_iva"));
+                    oListaTemporal.setBaseTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
+                    oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
+                    oListaTemporal.setIva(bd.resultado.getDouble("iva"));
+                    
+                    oListaTemporal.setFecha(bd.resultado.getString("fecha"));
+                    oListaTemporal.setFechaRecibe(bd.resultado.getString("fecha_confirmacion"));
+                    oListaTemporal.setTipo(bd.resultado.getString("tipo"));
+                    
+                    //oListaTemporal.setTotal(bd.resultado.getDouble("total"));
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+     }
+   
+   public ArrayList<clsCompras> consultaDataNotasEntregaTransferencias()
+    {       
+        ArrayList<clsCompras> data = new ArrayList<clsCompras>(); 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT id_cabecera_movi, a.codigo, b.nombre_empresa || ' ' || b.ciudad_empresa nombre_proveedor, "
+                        + " a.id_usuario, c.name, a.estado, total_interes total, "
+                        + " saldo, efectivo, fecha, fact_referencia, comentario, id_cajero, "
+                        + " b.id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
+                        + " base_tarifa_iva, estado_tramite, fecha_confirmacion, tipo"
+                    + " FROM ck_notas_de_entrega AS a JOIN ck_empresa AS b"
+                    + " ON a.codigo = b.id_empresa"
+                    + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
+                    + " WHERE a.estado = 'A'";
+            /*if(tipo.equals("NORMAL"))
+            {*/
+                //sql = sql + " AND transferencia = 'N'";
+            /*}
+            else if(tipo.equals("TRANSFERENCIAS"))
+            {    */    
+                sql = sql + " AND a.transferencia = 'S'";
+            /*}  */ 
             sql = sql + " ORDER BY fecha DESC";
             System.out.println(sql);
             System.out.println(tipo);

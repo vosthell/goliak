@@ -346,13 +346,23 @@ public class frmListProductos extends javax.swing.JDialog {
             }
             else if(p_tipo.equals("14"))
             {
-                frmNotasEntregaTransferencia.codigoProducto = Integer.parseInt(codigo);
-                frmNotasEntregaTransferencia.txtCodigoProducto.setText(codProducto);
-                frmNotasEntregaTransferencia.txtNombreProducto.setText(descripcion);
-                frmNotasEntregaTransferencia.txtStock.setText(stock);
-                frmNotasEntregaTransferencia.txtDescuentoUnidad.setText(descuento);
-                frmNotasEntregaTransferencia.controlExistencia = control_existencia;
-                frmNotasEntregaTransferencia.txtCosto.setText(costo);
+                frmNotasEntrega_transferencia.codigoProducto = Integer.parseInt(codigo);
+                frmNotasEntrega_transferencia.txtCodigoProducto.setText(codProducto);
+                frmNotasEntrega_transferencia.txtNombreProducto.setText(descripcion);
+                frmNotasEntrega_transferencia.txtStock.setText(stock);
+                frmNotasEntrega_transferencia.txtDescuentoUnidad.setText(descuento);
+                frmNotasEntrega_transferencia.controlExistencia = control_existencia;
+                frmNotasEntrega_transferencia.txtCosto.setText(costo);
+            }
+             else if(p_tipo.equals("15"))
+            {
+                frmNotasEntregaModificar_transferencia.codigoProducto = Integer.parseInt(codigo);
+                frmNotasEntregaModificar_transferencia.txtCodigoProducto.setText(codProducto);
+                frmNotasEntregaModificar_transferencia.txtNombreProducto.setText(descripcion);
+                frmNotasEntregaModificar_transferencia.txtStock.setText(stock);
+                frmNotasEntregaModificar_transferencia.txtDescuentoUnidad.setText(descuento);
+                frmNotasEntregaModificar_transferencia.controlExistencia = control_existencia;
+                frmNotasEntregaModificar_transferencia.txtCosto.setText(costo);
             }
             //CARGAR PRECIOS DEL PRODUCTO
            
@@ -393,7 +403,11 @@ public class frmListProductos extends javax.swing.JDialog {
                 }
                 else if(p_tipo.equals("14"))
                 {
-                    frmNotasEntregaTransferencia.cmbPrecio.removeAllItems();
+                    frmNotasEntrega_transferencia.cmbPrecio.removeAllItems();
+                }
+                else if(p_tipo.equals("15"))
+                {
+                    frmNotasEntregaModificar_transferencia.cmbPrecio.removeAllItems();
                 }
                 
                 for(int i=0; i<dataPrecios.size(); i++)
@@ -456,12 +470,26 @@ public class frmListProductos extends javax.swing.JDialog {
                         if(bandera_costo.equals("S"))
                         {
                             oItem = new clsComboBox(costo, "1 - " + costo);  
-                            frmNotasEntregaTransferencia.cmbPrecio.addItem(oItem);
+                            frmNotasEntrega_transferencia.cmbPrecio.addItem(oItem);
                         }
                         else
                         {
-                            frmNotasEntregaTransferencia.cmbPrecio.addItem(oItem);
+                            frmNotasEntrega_transferencia.cmbPrecio.addItem(oItem);
                         }
+                    }
+                     else if(p_tipo.equals("15"))
+                    {
+                        //if((codigoClienteX==202)||(codigoClienteX==3054))
+                        if(bandera_costo.equals("S"))
+                        {
+                            oItem = new clsComboBox(costo, "1 - " + costo); 
+                            frmNotasEntregaModificar_transferencia.cmbPrecio.addItem(oItem);
+                        }
+                        else
+                        {
+                            frmNotasEntregaModificar_transferencia.cmbPrecio.addItem(oItem);
+                        }
+                            
                     }
                 }
             }
@@ -502,8 +530,13 @@ public class frmListProductos extends javax.swing.JDialog {
             }
             else if(p_tipo.equals("14"))
             {                
-                frmNotasEntregaTransferencia.txtCantidad.setEditable(true);
-                frmNotasEntregaTransferencia.txtCantidad.requestFocus();
+                frmNotasEntrega_transferencia.txtCantidad.setEditable(true);
+                frmNotasEntrega_transferencia.txtCantidad.requestFocus();
+            }
+            else if(p_tipo.equals("15"))
+            {                
+                frmNotasEntregaModificar_transferencia.txtCantidad.setEditable(true);
+                frmNotasEntregaModificar_transferencia.txtCantidad.requestFocus();
             }
                 
             dispose();

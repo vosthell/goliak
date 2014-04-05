@@ -482,7 +482,7 @@ public class clsPago {
         return data;
     }
      
-     public ArrayList<clsPago>  consulta_entradas_asignadas(int id_cabecera){            
+     public ArrayList<clsPago>  consulta_entradas_asignadas(int id_cabecera, String tipo_venta){            
         ArrayList<clsPago> data = new ArrayList<clsPago>(); 
         try{
             bd.conectarBaseDeDatos();
@@ -495,8 +495,17 @@ public class clsPago {
                     "ON a.id_usuario = c.id_usuario " +
                     "JOIN ck_usuario AS d " +
                     "ON a.id_usuario_cobra = d.id_usuario " +
-                    "where a.cuota_inicial='S' " +
-                    "AND a.estado_asignado = 'S' " +
+                    "WHERE a.estado = 'A' ";
+            if(tipo_venta.equals("CREDITO"))
+            {
+                sql = sql + " AND a.cuota_inicial = 'S' ";
+            }
+            else
+            {
+                sql = sql + " AND a.ne_contado = 'S' ";
+            }
+            
+            sql =sql + "AND a.estado_asignado = 'S' " +
                     "AND a.estado ='A'" +
                     "AND id_cabecera_movi = " + id_cabecera;
             bd.resultado = bd.sentencia.executeQuery(sql);

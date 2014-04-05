@@ -1345,7 +1345,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     fechaVenta, 
                     "PILA QUE NO VALE", 
                     txtInteresPorcentaje.getText(),
-                    txtTarifaCero1.getText());      
+                    txtTarifaCero1.getText(),
+                    "N");      
 
             if(exito)
             {

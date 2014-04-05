@@ -48,14 +48,49 @@ public class clsEmpresa {
         return data;
     }
     
-    public ArrayList<clsComboBox>  consultarEmpresas_externas(){            
+    public ArrayList<clsComboBox>  consultarEmpresasConexion(){            
         ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
         try{
             bd.conectarBaseDeDatos2();
             sql = "SELECT id_empresa, nombre_empresa, ciudad_empresa"
                     + " FROM ck_empresa"
                     + " WHERE estado = 'A' "
-                    + " AND principal = 'N'"
+                    + " AND conexion = 'S'"
+                    + " ORDER BY id_empresa";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+              
+            if(bd.resultado.next())
+            {   
+                do 
+                { 
+                    clsComboBox oListaTemporal = new clsComboBox(bd.resultado.getString("id_empresa"), bd.resultado.getString("nombre_empresa") + "(" + bd.resultado.getString("ciudad_empresa") + ")");
+                    data.add(oListaTemporal);
+                }
+                while(bd.resultado.next()); 
+                //return data;
+            }
+            else
+            { 
+                data = null;
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        } 
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
+    
+    public ArrayList<clsComboBox>  consultarEmpresasTransferencia(){            
+        ArrayList<clsComboBox> data = new ArrayList<clsComboBox>(); 
+        try{
+            bd.conectarBaseDeDatos2();
+            sql = "SELECT id_empresa, nombre_empresa, ciudad_empresa"
+                    + " FROM ck_empresa"
+                    + " WHERE estado = 'A' "
+                    + " AND transferencia = 'S'"
                     + " ORDER BY id_empresa";
             bd.resultado = bd.sentencia.executeQuery(sql);
               

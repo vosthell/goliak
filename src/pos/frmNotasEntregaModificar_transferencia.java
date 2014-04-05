@@ -18,7 +18,7 @@ import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCuota;
 import clases.clsDetalle;
-import clases.clsEmail;
+import clases.clsEmpresa;
 import clases.clsFacturero;
 import clases.clsImpuestos;
 import clases.clsKardex;
@@ -27,16 +27,16 @@ import clases.clsPersonal;
 import clases.clsPlazo;
 import clases.clsPrecio;
 import clases.clsProducto;
-import clases.clsReporte;
 import clases.clsUtils;
-import clases.javaMail;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
@@ -47,14 +47,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import reportes.frmListEntradasAsignadas2;
 import stinventario.frmPrincipal;
-
 /**
  *
  * @author Kaiser
  */
-public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
+public class frmNotasEntregaModificar_transferencia extends javax.swing.JInternalFrame{
     clsCliente objCliente = new clsCliente();
     clsProducto objProducto = new clsProducto();
     clsPrecio objPrecio = new clsPrecio();
@@ -69,10 +71,9 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     clsAuditoria objAuditoria = new clsAuditoria();
     clsPlazo objPlazo = new clsPlazo();
     clsKardex objKardex = new clsKardex();
-    clsReporte objReporte = new clsReporte();
     clsParametros objParametros = new clsParametros();
     clsAbono objAbono = new clsAbono();
-    clsEmail objEmail = new clsEmail();
+    clsEmpresa objEmpresa = new clsEmpresa();
     
     Double valorInteresCuotaInicial = objParametros.consultaPorcentajeCuotaInicial(); //el 30 % del valor es  la cuota iniciañ
     //Double valorInteresTresMeses = 9.00;
@@ -91,22 +92,206 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     int controlComboBox = 0;
     //control del chkboxcredito para q no de error al aplicar changue item
     int controlCmbCredito = 0;
+    
     //CODIGO DEL CLIENTE SELECCIONADO
-    public static int codigoCliente;
+    public static int codigoEmpresa;
     //CODIGO DEL PRODUCTO SELECCIONADO 
     public static int codigoProducto;
     public static String controlExistencia;
     public static Double valorContado;
+    int idCabecera;
+    
     Double imp_iva = objImpuestos.obtenerPorcentajeIVA();
-    Double cuotaInicial = 0.00;
+    //CONTRLAR EL CHECKBOX PORQUE SINO AL CARAR EL FORM DA ERROR DE NULO
+    String banderaChkCredito = "PRIMERA_VEZ";
     /** Creates new form frmFacturar */
-    public frmNotasEntrega1() {
+    public frmNotasEntregaModificar_transferencia(int idCabecera2) {
+        idCabecera = idCabecera2;
         initComponents();  
-        this.setTitle(objUtils.nombreSistema + "NOTA DE  ENTREGA");
+        this.setTitle(objUtils.nombreSistema + "NOTA DE  ENTREGA - MODIFICAR");
         
+        ArrayList <clsCabecera> dataCabecera;
+        dataCabecera = objCabecera.consultarDataCabeceraCredito_transferencia(idCabecera);
+        
+        if(dataCabecera.isEmpty())
+        {
+            //LA NOTA DE ENTREGA FUE A CONTADO
+            chkCredito.setSelected(false);
+            dataCabecera = objCabecera.consultarDataCabeceraNotaEntrega(idCabecera);
+            
+            codigoEmpresa = dataCabecera.get(0).getIdEmpresa();
+                 
+            txtNotaEntrega.setText(dataCabecera.get(0).getFactReferencia());
+            txtComentario.setText(dataCabecera.get(0).getComentario());
+            txtCuota.setText("" + dataCabecera.get(0).getValor());
+            txtEfectivo.setText("" + dataCabecera.get(0).getEfectivo());        
+            txtTotal.setText("" + dataCabecera.get(0).getTotal());         
+            txtSaldo.setText("" + objUtils.redondear(dataCabecera.get(0).getSaldo()));
+            txtDescuento.setText("" + dataCabecera.get(0).getDescuento());
+            txtTarifaCero.setText("" + dataCabecera.get(0).getTarifaCero());
+            txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
+            txtIVA.setText("" + dataCabecera.get(0).getIVA());
+            
+            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
+            txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
+            txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
+            txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
+            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
+            
+            txtTarifaIVA1.setText("0.00");
+            txtTarifaCero1.setText("0.00");
+            txtDescuento1.setText("0.00");
+            txtIVA1.setText("0.00");
+            txtTotalFinal.setText("0.00");
+            
+            //fecha de nota de entrega
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            String strFecha = dataCabecera.get(0).getFecha();
+            Date fecha = null;
+            try {
+
+                fecha = formatoDelTexto.parse(strFecha);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            txtFechaVenta.setDate(fecha);   
+            
+            //CARGAR CUOTAS
+            cmbCuota.removeAllItems();
+            ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
+            for(int i=0;i<dataCuota.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataCuota.get(i).getCodigo(), dataCuota.get(i).getDescripcion());
+                cmbCuota.addItem(oItem);   
+               /* if(dataCuota.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcion()))
+                {    
+                    cmbCuota.setSelectedItem(oItem);
+                }  */
+            }   
+           
+           //CARGAR PLAZOS
+            ArrayList<clsComboBox> dataPlazo = objPlazo.consultarPlazo();        
+            for(int i=0;i<dataPlazo.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataPlazo.get(i).getCodigo(), dataPlazo.get(i).getDescripcion());
+                cmbPlazo.addItem(oItem);
+                /*if(dataPlazo.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcionPlazo()))
+                {    
+                    cmbPlazo.setSelectedItem(oItem);
+                }  */ 
+            }
+            
+            //CARGAR VENDEDOR
+            cmbVendedor.removeAllItems();
+            ArrayList<clsComboBox> dataPersonal = objPersonal.consultarPersonal();       
+            for(int i=0;i<dataPersonal.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataPersonal.get(i).getCodigo(), dataPersonal.get(i).getDescripcion());
+                cmbVendedor.addItem(oItem);   
+                if(dataPersonal.get(i).getCodigo().equals(""+dataCabecera.get(0).getIdVendedor()))
+                {    
+                    cmbVendedor.setSelectedItem(oItem);
+                }  
+            }    
+            //CARGAR EMPRESA
+            cmbVendedor.removeAllItems();
+            ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasTransferencia();     
+            for(int i=0;i<dataEmpresas.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
+                cmbEmpresa.addItem(oItem);   
+                if(dataEmpresas.get(i).getCodigo().equals(""+dataCabecera.get(0).getIdEmpresa()))
+                {    
+                    cmbEmpresa.setSelectedItem(oItem);
+                }  
+            }        
+        }
+        else
+        {
+            //LA NOTA DE ENTREGA FUE A CREDITO
+            chkCredito.setSelected(true);
+            
+            cmbCuota.setEnabled(true);
+            txtCuota.setEditable(true);
+            txtEfectivo.setEditable(true);
+            cmbPlazo.setEnabled(true);
+            
+            codigoEmpresa = dataCabecera.get(0).getIdEmpresa();
+            txtNotaEntrega.setText(dataCabecera.get(0).getFactReferencia());
+            txtComentario.setText(dataCabecera.get(0).getComentario());
+            txtCuota.setText(""+dataCabecera.get(0).getValor());
+            txtEfectivo.setText(""+dataCabecera.get(0).getEfectivo());        
+            txtTotal.setText("" + dataCabecera.get(0).getTotal());         
+            txtSaldo.setText(""+objUtils.redondear(dataCabecera.get(0).getSaldo()));    
+            this.txtDescuento.setText(""+dataCabecera.get(0).getDescuento());
+            this.txtTarifaCero.setText(""+dataCabecera.get(0).getTarifaCero());
+            this.txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
+            txtIVA.setText(""+dataCabecera.get(0).getIVA());
+
+            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
+            txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
+            txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
+            txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
+            txtTotalFinal.setText("" + dataCabecera.get(0).getTotal1());
+            txtFechaCancelacion.setText(dataCabecera.get(0).getFechaCancelacionSistema().substring(0, 10));
+
+             //CARGAR CUOTAS
+            cmbCuota.removeAllItems();
+            ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
+            for(int i=0;i<dataCuota.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataCuota.get(i).getCodigo(), dataCuota.get(i).getDescripcion());
+                cmbCuota.addItem(oItem);   
+                if(dataCuota.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcion()))
+                {    
+                    cmbCuota.setSelectedItem(oItem);
+                }  
+            }  
+            
+            //CARGAR PLAZOS
+            ArrayList<clsComboBox> dataPlazo = objPlazo.consultarPlazo();        
+            for(int i=0;i<dataPlazo.size();i=i+1)
+            {
+                clsComboBox oItem = new clsComboBox(dataPlazo.get(i).getCodigo(), dataPlazo.get(i).getDescripcion());
+                cmbPlazo.addItem(oItem);
+                if(dataPlazo.get(i).getDescripcion().equals(dataCabecera.get(0).getDescripcionPlazo()))
+                {    
+                    cmbPlazo.setSelectedItem(oItem);
+                }  
+            }
+            
+            //CARGAR VENDEDORES
+            ArrayList<clsComboBox> dataPersonal = objPersonal.consultarPersonal();        
+            for(int i=0; i<dataPersonal.size(); i++)
+            {
+                clsComboBox oItem2 = new clsComboBox(dataPersonal.get(i).getCodigo(), dataPersonal.get(i).getDescripcion());
+                cmbVendedor.addItem(oItem2);   
+                if(dataPersonal.get(i).getCodigo().equals(""+dataCabecera.get(0).getIdVendedor()))
+                {    
+                    cmbVendedor.setSelectedItem(oItem2);
+                }  
+            }
+            
+            //fecha de nota de entrega
+            SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+            String strFecha = dataCabecera.get(0).getFecha();
+            Date fecha = null;
+            try {
+
+                fecha = formatoDelTexto.parse(strFecha);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            txtFechaVenta.setDate(fecha);   
+            
+            
+            //calcular saldo e intereses porque noe sta guardado en la base de datos
+            operacion();
+        }
         //COLUMNA OCULTA
         dtmData.addColumn("idProducto");
-        //objUtils.setOcultarColumnasJTable(tblData, new int[]{6});
         dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
         dtmData.addColumn("Codigo");
         dtmData.addColumn("Descripción");
@@ -114,7 +299,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         dtmData.addColumn("Precio Unitario");        
         dtmData.addColumn("Total");
         dtmData.addColumn("IVA");
-        dtmData.addColumn("Descuento");
+        dtmData.addColumn("Descuento ($)");
         //oculta
         dtmData.addColumn("Total-Descuento");
         //oculta
@@ -131,13 +316,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         tblData.getColumnModel().getColumn(7).setCellRenderer(tcr);    
         tblData.getColumnModel().getColumn(8).setCellRenderer(tcr);        
         
-        List<String> dataCedula = objCliente.consultarCedulas(); 
         List<String> dataCodigo = objProducto.consultarCodigos(); 
-        
-        SelectAllUtils.install(txtCedula);
-        ListDataIntelliHints intellihints = new ListDataIntelliHints(txtCedula, dataCedula);
-        //((JList)intellihints.getDelegateComponent()).setFixedCellWidth(50);
-        intellihints.setCaseSensitive(false);
         
         SelectAllUtils.install(txtCodigoProducto);
         ListDataIntelliHints intellihints2 = new ListDataIntelliHints(txtCodigoProducto, dataCodigo);
@@ -155,19 +334,37 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         //idCajaAbierta = objCaja.obtenerCajaAbierta(main.idUser);
         
         //CARGAR CUOTAS
-        ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
+        /*ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
         for(int i=0;i<dataCuota.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataCuota.get(i).getCodigo(), dataCuota.get(i).getDescripcion());
             cmbCuota.addItem(oItem);            
-        }
+        }*/
         
-        //CARGAR PLAZOS
-        ArrayList<clsComboBox> dataPlazo = objPlazo.consultarPlazo();        
-        for(int i=0;i<dataPlazo.size();i=i+1)
+        ArrayList <clsDetalle> dataDetalle = objDetalle.consultarDataDetalleNotaEntrega(idCabecera);
+        objUtils.vaciarTabla(dtmData);
+        for(int i=0; i<dataDetalle.size(); i++)
         {
-            clsComboBox oItem = new clsComboBox(dataPlazo.get(i).getCodigo(), dataPlazo.get(i).getDescripcion());
-            cmbPlazo.addItem(oItem);            
+            
+            Double cantidad = dataDetalle.get(i).getCantidad();
+            Double precio = dataDetalle.get(i).getPrecio();
+            Double descuento = dataDetalle.get(i).getDescuento();
+            Double iva = dataDetalle.get(i).getIVA();
+            Double total = dataDetalle.get(i).getCantidad() * dataDetalle.get(i).getPrecio();
+            Double baseSinIVA = (total - descuento) - iva;
+            Object[] nuevaFila = {dataDetalle.get(i).getIdProducto()
+                        , i+1 
+                        , dataDetalle.get(i).getCodigoProducto()
+                        , dataDetalle.get(i).getDescripcionProducto()
+                        , cantidad
+                        , precio
+                        , total
+                        , iva
+                        , objUtils.redondearCincoDec(descuento)
+                        , total - descuento
+                        , baseSinIVA
+                        , dataDetalle.get(i).getCosto()};
+            dtmData.addRow(nuevaFila); 
         }
         
         /*clsComboBox oItem = new clsComboBox("1", "3 MESES");
@@ -179,30 +376,82 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         oItem = new clsComboBox("4", "12 MESES");
         cmbPlazo.addItem(oItem);*/ 
         
-        //CARGAR VENDEDORES
-        ArrayList<clsComboBox> dataPersonal = objPersonal.consultarPersonal();        
-        for(int i=0;i<dataPersonal.size();i=i+1)
-        {
-            clsComboBox oItem2 = new clsComboBox(dataPersonal.get(i).getCodigo(), dataPersonal.get(i).getDescripcion());
-            cmbVendedor.addItem(oItem2);            
-        }
+        
         
         //CARGAR VALOR DE LA FACTURA
         //obtenerFacturaQueToca();
-        Date fechaActual = new Date();
-        txtFechaVenta.setDate(fechaActual); 
         
-        //CARGAR FACTURERO DE NOTAS DE ENTREGA
-        ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFacturerosNotaEntrega();
-
-        for(int i=0;i<dataFacturero.size();i=i+1)
-        {
-            clsComboBox oItem = new clsComboBox(dataFacturero.get(i).getCodigo(), dataFacturero.get(i).getDescripcion());
-            cmbFacturero.addItem(oItem);            
-        }          
+        
+         //AQUI PROGRAMO LA MODIFICACION DE DATOS
+        tblData.getModel().addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+                dtmData.removeTableModelListener(this);
+                recalcular();                
+                dtmData.addTableModelListener(this);
+            }  
+        });
+        banderaChkCredito = "YA_INICIADO";
+        controlCmbCredito = 1;
+        
+        
     }   
     
-    public void obtenerFacturaQueToca()
+    public void recalcular()
+    {
+        Double subTotal = 0.00;
+        Double descuento = 0.00;
+        Double subTotalParaCalcularIva = 0.00;
+        Double iva = 0.00;
+        
+        /*dtmData.addColumn("idProducto");
+        dtmData.addColumn("N°");
+        dtmData.addColumn("Codigo");
+        dtmData.addColumn("Descripción");
+        dtmData.addColumn("Cantidad");
+        dtmData.addColumn("Precio Unitario");        
+        dtmData.addColumn("Total");
+        dtmData.addColumn("IVA");
+        dtmData.addColumn("Descuento ($)");
+        //oculta
+        dtmData.addColumn("Total-Descuento");
+        //oculta
+        dtmData.addColumn("Cantidad_sin_iva");
+        dtmData.addColumn("costo");*/
+        
+        
+        int maxData = dtmData.getRowCount();
+        for(int i=0; i<maxData; i++)
+        {
+            //CANTIDAD
+            Double mult1 = Double.parseDouble("" + dtmData.getValueAt(i,4));
+            //PRECIO
+            Double mult2 = Double.parseDouble("" + dtmData.getValueAt(i,5));
+            //SUBTOTAL
+            subTotal = mult1 * mult2;
+            dtmData.setValueAt(objUtils.redondearCincoDec(subTotal),i,6);
+            //DESCUENTO
+            descuento = Double.parseDouble(dtmData.getValueAt(i,8).toString());
+            subTotalParaCalcularIva = subTotal - descuento;
+            System.out.println("subt: " + subTotalParaCalcularIva);
+            //COMPROBAR SI SE  LE SUMA IVA
+            boolean verificarIVA = objImpuestos.comprobarImpuesto(Integer.parseInt("" + dtmData.getValueAt(i,0)), "1");                    
+            if(verificarIVA)
+            {    
+                //iva = subTotalParaCalcularIva*(imp_iva/100);  
+                iva = subTotalParaCalcularIva - (subTotalParaCalcularIva/(1+(imp_iva/100))); 
+            }
+            else
+            {   
+                iva = 0.00;                                    
+            }
+            dtmData.setValueAt(objUtils.redondearCincoDec(iva), i, 7);
+            dtmData.setValueAt(objUtils.redondearCincoDec(descuento), i, 8);
+            calcularTotal();                  
+        }
+        calcularTotal();
+    }
+    
+    /*public void obtenerFacturaQueToca()
     {
         //obtener si es manual
         factManual = objCaja.comprobarFacturacionManual(idCajaAbierta); 
@@ -232,19 +481,18 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 txtNotaEntrega.setText(""+(ultmFact+1));
             }
         }
-    }
+    }*/
     
     public class MiModelo extends DefaultTableModel
     {
             @Override
        public boolean isCellEditable (int row, int column)
        {
-           // Aquí devolvemos true o false según queramos que una celda
-           // identificada por fila,columna (row,column), sea o no editable
-          /* if (column == 3)
-              return true;*/
-           
-           return false;
+            if ((column == 4)||(column == 5))
+            {
+                return true;
+            }           
+            return false;
        }
     } 
 
@@ -257,14 +505,8 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        btnMostrarArturo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
-        txtNombreCliente = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtComentario = new javax.swing.JTextArea();
         jLabel11 = new javax.swing.JLabel();
@@ -274,7 +516,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         cmbVendedor = new javax.swing.JComboBox();
         txtFechaVenta = new com.toedter.calendar.JDateChooser();
         jLabel27 = new javax.swing.JLabel();
-        cmbFacturero = new javax.swing.JComboBox();
+        cmbEmpresa = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtCodigoProducto = new javax.swing.JTextField();
@@ -308,12 +550,13 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         txtFechaCancelacion = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         cmbPlazo = new javax.swing.JComboBox();
-        jLabel28 = new javax.swing.JLabel();
         txtInteresPorcentaje = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
-        txtSaldoDeuda = new javax.swing.JTextField();
         txtInteresValor = new javax.swing.JTextField();
+        txtSaldoDeuda = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         txtTarifaCero = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
@@ -338,54 +581,18 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel22 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         chkAnulada = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntrega1.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmNotasEntregaModificar_transferencia.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel1.border.title"))); // NOI18N
         jPanel1.setName("jPanel1"); // NOI18N
 
-        btnMostrarArturo.setIcon(resourceMap.getIcon("btnMostrarArturo.icon")); // NOI18N
-        btnMostrarArturo.setText(resourceMap.getString("btnMostrarArturo.text")); // NOI18N
-        btnMostrarArturo.setName("btnMostrarArturo"); // NOI18N
-        btnMostrarArturo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMostrarArturoActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
-
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
-        jLabel2.setName("jLabel2"); // NOI18N
-
-        txtCedula.setText(resourceMap.getString("txtCedula.text")); // NOI18N
-        txtCedula.setName("txtCedula"); // NOI18N
-        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCedulaKeyTyped(evt);
-            }
-        });
-
-        txtNombreCliente.setEditable(false);
-        txtNombreCliente.setText(resourceMap.getString("txtNombreCliente.text")); // NOI18N
-        txtNombreCliente.setName("txtNombreCliente"); // NOI18N
-
-        btnBuscar.setText(resourceMap.getString("btnBuscar.text")); // NOI18N
-        btnBuscar.setName("btnBuscar"); // NOI18N
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
@@ -415,12 +622,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel27.setText(resourceMap.getString("jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
 
-        cmbFacturero.setName("cmbFacturero"); // NOI18N
-        cmbFacturero.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbFactureroItemStateChanged(evt);
-            }
-        });
+        cmbEmpresa.setName("cmbEmpresa"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -428,71 +630,52 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnMostrarArturo)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel26)
-                    .addComponent(jLabel2)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel23))
-                    .addComponent(txtNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                    .addComponent(cmbVendedor, 0, 363, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(cmbVendedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 77, 77)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(cmbFacturero, 0, 61, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtNotaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar)
-                            .addComponent(jLabel23)
-                            .addComponent(cmbFacturero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel26)
-                            .addComponent(cmbVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtNotaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel27))
+                                .addComponent(jLabel27)
+                                .addComponent(jLabel23))
                             .addComponent(txtFechaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)))
-                    .addComponent(btnMostrarArturo, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                .addContainerGap())
+                            .addComponent(jLabel11)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cmbVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel26)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
@@ -506,6 +689,11 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         txtCodigoProducto.setForeground(resourceMap.getColor("txtCodigoProducto.foreground")); // NOI18N
         txtCodigoProducto.setText(resourceMap.getString("txtCodigoProducto.text")); // NOI18N
         txtCodigoProducto.setName("txtCodigoProducto"); // NOI18N
+        txtCodigoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoProductoActionPerformed(evt);
+            }
+        });
         txtCodigoProducto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCodigoProductoKeyTyped(evt);
@@ -549,11 +737,6 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
-            }
-        });
-        btnAgregar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                btnAgregarKeyTyped(evt);
             }
         });
 
@@ -622,11 +805,6 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 chkCreditoItemStateChanged(evt);
             }
         });
-        chkCredito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkCreditoActionPerformed(evt);
-            }
-        });
 
         jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
         jLabel12.setName("jLabel12"); // NOI18N
@@ -693,13 +871,13 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
-        jLabel28.setName("jLabel28"); // NOI18N
-
         txtInteresPorcentaje.setEditable(false);
         txtInteresPorcentaje.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtInteresPorcentaje.setText(resourceMap.getString("txtInteresPorcentaje.text")); // NOI18N
         txtInteresPorcentaje.setName("txtInteresPorcentaje"); // NOI18N
+
+        jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
+        jLabel28.setName("jLabel28"); // NOI18N
 
         jLabel29.setText(resourceMap.getString("jLabel29.text")); // NOI18N
         jLabel29.setName("jLabel29"); // NOI18N
@@ -707,15 +885,23 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         jLabel30.setText(resourceMap.getString("jLabel30.text")); // NOI18N
         jLabel30.setName("jLabel30"); // NOI18N
 
+        txtInteresValor.setEditable(false);
+        txtInteresValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtInteresValor.setText(resourceMap.getString("txtInteresValor.text")); // NOI18N
+        txtInteresValor.setName("txtInteresValor"); // NOI18N
+
         txtSaldoDeuda.setEditable(false);
         txtSaldoDeuda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSaldoDeuda.setText(resourceMap.getString("txtSaldoDeuda.text")); // NOI18N
         txtSaldoDeuda.setName("txtSaldoDeuda"); // NOI18N
 
-        txtInteresValor.setEditable(false);
-        txtInteresValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteresValor.setText(resourceMap.getString("txtInteresValor.text")); // NOI18N
-        txtInteresValor.setName("txtInteresValor"); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -724,83 +910,96 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24)
                             .addComponent(jLabel25)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbPlazo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(chkCredito)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel12)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel24)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel14)
-                        .addComponent(jLabel13))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel28)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtInteresPorcentaje)
-                    .addComponent(txtEfectivo)
-                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGap(15, 15, 15)
+                                    .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbCuota, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(chkCredito))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel30)
-                    .addComponent(jLabel29))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtInteresValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                    .addComponent(txtSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                    .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtInteresPorcentaje)
+                            .addComponent(txtCuota)
+                            .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(8, 8, 8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtInteresValor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                            .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSaldo)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkCredito)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
                             .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13))
+                        .addGap(7, 7, 7)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel28)
-                            .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel25)
-                            .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel29)
-                            .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel30)
-                            .addComponent(txtInteresValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(chkCredito)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel25)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel29)
+                                        .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel30)
+                                            .addComponent(txtInteresValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(7, 7, 7)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel24)
                             .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
                             .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel16.setFont(resourceMap.getFont("jLabel16.font")); // NOI18N
@@ -838,6 +1037,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
 
         txtDescuentoUnidad.setBackground(resourceMap.getColor("txtDescuentoUnidad.background")); // NOI18N
         txtDescuentoUnidad.setFont(resourceMap.getFont("txtDescuentoUnidad.font")); // NOI18N
+        txtDescuentoUnidad.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtDescuentoUnidad.setText(resourceMap.getString("txtDescuentoUnidad.text")); // NOI18N
         txtDescuentoUnidad.setName("txtDescuentoUnidad"); // NOI18N
         txtDescuentoUnidad.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -908,7 +1108,7 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMostrarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
@@ -929,16 +1129,19 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel19))
+                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmbPrecio, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel19))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
                                 .addComponent(jLabel10)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -952,28 +1155,31 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                             .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel21)
-                            .addComponent(jLabel8))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtIVA)
-                                .addComponent(txtDescuento)
-                                .addComponent(txtTarifaCero)
-                                .addComponent(txtTarifaIVA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel16)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel21))
+                                .addGap(23, 23, 23)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtTarifaCero)
+                                    .addComponent(txtDescuento, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtIVA, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                                    .addComponent(txtTarifaIVA)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(txtIVA1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(txtDescuento1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
+                            .addComponent(txtTotalFinal)
+                            .addComponent(txtIVA1)
+                            .addComponent(txtDescuento1)
+                            .addComponent(txtTarifaCero1)
+                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -1034,12 +1240,12 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                                 .addComponent(txtIVA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTotal)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtTotal, 0, 0, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTotalFinal))))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(8, 8, 8))
+                .addGap(27, 27, 27))
         );
 
         btnImprimir.setIcon(resourceMap.getIcon("btnImprimir.icon")); // NOI18N
@@ -1080,55 +1286,31 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
         chkAnulada.setText(resourceMap.getString("chkAnulada.text")); // NOI18N
         chkAnulada.setName("chkAnulada"); // NOI18N
 
-        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-        jButton2.setName("jButton2"); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel9)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(lblCajero)
-                            .addGap(52, 52, 52)
-                            .addComponent(jLabel22)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblUsuario)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkAnulada)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnGuardar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnImprimir))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCajero)
+                .addGap(52, 52, 52)
+                .addComponent(jLabel22)
+                .addGap(18, 18, 18)
+                .addComponent(lblUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chkAnulada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardar)
+                .addGap(18, 18, 18)
+                .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -1137,46 +1319,22 @@ public class frmNotasEntrega1 extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 54, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnImprimir)
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)
                     .addComponent(jLabel22)
                     .addComponent(lblUsuario)
-                    .addComponent(chkAnulada))
+                    .addComponent(btnImprimir)
+                    .addComponent(chkAnulada)
+                    .addComponent(btnGuardar))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    cargarDataCliente();  
-}//GEN-LAST:event_btnBuscarActionPerformed
-
-    public void cargarDataCliente()
-    {
-        ArrayList<clsCliente> dataCliente = objCliente.consultarDataCliente(txtCedula.getText().toString());
-        if(dataCliente.isEmpty())
-        {
-            JOptionPane.showMessageDialog(this, "Cédula no existe!!!", "Atención!", JOptionPane.ERROR_MESSAGE);
-        }
-        else
-        {
-            vaciarDatos();
-            txtCedula.setText(dataCliente.get(0).getCedula());
-            codigoCliente = dataCliente.get(0).getCodigo();            
-            this.txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
-            txtCodigoProducto.requestFocus();
-        }
-    }
      
     public void vaciarDatos()
     {
@@ -1189,8 +1347,7 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         txtPrecio.setText("");
         txtPrecio.setEditable(false);
         codigoProducto=0;
-        txtCedula.setText("");
-        txtNombreCliente.setText("");
+        
         txtTarifaCero.setText("0.00");
         txtTarifaCero1.setText("0.00");
         txtTarifaIVA.setText("0.00");
@@ -1208,25 +1365,25 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         txtFechaCancelacion.setText("0");
         txtComentario.setText("");
         txtCosto.setText("costo");
-        //controlCmbCredito = 1;
+        controlCmbCredito = 1;      //sin esto salia error: For input string: "�"
         chkCredito.setSelected(false);
-        controlCmbCredito = 0;
+        controlCmbCredito = 0;      //sin esto salia error: For input string: "�"
         chkAnulada.setSelected(false);   
         //CARGAR FACTURERO DE NOTAS DE ENTREGA
         controlComboBox = 1;
         ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFacturerosNotaEntrega();
-        cmbFacturero.removeAllItems();
-        for(int i=0;i<dataFacturero.size();i=i+1)
+        //cmbFacturero.removeAllItems();
+        /*for(int i=0;i<dataFacturero.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataFacturero.get(i).getCodigo(), dataFacturero.get(i).getDescripcion());
             cmbFacturero.addItem(oItem);            
-        }  
-        clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
-        String factActual = objFacturero.seleccionarFacturaActual(Integer.parseInt(objFactureroSelect.getCodigo()));
-        txtNotaEntrega.setText(factActual);
+        }  */
+        //clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
+        //String factActual = objFacturero.seleccionarFacturaActual(Integer.parseInt(objFactureroSelect.getCodigo()));
+        //txtNotaEntrega.setText(factActual);
         controlComboBox = 0;
         
-        objUtils.vaciarTabla(dtmData);      
+        objUtils.vaciarTabla(dtmData);         
 }
 private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
     agregarProducto();
@@ -1274,11 +1431,11 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     else
                     {    
                         double iva = 0.00;
-                        double descuento=0.00;
-                        double subTotalParaCalcularIva=0.00;
+                        double descuento = 0.00;
+                        double subTotalParaCalcularIva = 0.00;
                         double precio = Double.parseDouble(txtPrecio.getText().toString());
                         double subTotal = cantidad*precio; 
-                        descuento = subTotal*Double.parseDouble(txtDescuentoUnidad.getText().toString())/100;
+                        descuento = subTotal * Double.parseDouble(txtDescuentoUnidad.getText().toString())/100;
                         subTotalParaCalcularIva = subTotal - descuento;
                         
                         //COMPROBAR SI SE  LE SUMA IVA
@@ -1286,8 +1443,8 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         baseTarifaIva = 0.00;
                         if(verificarIVA)
                         {    
-                            iva = subTotalParaCalcularIva-(subTotalParaCalcularIva/(1+(imp_iva/100))); 
-                            baseTarifaIva = baseTarifaIva+subTotalParaCalcularIva/(1+(imp_iva/100));
+                            iva = subTotalParaCalcularIva - (subTotalParaCalcularIva/(1+(imp_iva/100))); 
+                            baseTarifaIva = baseTarifaIva + subTotalParaCalcularIva/(1+(imp_iva/100));
                             //txtTarifaIVA.setText(""+objUtils.redondear(baseTarifaIva));
                         }
                         else
@@ -1316,7 +1473,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     txtPrecio.setText("");
                     txtStock.setText("");
                     txtPrecio.setEditable(false);
-                    codigoProducto = 0;
+                    codigoProducto=0;
                     txtDescuentoUnidad.setText("");
 
                     txtCodigoProducto.getFocusListeners();
@@ -1344,7 +1501,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         return bandera;
     }
     
-    private boolean registrarVenta()
+     private boolean registrarVenta()
     {
         boolean p_exito = false;
         boolean exito = true;
@@ -1354,17 +1511,16 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String descuento = "";
         String iva = "";
         Double costo = 0.00;
-        String plazo = "";
-               
+        
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1= txtFechaVenta.getDate();
         String fechaVenta = df2.format(date1);
         
         String descuentoF = txtDescuento.getText().toString();
         String ivaF = txtIVA.getText().toString();
-        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();        
-        
-        int maxData = 0;
+        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
+        clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();   
+        codigoEmpresa = Integer.parseInt(objEmpresaSelect.getCodigo());
         /*if(!this.chkAnulada.isSelected())        
         {  */              
             /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
@@ -1389,19 +1545,31 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     cuota = Double.parseDouble(txtCuota.getText());
                     
                     
-                    maxData = dtmData.getRowCount();
+                    int maxData = dtmData.getRowCount();
                    
                     //System.out.println("S: " + ultmFactura);
                     if(this.chkCredito.isSelected())        
                     {
                         /**************CABECERA***************************/
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                        /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
                                     saldoIntereses, txtEfectivo.getText(), 
                                     descuentoF, ivaF, txtNotaEntrega.getText(), 
-                                    txtTarifaIVA.getText(), 
-                                    txtTarifaCero.getText(),
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "C", txtInteresPorcentaje.getText());   */
+                        
+                        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                                    codigoEmpresa, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtEfectivo.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
                                     txtTarifaIVA1.getText(),
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
@@ -1409,23 +1577,25 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     fechaVenta, 
                                     "C", 
                                     txtInteresPorcentaje.getText(),
-                                    txtTarifaCero1.getText(),
-                                    "N");   
+                                    txtTarifaCero1.getText());
                         /***********************************************/
-                         int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                       //int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                         clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
                         clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
                         
-                        plazo = objPlazoSelect.getDescripcion();
-                        
-
-                        objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
+                        //BORRAR LA CUENTA POR COBRAR GENERADA
+                        objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+                        //INGRESAR LA NUEVA CUENTA POR COBRAR
+                        objCabecera.insertarCtaCobrarNotaEntrega(idCabecera, txtComentario.getText(), 
                                                     saldoIntereses, txtFechaCancelacion.getText(),
                                                     objPlazoSelect.getCodigo());
-                        
-                        objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
+                        //BORRAR LOS VALORES
+                        objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+                        //INGRESAR NUEVOS VALORES
+                        objCabecera.insertarValorCuotaNotaEntrega(idCabecera, objCuotaSelect.getCodigo(), 
                                                     cuota);
-                        
+                        //BORRAR LSO ABONOS
+                        objAbono.borrarAbonos(idCabecera);
                         
                         ////*AQUI VA EL REGISTRO DE LOS PAGOS**////
                         Double numeroPagos = saldoIntereses / cuota;
@@ -1477,7 +1647,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
                             //Object[] nuevaFila = {i, fecha2, valor};
                             
-                            objAbono.insertarAbono(i+1, fecha2, cuota, ultmFactura);
+                            objAbono.insertarAbono(i+1, fecha2, cuota, idCabecera);
                             
                             
                             //dtmData.addRow(nuevaFila);
@@ -1488,7 +1658,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     else
                     {
                          /**************CABECERA CONTADO******************/
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                        /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
                                     "0", txtComentario.getText(), 
                                     saldoIntereses, txtTotal.getText(), 
@@ -1498,11 +1668,25 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     txtIVA1.getText(),
                                     txtTotalFinal.getText(),
                                     objVendedorSelect.getCodigo(),
-                                    fechaVenta, "D", "0.00", "0.00", "N");   
+                                    fechaVenta, "D", "0.00");   */
+                        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                                    codigoEmpresa, main.idUser, "0", 
+                                    txtTotal.getText(), main.idEmpresa, 
+                                    "0", txtComentario.getText(), 
+                                    saldoIntereses, txtTotal.getText(), 
+                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                                    txtTarifaIVA1.getText(),
+                                    txtIVA1.getText(),
+                                    txtTotalFinal.getText(),
+                                    objVendedorSelect.getCodigo(),
+                                    fechaVenta, "D", "0.00", "0.00");  
                         /***********************************************/
                     
                     }
-                    int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                    //int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
+                    //BORRAR LOS PRODUCTOS QUE TIENE LA NOTA DE ENTREGA ACTUALMENTE
+                    exito = objDetalle.borrarProductosNotaEntrega(idCabecera);
                     for(int i=0; i<maxData; i++)
                     {                       
                         //**************DETALLE*******************//
@@ -1514,7 +1698,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         descuento = "" + dtmData.getValueAt(i, 8);
                         costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
 
-                        exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
+                        exito = objDetalle.insertarDetalleNotasEntrega(idCabecera, idProducto, cantidad, 
                                 precio, descuento, iva, costo);
                         /*objKardex.insertarKardex(idProducto, 
                                 "NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + ultmFactura, 
@@ -1527,17 +1711,16 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                 ultmFactura);
                         objProducto.disminuirStock(idProducto, cantidad);*/
                     }  
-                    clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
-                    objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
+                    //clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
+                    //objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
 
                     JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-                    //vaciarDatos();
+                   
                     p_exito = true;
                     //obtenerFacturaQueToca();
-                    objAuditoria.insertarAuditoria("frmNotasEntrega1", "INGRESO DE NOTA DE  ENTREGA:"
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "INGRESO DE NOTA DE ENTREGA:"
                              + txtNotaEntrega.getText(), "3");
-                    
-                   
+                    vaciarDatos();
                 }
                 catch(Exception e)
                 {
@@ -1557,74 +1740,134 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
            
         /*}
         dispose();*/
-        //ENVIAR EMAIL
-        String email_habilitado = objParametros.consultaValor("email_habilitado");
-        if(email_habilitado.equals("1"))
-        {    
-            try{
-                String texto = "EL USUARIO: " 
-                + main.nameUser+ ", REGISTRO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR>"
-                            + "COMENTARIO: " + txtComentario.getText() + "</BR></BR>"
-                            + "<TABLE BORDER=\"1\">"
-                            + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
-                            + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
-                            + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"                        
-                            + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
-                if(this.chkCredito.isSelected())       
-                {
-                    texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
-                                + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
-                                + "<TR><TD>CUOTA INICIAL ($ " + cuotaInicial + "):</TD><TD>" + txtEfectivo.getText() + "</TD></TR>"
-                                + "<TR><TD>SALDO + INTERESES:</TD><TD>" + txtSaldo.getText() + "</TD></TR>"
-                                + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>"                           
-                                + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
+        return p_exito;     
+    }
+   
+    private boolean registrarVenta2()
+    {
+        boolean p_exito = false;
+        boolean exito = false;
+        int idProducto = 0;
+        String cantidad = "";
+        String precio = "";   
+        String descuento = "";
+        String iva = "";
+        Double costo = 0.00;
+        
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1= txtFechaVenta.getDate();
+        String fechaVenta = df2.format(date1);
+        
+        String descuentoF = txtDescuento.getText().toString();
+        String ivaF = txtIVA.getText().toString();
+        clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
+        
+        double saldo = Double.parseDouble(txtSaldo.getText());
+        /*if(!this.chkAnulada.isSelected())        
+        {  */              
+            /*exito = objCabecera.insertarRegistroNotaDeEntrega(codigoCliente, main.idUser, "0", 
+                    txtTotal.getText(), main.idEmpresa, 
+                    "0", txtComentario.getText(), 
+                    saldo, txtEfectivo.getText(), 
+                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                    txtTarifaIVA1.getText(),
+                    txtIVA1.getText(),
+                    txtTotalFinal.getText(),
+                    objVendedorSelect.getCodigo(),
+                    fechaVenta, "PITIADO", txtInteresPorcentaje.getText());  */    
+        exito = objCabecera.modificarRegistroNotaDeEntrega(idCabecera,
+                    codigoEmpresa, main.idUser, "0", 
+                    txtTotal.getText(), main.idEmpresa, 
+                    "0", txtComentario.getText(), 
+                    saldo, txtEfectivo.getText(), 
+                    descuentoF, ivaF, txtNotaEntrega.getText(), 
+                    txtTarifaIVA.getText(), txtTarifaCero.getText(),
+                    txtTarifaIVA1.getText(),
+                    txtIVA1.getText(),
+                    txtTotalFinal.getText(),
+                    objVendedorSelect.getCodigo(),
+                    fechaVenta, "C", 
+                    txtInteresPorcentaje.getText(),
+                    txtTarifaCero1.getText());
+
+            if(exito)
+            {
+                try
+                {                          
+                    int maxData = dtmData.getRowCount();
+                    //int ultmFactura = Integer.parseInt(txtNotaEntrega.getText());
+                    //System.out.println("S: " + ultmFactura);
+                    if(this.chkCredito.isSelected())        
+                    {
+                        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
+                        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
+
+                        //BORRAR LA CUENTA POR COBRAR GENERADA
+                        objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+                        //INGRESAR LA NUEVA CUENTA POR COBRAR
+                        objCabecera.insertarCtaCobrarNotaEntrega(idCabecera, txtComentario.getText(), 
+                                                    saldo, txtFechaCancelacion.getText(),
+                                                    objPlazoSelect.getCodigo());
+                        //BORRAR LOS VALORES
+                        objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+                        //INGRESAR NUEVOS VALORES
+                        objCabecera.insertarValorCuotaNotaEntrega(idCabecera, objCuotaSelect.getCodigo(), 
+                                                    Double.parseDouble(txtCuota.getText()));
+                    }
+                    
+                    //BORRAR LOS PRODUCTOS QUE TIENE LA NOTA DE ENTREGA ACTUALMENTE
+                    exito = objDetalle.borrarProductosNotaEntrega(idCabecera);
+                    for(int i=0; i<maxData; i++)
+                    {                       
+                        //factura, idProducto
+                        idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
+                        cantidad = "" + dtmData.getValueAt(i, 4);
+                        precio = "" + dtmData.getValueAt(i, 5);                        
+                        iva = "" + dtmData.getValueAt(i, 7);
+                        descuento = "" + dtmData.getValueAt(i, 8);
+                        costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
+
+                        exito = objDetalle.insertarDetalleNotasEntrega(idCabecera, idProducto, cantidad, 
+                                precio, descuento, iva, costo);
+                        /*objKardex.insertarKardex(idProducto, 
+                                "NOTAS DE ENTREGA, ID NOTAS ENTREGA:" + ultmFactura, 
+                                "-" + cantidad,
+                                txtCedula.getText(),
+                                txtNombreCliente.getText(),
+                                precio,
+                                costo,
+                                "EGRESO",
+                                ultmFactura);*/
+                        //objProducto.disminuirStock(idProducto, cantidad);
+                    }  
+                   
+
+                    JOptionPane.showMessageDialog(this, "Nota de entrega modificada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
+                    vaciarDatos();
+                    p_exito = true;
+                    //obtenerFacturaQueToca();
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "ACTUALIZACION DE NOTA DE  ENTREGA:"
+                             + txtNotaEntrega.getText(), "3");
                 }
-                else
+                catch(Exception e)
                 {
-                    texto = texto  + "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
-                            + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>";
+                    System.out.println(e.getMessage());
+                    p_exito = false;
                 }
-
-                texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
-                        + "</TABLE></BR></BR>"
-                        + "<TABLE BORDER=\"1\">"
-                        + "<TR><TD>PRODUCTO</TD><TD>CANTIDAD</TD><TD>PVP</TD></TR>" ;
-
-                String descripcion = "";
-                for(int i=0; i<maxData; i++)
-                {                       
-                    //**************DETALLE*******************//
-                    //factura, idProducto
-                    //idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
-                    descripcion = "" + dtmData.getValueAt(i, 3);
-                    cantidad = "" + dtmData.getValueAt(i, 4);
-                    precio = "" + dtmData.getValueAt(i, 5);                        
-                    //iva = "" + dtmData.getValueAt(i, 7);
-                    //descuento = "" + dtmData.getValueAt(i, 8);
-                    //costo = Double.parseDouble("" + dtmData.getValueAt(i, 11));
-
-
-                    //exito = objDetalle.insertarDetalleNotasEntrega(ultmFactura, idProducto, cantidad, 
-                    //        precio, descuento, iva, costo);
-                    texto = texto + "<TR><TD>" + descripcion + "</TD><TD>" + cantidad + "</TD><TD>" + precio + "</TD></TR>";
-
-                }  
-                texto = texto + "</TABLE>";
-
-                javaMail mail = new javaMail();
-                ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("3");        
-                for(int i=0;i<dataEmail.size();i=i+1)
-                {
-                    mail.send(dataEmail.get(i).getEmail(), "REGISTRO NOTA DE ENTREGA", texto);
-                }
+                //Vaciar Datos para facturar de nuevo
             }
-            catch(Exception e){
-                //e.printStackTrace();
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        //ENVIAR EMAIL - FIN
-        vaciarDatos();
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Error al ingresar la información", "Atención!", JOptionPane.ERROR_MESSAGE);      
+                p_exito = false;
+            }        
+        /*}
+        else
+        {*/
+           
+        /*}
+        dispose();*/
         return p_exito;     
     }
     
@@ -1738,30 +1981,25 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         txtDescuento.setText(""+objUtils.redondear(descuento));
         //txtDescuento1.setText(""+objUtils.redondear(descuento));
         
-        txtIVA.setText(""+objUtils.redondear(impIVA));
-        txtIVA1.setText(""+objUtils.redondear(impIVA));
+        txtIVA.setText("" + objUtils.redondear(impIVA));
+        txtIVA1.setText("" + objUtils.redondear(impIVA));
         //txtTotal.setText(""+objUtils.redondear(total-descuento+impIVA));   
-        txtTotal.setText(""+objUtils.redondear(total-descuento));  
-        txtTotalFinal.setText(""+objUtils.redondear(total-descuento));  
+        txtTotal.setText("" + objUtils.redondear(total - descuento));  
+        txtTotalFinal.setText("" + objUtils.redondear(total - descuento));  
         //baseTarifaCero = 0.00;
         
     }
 
-    private void btnMostrarArturoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarArturoActionPerformed
-        frmListClientes ventana = new frmListClientes(null, true, "7");
-        //new inventariopdf.JDEscoger(this, true);
-        ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
-    }//GEN-LAST:event_btnMostrarArturoActionPerformed
-
     private void btnMostrarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarProductosActionPerformed
-        frmListProductos ventana = new frmListProductos(null, true, "9", "N");        
+        //N COSTO
+        frmListProductos ventana = new frmListProductos(null, true, "15", "S");        
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnMostrarProductosActionPerformed
 
 private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoProductoKeyTyped
-       if(evt.getKeyChar() == KeyEvent.VK_ENTER){           
+       if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+       {           
             String codeProducto = txtCodigoProducto.getText().toString();
             ArrayList<clsProducto> dataProducto = objProducto.consultarDataProductoPorCodigo(codeProducto); 
             if(dataProducto.isEmpty())
@@ -1778,16 +2016,18 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                 String costo = dataProducto.get(0).getCosto().toString();
                 txtCosto.setText(costo);
                 //CARGAR PRECIOS DEL PRODUCTO
+                
+                cmbPrecio.removeAllItems();   
                 //SI ES PARA BETTY RODAS COLOCAR COSTO
-                cmbPrecio.removeAllItems();
-               
-                /*if((codigoCliente==202)||(codigoCliente==3054))
-                {
+                //if((codigoCliente==202)||(codigoCliente==3054))
+                //SI ES PARA JORGE RIZZO MUÑOZ COLOCAR COSTO
+                //if((codigoCliente==114))
+                //{
                      clsComboBox oItem = new clsComboBox(costo, "1 - " + costo);
                      cmbPrecio.addItem(oItem);
-                }
+                /*}
                 else
-                {     */                         
+                {   
                     ArrayList<clsComboBox> dataPrecios = objPrecio.consultarPrecios(""+codigoProducto);        
                     if(dataPrecios.isEmpty())
                     {}
@@ -1799,8 +2039,7 @@ private void txtCodigoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST
                             cmbPrecio.addItem(oItem);            
                         }
                     }
-               // }
-                //****************//
+                }*/
                 txtCantidad.setEditable(true);
                 txtCantidad.requestFocus();
             }  
@@ -1844,83 +2083,52 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         int contRows = tblData.getRowCount();
         if(chkAnulada.isSelected())
         {
-             if(txtComentario.getText().equals(""))
-             {     
-                JOptionPane.showMessageDialog(this, "Antes de anular coloque un comentario", "Atención!", JOptionPane.ERROR_MESSAGE);
-             }
-             else
-             {
-                //REGISTRO NOTA DE ENTREGA ANULADA
-                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-                Date date1= txtFechaVenta.getDate();
-                String fechaVenta = df2.format(date1);
-                exito = objCabecera.insertarRegistroNotaEntregaAnulada(
-                        main.idUser, 
-                        "0", 
-                        main.idEmpresa, 
-                        "0", 
-                        txtComentario.getText(),
-                        txtNotaEntrega.getText(),                     
-                        fechaVenta);
-
-                if(exito)
+            //REGISTRO NOTA DE ENTREGA ANULADA
+            DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1= txtFechaVenta.getDate();
+            String fechaVenta = df2.format(date1);
+            /*exito = objCabecera.insertarRegistroNotaEntregaAnulada(
+                    main.idUser, 
+                    "0", 
+                    main.idEmpresa, 
+                    "0", 
+                    txtComentario.getText(),
+                    txtNotaEntrega.getText(),                     
+                    fechaVenta);*/
+            exito = objCabecera.modificarRegistroNotaEntregaAnulada(main.idUser, 
+                    "0", 
+                    main.idEmpresa, 
+                    "0", 
+                    txtComentario.getText(),
+                    txtNotaEntrega.getText(),                     
+                    fechaVenta,
+                    idCabecera);
+            //COMO LA VOY A ANULAR BORRO TODO LO QUE TENGA SI NO ERA ANULADA
+            objCabecera.borrarCtaCobrarNotaEntrega(idCabecera);
+            objCabecera.borrarValorCuotaNotaEntrega(idCabecera);
+            objDetalle.borrarProductosNotaEntrega(idCabecera);
+            if(exito)
+            {
+                try
+                {          
+                    JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
+                    vaciarDatos();
+                    objAuditoria.insertarAuditoria("frmNotasEntregaModificar", "INGRESO DE NOTA DE ENTREGA ANULADA:"
+                             + txtNotaEntrega.getText(), "3");
+                    exito = true;
+                }
+                catch(Exception e)
                 {
-                    try
-                    {
-                        clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();                    
-                        objFacturero.actualizarFacturero(Integer.parseInt(objFactureroSelect.getCodigo()));
-                        JOptionPane.showMessageDialog(this, "Nota de entrega guardada con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);        
-
-                        objAuditoria.insertarAuditoria("frmNotasEntrega", "INGRESO DE NOTA DE ENTREGA ANULADA:"
-                                 + txtNotaEntrega.getText(), "3");
-                        exito = true;
-
-
-                    }
-                    catch(Exception e)
-                    {
-                        System.out.println(e.getMessage());
-                        exito = false;
-                    }             
-                }
-
-                //ENVIAR CORREO
-                String email_habilitado = objParametros.consultaValor("email_habilitado");
-                if(email_habilitado.equals("1"))
-                {    
-                    try{
-                        String texto = "EL USUARIO: " 
-                                        + main.nameUser+ ", ANULO LA NOTA DE ENTREGA: " + txtNotaEntrega.getText() + "</BR></BR>"
-                                        + "COMENTARIO: " + txtComentario.getText() + "</BR>"
-                                        + "<TABLE BORDER=\"1\">"
-                                        + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
-                                        + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>";
-                        texto = texto + "</TABLE></BR>"; 
-                        javaMail mail = new javaMail();
-                        ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("4");        
-                        for(int i=0;i<dataEmail.size();i=i+1)
-                        {
-                            mail.send(dataEmail.get(i).getEmail(), "ANULADA NOTA DE ENTREGA", texto);
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        //e.printStackTrace();
-                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar correo", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                vaciarDatos();
-            } //if(txtComentario.getText().equals(""))               
+                    System.out.println(e.getMessage());
+                    exito = false;
+                }             
+            }
         }
         else
         {
             if(this.chkCredito.isSelected())        
             {
-                if(txtNombreCliente.getText().equals("")||
-                        (contRows==0)||
-                        txtSaldo.getText().equals("")||
-                        txtNotaEntrega.getText().equals("")||
-                        txtComentario.getText().equals(""))
+                if((contRows==0)||txtSaldo.getText().equals("")||txtNotaEntrega.getText().equals(""))
                 {
                    JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1934,7 +2142,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             }
             else
             {
-                if(txtNombreCliente.getText().equals("")||(contRows==0)||txtNotaEntrega.getText().equals("")||txtComentario.getText().equals(""))
+                if((contRows==0)||txtNotaEntrega.getText().equals(""))
                 {
                    JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1947,8 +2155,6 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 }
             }
         }        
-        
-        
         return exito;
     }
     
@@ -1968,10 +2174,10 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         {
             fichero = new FileWriter(objUtils.HostSystem + "file00001.txt");
             pw = new PrintWriter(fichero);
-            pw.println(objParametros.consultaValor("print_factura_linea1"));
-            pw.println(objParametros.consultaValor("print_factura_linea2"));
-            pw.println(objParametros.consultaValor("print_factura_linea3"));
-            pw.println(objParametros.consultaValor("print_factura_linea4"));
+            pw.println("           S U P E R  T O D O");
+            pw.println("           RUC: 0913187068001");
+            pw.println("ROCAFUERTE 617 ENTRE 9 DE OCTUBRE y SUCR");
+            pw.println("           BABA - ECUADOR");
             //pw.println("");
             //pw.println("");
             //pw.println("");
@@ -2223,18 +2429,21 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         interes = valorInteresTresMeses;
         txtInteresPorcentaje.setText("" + interes);
         meses = 3;
+        
     }
     else if(idPlazo.equals("2"))
     {
         interes = valorInteresSeisMeses;
         txtInteresPorcentaje.setText("" + interes);
         meses = 6;
+        
     }
     else if(idPlazo.equals("3"))
     {
         interes = valorInteresNueveMeses;
         txtInteresPorcentaje.setText("" + interes);
         meses = 9;
+        
     }
     else if(idPlazo.equals("4"))
     {
@@ -2249,12 +2458,8 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         meses = 2;
     }
     double cantidadAdeudada = valorContado - cuotaInicial;
-    txtSaldoDeuda.setText("" + cantidadAdeudada);
     
     double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
-    double valorInteres = cantidadAdeudada * interes / 100;
-    txtInteresValor.setText("" + valorInteres);
-    
     txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
     //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
     //MENSUAL QUINCENAL SEMANAL
@@ -2262,36 +2467,36 @@ private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     String idCuota = objCuotaSelect.getCodigo();
     Double cuotaIndividual= 0.00;
     //2 semanal, 3 quincenal, 4 mensual
-    if(idCuota.equals("2"))//semanal
+    if(idCuota.equals("2"))
     {
-         if(idPlazo.equals("1"))//3 meses tiene 12 semanas, pero le ponen 13
+         if(idPlazo.equals("1"))
         {
             cuotaIndividual = cantidadInteres/13;
         }
-        else if(idPlazo.equals("2"))//6 meses son 24 semanas, pero le ponen 26
+        else if(idPlazo.equals("2"))
         {
             cuotaIndividual = cantidadInteres/26;
         }
-        else if(idPlazo.equals("3"))//9 meses son 36 semanas, pero le ponen 39
+        else if(idPlazo.equals("3"))
         {
             cuotaIndividual = cantidadInteres/39;
         }
-        else if(idPlazo.equals("4"))//12 meses son 48 semanas, pero le ponen 52
+        else if(idPlazo.equals("4"))
         {           
             cuotaIndividual = cantidadInteres/52;
         }
-        else if(idPlazo.equals("9"))//2 MESES son 8 semanas
+        else if(idPlazo.equals("9"))
         {
             cuotaIndividual = cantidadInteres/8;
         }
     }
-    else if(idCuota.equals("3"))//quincenal
+    else if(idCuota.equals("3"))
     {
-         cuotaIndividual = cantidadInteres/(meses*2); // los meses q son lo multiplico por 2 para que me de en quincenas, un mes tiene 2 quincenas
+         cuotaIndividual = cantidadInteres/(meses*2);
     }
-    else if(idCuota.equals("4"))//mensual
+    else if(idCuota.equals("4"))
     {
-        cuotaIndividual = cantidadInteres/meses; // mes normal
+        cuotaIndividual = cantidadInteres/meses;
     }
     txtCuota.setText(""+objUtils.redondear(cuotaIndividual));
     txtFechaCancelacion.setText(calcular_fecha_cancelacion());
@@ -2304,14 +2509,12 @@ public String calcular_fecha_cancelacion()
 {
     //CALCULAR FECHA DE CANCELACION
     Date date1= new Date();
-    //DIARIO; SEMANAL; QUINCENAL;MENSUAL
     clsComboBox objetoPagoSeleccionado = (clsComboBox)cmbCuota.getSelectedItem();
     String tipoPago = objetoPagoSeleccionado.getCodigo();
-    
     Calendar fechaCarta2 = Calendar.getInstance();
-    fechaCarta2.setTime(date1); 
+    //fechaCarta2.setTime(date1); 
+    fechaCarta2.setTime(txtFechaVenta.getDate());
     double numeroPagos =0;
-    //???porque hice que el numero de pagos sean = saldo/cuotas
     numeroPagos = Double.parseDouble(txtSaldo.getText())/Double.parseDouble(txtCuota.getText());
     Locale.setDefault(Locale.ENGLISH);       
     DecimalFormat formateador = new DecimalFormat("####");
@@ -2345,42 +2548,48 @@ public String calcular_fecha_cancelacion()
 
 
 private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
-    if(controlCmbCredito==0)
-    {
-        valorContado = Double.parseDouble(txtTotal.getText().toString());
-        btnAgregar.setEnabled(false);
-        txtCuota.setText("");
-        txtEfectivo.setText("0");
-        txtSaldo.setText("");
-        
-        calcularCuotas();
-        //txtEfectivo.setText(""+cuotaInicial);
-       // controlCmbCredito = 1;
-        if(this.chkCredito.isSelected())        
-        {
-            cmbCuota.setEnabled(true);
-            txtCuota.setEditable(true);
-            txtEfectivo.setEditable(true);
-            cmbPlazo.setEnabled(true);
-            //txtSaldo.setEditable(true);       
-        } 
-        else
-        {
-            cmbCuota.setEnabled(false);
-            txtCuota.setEditable(false);
-            txtEfectivo.setEditable(false);
-            cmbPlazo.setEnabled(false);
-            //txtSaldo.setEditable(false);     
-        }
-        //controlCmbCredito = 0;
-    }
+    //la puse asi para q pueda llamr estos pasos al iniciar el form y se calcule los intereses y saldo
+    operacion();
 }//GEN-LAST:event_chkCreditoItemStateChanged
 
+    public void operacion ()
+    {
+        if(controlCmbCredito==1)
+        {
+            //if(banderaChkCredito.equals("YA_INICIADO"))
+            //{
+                valorContado = Double.parseDouble(txtTotal.getText().toString());
+
+                btnAgregar.setEnabled(false);
+                txtCuota.setText("");
+                txtEfectivo.setText("0");
+                txtSaldo.setText("");
+                calcularCuotas();
+                //txtEfectivo.setText(""+cuotaInicial);
+                if(chkCredito.isSelected())        
+                {
+                    cmbCuota.setEnabled(true);
+                    txtCuota.setEditable(true);
+                    txtEfectivo.setEditable(true);
+                    cmbPlazo.setEnabled(true);
+                    //txtSaldo.setEditable(true);       
+                } 
+                else
+                {
+                    cmbCuota.setEnabled(false);
+                    txtCuota.setEditable(false);
+                    txtEfectivo.setEditable(false);
+                    cmbPlazo.setEnabled(false);
+                    //txtSaldo.setEditable(false);     
+                }
+            //}
+        }
+    }
 
 void calcularCuotas()
 {
-    cuotaInicial = valorContado * valorInteresCuotaInicial/100;
-    txtEfectivo.setText("" + cuotaInicial);
+    Double cuotaInicial = valorContado * valorInteresCuotaInicial/100;
+    txtEfectivo.setText(""+cuotaInicial);
     //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
     clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
     String idPlazo = objPlazoSelect.getCodigo();
@@ -2398,7 +2607,6 @@ void calcularCuotas()
         interes = valorInteresSeisMeses;
         txtInteresPorcentaje.setText("" + interes);
         meses = 6;
-        
     }
     else if(idPlazo.equals("3"))
     {
@@ -2482,10 +2690,6 @@ private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     }
 }//GEN-LAST:event_txtCantidadKeyTyped
 
-private void btnAgregarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyTyped
-   
-}//GEN-LAST:event_btnAgregarKeyTyped
-
 private void txtDescuentoUnidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescuentoUnidadKeyPressed
 // TODO add your handling code here:
 }//GEN-LAST:event_txtDescuentoUnidadKeyPressed
@@ -2501,55 +2705,40 @@ private void txtDescuentoUnidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRS
 // TODO add your handling code here:
 }//GEN-LAST:event_txtDescuentoUnidadKeyTyped
 
-private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
-    if(evt.getKeyChar() == KeyEvent.VK_ENTER){  
-        cargarDataCliente();   
-    } 
-}//GEN-LAST:event_txtCedulaKeyTyped
-
 private void cmbPlazoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPlazoItemStateChanged
-    if(cmbPlazo.isEnabled())
-        calcularCuotas();    // TODO add your handling code here:
+    if(banderaChkCredito.equals("YA_INICIADO"))
+    {
+        if(cmbPlazo.isEnabled())
+        calcularCuotas(); 
+    }
 }//GEN-LAST:event_cmbPlazoItemStateChanged
 
 private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCuotaItemStateChanged
-     if(cmbCuota.isEnabled())
-        calcularCuotas(); // TODO add your handling code here:
+    if(banderaChkCredito.equals("YA_INICIADO"))
+    {
+        if(cmbCuota.isEnabled())
+        calcularCuotas();
+    }
 }//GEN-LAST:event_cmbCuotaItemStateChanged
 
-private void cmbFactureroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbFactureroItemStateChanged
-    if(controlComboBox == 0)
-    {
-        clsComboBox objFactureroSelect = (clsComboBox)cmbFacturero.getSelectedItem();
-        String factActual = objFacturero.seleccionarFacturaActual(Integer.parseInt(objFactureroSelect.getCodigo()));
-        txtNotaEntrega.setText(factActual);
-    }
-}//GEN-LAST:event_cmbFactureroItemStateChanged
+    private void txtCodigoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoProductoActionPerformed
 
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    objReporte.ejecutarReporteParametroInt(codigoCliente, "solicitud_cliente");
-}//GEN-LAST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String tipo_venta = "CREDITO";
+       if(this.chkCredito.isSelected())  
+            tipo_venta = "CREDITO";
+        else
+            tipo_venta = "CONTADO";
+        frmListEntradasAsignadas2 formulario = new frmListEntradasAsignadas2(null, true, idCabecera, tipo_venta);
+        //mostrarJInternalCentrado(formulario); 
+        formulario.setLocationRelativeTo(null);
+        formulario.setVisible(true);    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-    String idPlazo = objPlazoSelect.getCodigo();
     
-    clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-    String idCuota = objCuotaSelect.getCodigo(); 
-    
-    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-    Date date1= txtFechaVenta.getDate();
-    String fechaVenta = df2.format(date1);
-    
-    frmPagosDeuda formulario = new frmPagosDeuda(idPlazo, idCuota, txtCuota.getText(), txtSaldo.getText(), fechaVenta);
-    mostrarJInternalCentrado(formulario); 
-}//GEN-LAST:event_jButton2ActionPerformed
-
-private void chkCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditoActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_chkCreditoActionPerformed
-
-public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
+     public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
         Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
         Dimension jInternalFrameSize = formulario.getSize();
@@ -2558,27 +2747,24 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
 
         frmPrincipal.jDesktopPane1.add(formulario);
         formulario.show(); 
-    }   
+    }
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnImprimir;
-    private javax.swing.JButton btnMostrarArturo;
     public static javax.swing.JButton btnMostrarProductos;
     private javax.swing.JCheckBox chkAnulada;
     private javax.swing.JCheckBox chkCredito;
     private javax.swing.JComboBox cmbCuota;
-    private javax.swing.JComboBox cmbFacturero;
+    private javax.swing.JComboBox cmbEmpresa;
     private javax.swing.JComboBox cmbPlazo;
     public static javax.swing.JComboBox cmbPrecio;
     private javax.swing.JComboBox cmbVendedor;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2590,7 +2776,6 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -2614,12 +2799,10 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCajero;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tblData;
     public static javax.swing.JTextField txtCantidad;
-    public static javax.swing.JTextField txtCedula;
     public static javax.swing.JTextField txtCodigoProducto;
     private javax.swing.JTextArea txtComentario;
     public static javax.swing.JTextField txtCosto;
@@ -2634,7 +2817,6 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JTextField txtIVA1;
     private javax.swing.JTextField txtInteresPorcentaje;
     private javax.swing.JTextField txtInteresValor;
-    public static javax.swing.JTextField txtNombreCliente;
     public static javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtNotaEntrega;
     private javax.swing.JTextField txtPrecio;

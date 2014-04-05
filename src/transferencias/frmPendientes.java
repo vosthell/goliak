@@ -53,7 +53,7 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         objUtils.setOcultarColumnasJTable(this.tblData, new int[]{0});
         
         //CARGAR EMPRESAS
-        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresas_externas();        
+        ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasTransferencia();        
         for(int i=0;i<dataEmpresas.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataEmpresas.get(i).getCodigo(), dataEmpresas.get(i).getDescripcion());
