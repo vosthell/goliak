@@ -721,7 +721,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getActionMap(frmPrincipal.class, this);
         btnCajaAntes.setAction(actionMap.get("productos")); // NOI18N
-        btnCajaAntes.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
+        btnCajaAntes.setBackground(resourceMap.getColor("btnCerrar.background")); // NOI18N
         btnCajaAntes.setText(resourceMap.getString("btnCajaAntes.text")); // NOI18N
         btnCajaAntes.setFocusable(false);
         btnCajaAntes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -734,7 +734,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnCajaAntes);
 
-        btnAbrir.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
+        btnAbrir.setBackground(resourceMap.getColor("btnCerrar.background")); // NOI18N
         btnAbrir.setIcon(resourceMap.getIcon("btnAbrir.icon")); // NOI18N
         btnAbrir.setText(resourceMap.getString("btnAbrir.text")); // NOI18N
         btnAbrir.setFocusable(false);
@@ -748,7 +748,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnAbrir);
 
-        btnFacturar.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
+        btnFacturar.setBackground(resourceMap.getColor("btnCerrar.background")); // NOI18N
         btnFacturar.setIcon(resourceMap.getIcon("btnFacturar.icon")); // NOI18N
         btnFacturar.setText(resourceMap.getString("btnFacturar.text")); // NOI18N
         btnFacturar.setEnabled(false);
@@ -763,7 +763,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btnFacturar);
 
-        btnCerrar.setBackground(resourceMap.getColor("btnAbrir.background")); // NOI18N
+        btnCerrar.setBackground(resourceMap.getColor("btnCerrar.background")); // NOI18N
         btnCerrar.setIcon(resourceMap.getIcon("btnCerrar.icon")); // NOI18N
         btnCerrar.setText(resourceMap.getString("btnCerrar.text")); // NOI18N
         btnCerrar.setEnabled(false);

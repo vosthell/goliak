@@ -957,7 +957,7 @@
             <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
               <action class="stinventario.frmPrincipal" id="productos" methodName="productos"/>
             </Property>
-            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
+            <Property name="background" type="java.awt.Color" resourceKey="btnCerrar.background"/>
             <Property name="text" type="java.lang.String" resourceKey="btnCajaAntes.text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -973,7 +973,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAbrir">
           <Properties>
-            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
+            <Property name="background" type="java.awt.Color" resourceKey="btnCerrar.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnAbrir.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnAbrir.text"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -990,7 +990,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnFacturar">
           <Properties>
-            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
+            <Property name="background" type="java.awt.Color" resourceKey="btnCerrar.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnFacturar.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnFacturar.text"/>
             <Property name="enabled" type="boolean" value="false"/>
@@ -1008,7 +1008,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCerrar">
           <Properties>
-            <Property name="background" type="java.awt.Color" resourceKey="btnAbrir.background"/>
+            <Property name="background" type="java.awt.Color" resourceKey="btnCerrar.background"/>
             <Property name="icon" type="javax.swing.Icon" resourceKey="btnCerrar.icon"/>
             <Property name="text" type="java.lang.String" resourceKey="btnCerrar.text"/>
             <Property name="enabled" type="boolean" value="false"/>
