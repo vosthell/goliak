@@ -8,7 +8,7 @@
  *
  * Created on 23-oct-2011, 15:34:09
  */
-package pos;
+package transferencias;
 
 import clases.clsAbono;
 import clases.clsAuditoria;
@@ -49,6 +49,8 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import pos.frmCambio;
+import pos.frmListProductos;
 import stinventario.frmPrincipal;
 
 /**

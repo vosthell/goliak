@@ -10,6 +10,8 @@
  */
 package pos;
 
+import transferencias.frmNotasEntrega_transferencia;
+import transferencias.frmNotasEntregaModificar_transferencia;
 import clases.clsComboBox;
 import clases.clsPrecio;
 import clases.clsProducto;

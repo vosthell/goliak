@@ -69,16 +69,17 @@ import pos.frmFacturero;
 import pos.frmIngresoDinero;
 import pos.frmInventario;
 import pos.frmListNotasEntrega;
-import pos.frmListNotasEntregaTransferencia;
+import transferencias.frmListNotasEntrega_transferencia;
 import pos.frmNotasEntrega;
 import pos.frmNotasEntrega1;
-import pos.frmNotasEntrega_transferencia;
+import transferencias.frmNotasEntrega_transferencia;
 import pos.frmRecibosPago;
 import pos.frmRecibosPagoGenerados;
 import producto.frmCompras;
 import producto.frmGrupoAdd;
 import producto.frmGuiaRemision;
 import producto.frmListCompras;
+import transferencias.frmListCompras_transferencias;
 import producto.frmListProductosDel;
 import producto.frmListProductosInventario;
 import reportes.frmListDescuentos;
@@ -678,8 +679,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem40 = new javax.swing.JMenuItem();
         jSeparator15 = new javax.swing.JPopupMenu.Separator();
         jMenuItem27 = new javax.swing.JMenuItem();
+        jMenuItem44 = new javax.swing.JMenuItem();
         jMenuItem31 = new javax.swing.JMenuItem();
         jMenuItem37 = new javax.swing.JMenuItem();
+        jSeparator17 = new javax.swing.JPopupMenu.Separator();
+        jSeparator18 = new javax.swing.JPopupMenu.Separator();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem26 = new javax.swing.JMenuItem();
 
@@ -1846,7 +1850,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         mnTransferencias.add(jSeparator15);
 
         jMenuItem27.setText(resourceMap.getString("jMenuItem27.text")); // NOI18N
-        jMenuItem27.setEnabled(false);
         jMenuItem27.setName("jMenuItem27"); // NOI18N
         jMenuItem27.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1855,9 +1858,18 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         mnTransferencias.add(jMenuItem27);
 
+        jMenuItem44.setText(resourceMap.getString("jMenuItem44.text")); // NOI18N
+        jMenuItem44.setEnabled(false);
+        jMenuItem44.setName("jMenuItem44"); // NOI18N
+        mnTransferencias.add(jMenuItem44);
+
         jMenuItem31.setText(resourceMap.getString("jMenuItem31.text")); // NOI18N
-        jMenuItem31.setEnabled(false);
         jMenuItem31.setName("jMenuItem31"); // NOI18N
+        jMenuItem31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem31ActionPerformed(evt);
+            }
+        });
         mnTransferencias.add(jMenuItem31);
 
         jMenuItem37.setText(resourceMap.getString("jMenuItem37.text")); // NOI18N
@@ -1868,6 +1880,12 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         mnTransferencias.add(jMenuItem37);
+
+        jSeparator17.setName("jSeparator17"); // NOI18N
+        mnTransferencias.add(jSeparator17);
+
+        jSeparator18.setName("jSeparator18"); // NOI18N
+        mnTransferencias.add(jSeparator18);
 
         jMenuBar1.add(mnTransferencias);
 
@@ -2650,7 +2668,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     }//GEN-LAST:event_jMenuItem40ActionPerformed
 
     private void jMenuItem37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem37ActionPerformed
-        frmListNotasEntregaTransferencia formulario = new frmListNotasEntregaTransferencia();
+        frmListNotasEntrega_transferencia formulario = new frmListNotasEntrega_transferencia();
         mostrarJInternalCentrado(formulario); 
     }//GEN-LAST:event_jMenuItem37ActionPerformed
 
@@ -2663,6 +2681,11 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         frmModificaPago formulario = new frmModificaPago();
         mostrarJInternalCentrado(formulario);
     }//GEN-LAST:event_mnModTipoPagoActionPerformed
+
+    private void jMenuItem31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem31ActionPerformed
+        frmListCompras_transferencias formulario = new frmListCompras_transferencias();
+        mostrarJInternalCentrado(formulario);  
+    }//GEN-LAST:event_jMenuItem31ActionPerformed
 
    void mostrarAuditoria()
    {
@@ -2834,6 +2857,7 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem jMenuItem41;
     private javax.swing.JMenuItem jMenuItem42;
     private javax.swing.JMenuItem jMenuItem43;
+    private javax.swing.JMenuItem jMenuItem44;
     private javax.swing.JMenuItem jMenuItem47;
     private javax.swing.JMenuItem jMenuItem48;
     private javax.swing.JMenuItem jMenuItem5;
@@ -2852,6 +2876,8 @@ private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JPopupMenu.Separator jSeparator14;
     private javax.swing.JPopupMenu.Separator jSeparator15;
     private javax.swing.JPopupMenu.Separator jSeparator16;
+    private javax.swing.JPopupMenu.Separator jSeparator17;
+    private javax.swing.JPopupMenu.Separator jSeparator18;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;

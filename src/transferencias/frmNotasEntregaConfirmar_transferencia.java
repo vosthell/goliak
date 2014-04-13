@@ -8,7 +8,7 @@
  *
  * Created on 23-oct-2011, 15:34:09
  */
-package pos;
+package transferencias;
 
 import clases.clsCabecera;
 import clases.clsCaja;
@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pos.frmListNotasEntrega;
+import pos.frmPagosCuotaInicial;
 import reportes.frmListEntradasAsignadas2;
 import stinventario.frmPrincipal;
 
@@ -835,7 +837,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
    {
         try{
              String texto = "EL USUARIO: " 
-             + main.nameUser+ ", CONFIRMO LA NOTA DE ENTREGA: " + txtMonica.getText() + "</BR></BR>"
+             + main.nameUser+ ", CONFIRMO LA TRANSFERENCIA: " + txtMonica.getText() + "</BR></BR>"
                      + "COMENTARIO: " + txtComentario.getText() + "</BR>"
                      + "<TABLE BORDER=\"1\">"
                              + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"
@@ -875,7 +877,7 @@ private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
              texto = texto + "</TABLE>";
 
              javaMail mail = new javaMail();
-             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("5");        
+             ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("11");        
              for(int i=0;i<dataEmail.size();i=i+1)
              {
                  mail.send(dataEmail.get(i).getEmail(), "TRANSFERENCIA - CONFIRMACION - NOTA DE ENTREGA", texto);

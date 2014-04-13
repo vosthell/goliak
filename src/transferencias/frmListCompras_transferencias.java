@@ -8,8 +8,9 @@
  *
  * Created on 05-mar-2012, 9:46:37
  */
-package pos;
+package transferencias;
 
+import pos.*;
 import clases.clsCaja;
 import clases.clsComboBox;
 import clases.clsCompras;
@@ -36,13 +37,15 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import producto.frmComprasModificar;
+import producto.frmComprasRecibir;
 import stinventario.frmPrincipal;
 
 /**
  *
  * @author CKaiser
  */
-public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame {
+public class frmListCompras_transferencias extends javax.swing.JInternalFrame {
     MiModelo dtmData = new MiModelo();
     
     clsReporte objReporte = new clsReporte(); 
@@ -57,27 +60,25 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
     String idCajaAbierta = "";
     
     /** Creates new form frmPagosRealizados */
-    public frmListNotasEntregaTransferencia() {
+    public frmListCompras_transferencias() {
         initComponents();        
         
         dtmData.addColumn("id");
         dtmData.addColumn("N°");/*.setPreferredWidth(500)*/
-        dtmData.addColumn("CODIGO");
-        dtmData.addColumn("CLIENTE");
+        dtmData.addColumn("Proveedor");
+        dtmData.addColumn("Total");
         dtmData.addColumn("ESTADO");
         dtmData.addColumn("MODIFICAR");
-        dtmData.addColumn("CONFIRMAR");
+        dtmData.addColumn("RECIBIR");
         dtmData.addColumn("FECHA CREACION");
-        dtmData.addColumn("FECHA CONFIRMACION");
+        dtmData.addColumn("FECHA RECIBE");
         dtmData.addColumn("ID");
-        dtmData.addColumn("TOTAL");
-        dtmData.addColumn("TIPO");
         //dtmData.addColumn("Valor");
         //dtmData.addColumn("idCabeceraMovi");
         //ALINEAR COLUMNA
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
-        tblData.getColumnModel().getColumn(10).setCellRenderer(tcr);
+        tblData.getColumnModel().getColumn(3).setCellRenderer(tcr);
         
         //OCULTAR
         objUtils.setOcultarColumnasJTable(this.tblData, new int[]{0});
@@ -85,16 +86,8 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         //idCajaAbierta
         //ArrayList<clases.clsCaja> dataCaja = objCaja.consultarDataCajaAbierta(main.idUser);
         //idCajaAbierta = dataCaja.get(0).getIdCajaOperacion(); 
-        ArrayList<clsCompras> dataCompras = new ArrayList<clsCompras>();
-        /*if(tipo.equals("NORMAL"))
-        {
-             dataCompras = objCompras.consultaDataNotasEntrega(); 
-        }
-        else if(tipo.equals("TRANSFERENCIAS"))
-        {   */     
-            dataCompras = objCompras.consultaDataNotasEntregaTransferencias(); 
-        //}   
-       
+        
+        ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasTransferencia(); 
         llenarData(dataCompras);
         
         Date fechaActual = new Date();
@@ -105,10 +98,6 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         
         tblData.setAutoCreateRowSorter(true);  
         
-        /*List<String> dataCodigo = objProveedor.consultarCodigos(); 
-        SelectAllUtils.install(txtCedula);
-        ListDataIntelliHints intellihints = new ListDataIntelliHints(txtCedula, dataCodigo);        
-        intellihints.setCaseSensitive(false);*/
         //CARGAR EMPRESAS
         ArrayList<clsComboBox> dataEmpresas = objEmpresa.consultarEmpresasTransferencia();        
         for(int i=0;i<dataEmpresas.size();i=i+1)
@@ -127,47 +116,31 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         String etiqueta="";
         String etiqueta2="";
         String etiqueta3="";
-        String etiquetaTipo="";
         String fecha_realizada = "";
         String fecha_recibida = "";
         for(int i=0; i<maxData; i++)
         {
             if(dataCompras.get(i).getEstadoTramite().equals("S"))
-            {    
-                etiqueta = "CONFIRMADA";
+            {    etiqueta = "RECIBIDA";
                 etiqueta2 = "";
                 etiqueta3 = "";
+            }else
+            {    etiqueta = "SIN RECIBIR";
+                 etiqueta2 = "MODIFICAR";
+                 etiqueta3 = "RECIBIR";
             }
-            else
-            {    
-                etiqueta = "SIN CONFIRMAR";
-                etiqueta2 = "MODIFICAR";
-                etiqueta3 = "CONFIRMAR";
-            }
-            if(dataCompras.get(i).getTipo().equals("D"))
-            {   
-                etiquetaTipo = "CONTADO";
-                
-            }
-            else
-            {    
-                etiquetaTipo = "CREDITO";
-                 
-            }
-            fecha_realizada = dataCompras.get(i).getFecha().substring(0 , 16);
+            fecha_realizada = dataCompras.get(i).getFecha().substring(1, 16);
             fecha_recibida = dataCompras.get(i).getFechaRecibe();            
             Object[] nuevaFila = {dataCompras.get(i).getIdCompras(),
-                                    i+1, 
-                                    dataCompras.get(i).getFacturaReferencia(),
-                                    dataCompras.get(i).getNombreProveedor(),                                    
+                                    i+1,                                     
+                                    dataCompras.get(i).getNombreProveedor(),
+                                    df1.format(dataCompras.get(i).getTotal()),
                                     etiqueta,
                                     etiqueta2,
                                     etiqueta3,
                                     fecha_realizada,
                                     fecha_recibida,
-                                    dataCompras.get(i).getIdCompras(),
-                                    df1.format(dataCompras.get(i).getTotal()),
-                                    etiquetaTipo
+                                    dataCompras.get(i).getIdCompras()
              };       
              total = total + dataCompras.get(i).getTotal();
              dtmData.addRow(nuevaFila); 
@@ -183,9 +156,9 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         { 
             setEnabled(table == null || table.isEnabled());        
 
-            if(String.valueOf(table.getValueAt(row, 4)).equals("CONFIRMADA")) 
+            if(String.valueOf(table.getValueAt(row, 4)).equals("RECIBIDA")) 
                 setBackground(Color.green); 
-            else if(String.valueOf(table.getValueAt(row, 4)).equals("SIN CONFIRMAR")) 
+            else if(String.valueOf(table.getValueAt(row, 4)).equals("SIN RECIBIR")) 
                 setBackground(Color.RED); 
             else setBackground(null); 
 
@@ -202,7 +175,6 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         txtFechaInicio = new com.toedter.calendar.JDateChooser();
         txtFechaFin = new com.toedter.calendar.JDateChooser();
@@ -216,9 +188,6 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         jLabel5 = new javax.swing.JLabel();
         txtFechaFinRecibe = new com.toedter.calendar.JDateChooser();
         chkProveedor = new javax.swing.JCheckBox();
-        rbtnTodas = new javax.swing.JRadioButton();
-        rbtnActivas = new javax.swing.JRadioButton();
-        rbtnAnuladas = new javax.swing.JRadioButton();
         cmbEmpresa = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -229,7 +198,7 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
 
         setClosable(true);
         setIconifiable(true);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmListNotasEntregaTransferencia.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmListCompras_transferencias.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
         setPreferredSize(new java.awt.Dimension(802, 523));
@@ -285,11 +254,6 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
                 chkFechaRecibeItemStateChanged(evt);
             }
         });
-        chkFechaRecibe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkFechaRecibeActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
@@ -323,19 +287,6 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
             }
         });
 
-        buttonGroup1.add(rbtnTodas);
-        rbtnTodas.setText(resourceMap.getString("rbtnTodas.text")); // NOI18N
-        rbtnTodas.setName("rbtnTodas"); // NOI18N
-
-        buttonGroup1.add(rbtnActivas);
-        rbtnActivas.setSelected(true);
-        rbtnActivas.setText(resourceMap.getString("rbtnActivas.text")); // NOI18N
-        rbtnActivas.setName("rbtnActivas"); // NOI18N
-
-        buttonGroup1.add(rbtnAnuladas);
-        rbtnAnuladas.setText(resourceMap.getString("rbtnAnuladas.text")); // NOI18N
-        rbtnAnuladas.setName("rbtnAnuladas"); // NOI18N
-
         cmbEmpresa.setEnabled(false);
         cmbEmpresa.setName("cmbEmpresa"); // NOI18N
 
@@ -349,7 +300,7 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
                     .addComponent(chkFechaRegistro)
                     .addComponent(chkFechaRecibe)
                     .addComponent(chkProveedor))
-                .addGap(25, 25, 25)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,7 +312,7 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtFechaInicioRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(54, 54, 54)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -372,12 +323,7 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(cmbEmpresa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rbtnTodas)
-                    .addComponent(rbtnActivas)
-                    .addComponent(rbtnAnuladas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addComponent(btnBuscar)
                 .addContainerGap())
         );
@@ -386,36 +332,28 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(chkFechaRegistro)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkFechaRecibe))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rbtnActivas))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
+                                .addComponent(chkFechaRegistro)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkFechaRecibe))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtFechaInicioRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtFechaFinRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel4)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbtnAnuladas)))))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkProveedor)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(rbtnTodas)
-                        .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkProveedor)
+                            .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -454,28 +392,28 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -486,17 +424,18 @@ public class frmListNotasEntregaTransferencia extends javax.swing.JInternalFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -514,41 +453,33 @@ private void tblDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     /*frmComprasShow ventana = new frmComprasShow(null, true, idCabecera);
     ventana.setLocationRelativeTo(null);
     ventana.setVisible(true);*/
-    if(tblData.getValueAt(i, 4).equals("CONFIRMADA"))
+    if(tblData.getValueAt(i, 4).equals("RECIBIDA"))
     {   
-        frmFactHistoShow_transferencia ventana = new frmFactHistoShow_transferencia(null, true, idCabecera);
-        ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+        frmComprasShow_transferencia formulario = new frmComprasShow_transferencia(idCabecera);
+        mostrarJInternalCentrado(formulario);  
     }
     else
     {
-        String idUsuario = main.idUser;
         if (columna == 6)
         {
-            if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaConfirmar"))
-            {
-                frmNotasEntregaConfirmar_transferencia formulario = new frmNotasEntregaConfirmar_transferencia(idCabecera);
-                mostrarJInternalCentrado(formulario);  
-                dispose();
+            boolean permitido = objPermisos.comprobarPermisoFormulario(main.idUser, "frmComprasRecibir");
+            if(permitido)
+            {           
+                frmComprasRecibir formulario = new frmComprasRecibir(idCabecera);
+                mostrarJInternalCentrado(formulario);                 
             }
             else
             {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para confirmar Notas de Entrega", "Atención!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para recibir compras", "Atención!", JOptionPane.ERROR_MESSAGE);
             }
+            dispose();
         }
         
         if (columna == 5)
         {
-            if(objPermisos.comprobarPermisoFormulario(idUsuario, "frmNotasEntregaModificar"))
-            {
-                frmNotasEntregaModificar_transferencia formulario = new frmNotasEntregaModificar_transferencia(idCabecera);
-                mostrarJInternalCentrado(formulario);
-                dispose();
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para modificar Notas de Entrega", "Atención!", JOptionPane.INFORMATION_MESSAGE);
-            }
+            frmComprasModificar formulario = new frmComprasModificar(idCabecera);
+            mostrarJInternalCentrado(formulario);
+            dispose();
         }
     }
 }//GEN-LAST:event_tblDataMouseClicked
@@ -565,32 +496,18 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
         String fechaInicio = "";
         String fechaFin = "";
-        String soloCliente = "";
-        String anuladas = "";
+        String soloProveedor = "";
         clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();   
         
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         
         if(this.chkProveedor.isSelected())
         {
-            soloCliente = "S";
+            soloProveedor = "S";
         }
         else
         {
-            soloCliente = "N";
-        }
-        
-        if(this.rbtnTodas.isSelected())
-        {
-            anuladas = "T"; //TODAS
-        }
-        if(this.rbtnAnuladas.isSelected())
-        {
-            anuladas = "N"; //SOLO ANULADAS
-        }
-        if(this.rbtnActivas.isSelected())
-        {
-            anuladas = "A"; //SOLO ACTIVAS
+            soloProveedor = "N";
         }
 
         if(this.chkFechaRegistro.isSelected())
@@ -600,8 +517,8 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
             Date date2 = txtFechaFin.getDate();
             fechaFin = df1.format(date2);
-
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoRegistro_transferencia(fechaInicio, fechaFin, soloCliente, Integer.parseInt(objEmpresaSelect.getCodigo()), anuladas); 
+            //Integer.parseInt(objEmpresaSelect.getCodigo())
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRegistro_transferencia(fechaInicio, fechaFin, soloProveedor, objEmpresaSelect.getCodigo()); 
             llenarData(dataCompras);
         }
         else if(this.chkFechaRecibe.isSelected())
@@ -612,12 +529,12 @@ private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Date date2 = txtFechaFinRecibe.getDate();
             fechaFin = df1.format(date2);
 
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaRangoConfirmacion_transferencia(fechaInicio, fechaFin, soloCliente, Integer.parseInt(objEmpresaSelect.getCodigo()), anuladas); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRecibe_transferencia(fechaInicio, fechaFin, soloProveedor, objEmpresaSelect.getCodigo()); 
             llenarData(dataCompras);
         }
         else
         {
-            ArrayList<clsCompras> dataCompras = objCompras.consultaDataNotasEntregaCliente_transferencia(soloCliente, objEmpresaSelect.getCodigo(), anuladas); 
+            ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasProv_transferencia(soloProveedor, objEmpresaSelect.getCodigo()); 
             llenarData(dataCompras);    
         }
     }        
@@ -682,7 +599,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
         /*ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRegistro(fechaInicio, fechaFin); 
         llenarData(dataCompras);*/
-        objReporte.ejecutarReporte2ParametrosDate(date1, date2, "rptNETotalesFechaCompra");
+        objReporte.ejecutarReporte2ParametrosDate(date1, date2, "rptComprasTotalesFechaCompra");
     }
     else if(this.chkFechaRecibe.isSelected())
     {
@@ -694,18 +611,18 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
         /*ArrayList<clsCompras> dataCompras = objCompras.consultaDataComprasRangoRecibe(fechaInicio, fechaFin); 
         llenarData(dataCompras);*/
-        objReporte.ejecutarReporte2ParametrosDate(date1, date2, "rptNETotalesFechaRecibe");
+        objReporte.ejecutarReporte2ParametrosDate(date1, date2, "rptComprasTotalesFechaRecibe");
     }
     else
     {
-        objReporte.ejecutarReporte("rptNETotales"); 
+        objReporte.ejecutarReporte("rptComprasTotales"); 
         /*ArrayList<clsCompras> dataCompras = objCompras.consultaDataCompras(); 
         llenarData(dataCompras); */   
     }
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void chkProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkProveedorItemStateChanged
-    //txtCedula.setText("");
+    //txtCodigoProveedor.setText("");
     if(this.chkProveedor.isSelected())
     {
         cmbEmpresa.setEnabled(true);
@@ -718,10 +635,6 @@ private void chkProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-F
     }
     
 }//GEN-LAST:event_chkProveedorItemStateChanged
-
-private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkFechaRecibeActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_chkFechaRecibeActionPerformed
     public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
         Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
@@ -748,7 +661,6 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     } 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkFechaRecibe;
     private javax.swing.JCheckBox chkFechaRegistro;
     private javax.swing.JCheckBox chkProveedor;
@@ -762,9 +674,6 @@ private void chkFechaRecibeActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbtnActivas;
-    private javax.swing.JRadioButton rbtnAnuladas;
-    private javax.swing.JRadioButton rbtnTodas;
     private javax.swing.JTable tblData;
     private com.toedter.calendar.JDateChooser txtFechaFin;
     private com.toedter.calendar.JDateChooser txtFechaFinRecibe;

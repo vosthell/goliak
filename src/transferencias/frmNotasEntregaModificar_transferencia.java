@@ -8,7 +8,7 @@
  *
  * Created on 23-oct-2011, 15:34:09
  */
-package pos;
+package transferencias;
 
 import clases.clsAbono;
 import clases.clsAuditoria;
@@ -50,6 +50,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import pos.frmCambio;
+import pos.frmListProductos;
 import reportes.frmListEntradasAsignadas2;
 import stinventario.frmPrincipal;
 /**
@@ -1320,7 +1322,7 @@ public class frmNotasEntregaModificar_transferencia extends javax.swing.JInterna
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 54, Short.MAX_VALUE)
+                .addGap(18, 58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)

@@ -330,7 +330,45 @@ public class clsDetalle {
         }   
         bd.desconectarBaseDeDatos();
         return data;
-    }   
+    }
+    
+    public ArrayList<clsDetalle>  consultarDataDetalleNotaEntrega_externo(int idCabecera, String ip){            
+        ArrayList<clsDetalle> data = new ArrayList<clsDetalle>();   
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT id_detalle_movi, id_cabecera_movi, cantidad, "
+                        + " precio, a.id_items id_items, des_item, cod_item,"
+                        + " deta_descuento, deta_iva, a.costo costo"
+                    + " FROM ck_notas_de_entrega_detalle AS a "
+                    + " INNER JOIN ck_items AS b ON a.id_items = b.id_items"
+                    + " WHERE id_cabecera_movi= " + idCabecera + ""
+                    + " AND a.estado = 'A'";
+            bd.resultado = bd.sentencia.executeQuery(sql);
+            
+            while(bd.resultado.next()){
+                clsDetalle oListaTemporal = new clsDetalle();
+                
+                oListaTemporal.setIdProducto(bd.resultado.getInt("id_items"));  
+                oListaTemporal.setCodigoProducto(bd.resultado.getString("cod_item"));                
+                oListaTemporal.setDescripcionProducto(bd.resultado.getString("des_item"));  
+                oListaTemporal.setCantidad(bd.resultado.getDouble("cantidad"));   
+                oListaTemporal.setPrecio(bd.resultado.getDouble("precio"));   
+                oListaTemporal.setDescuento(bd.resultado.getDouble("deta_descuento"));   
+                oListaTemporal.setIVA(bd.resultado.getDouble("deta_iva"));   
+                oListaTemporal.setCosto(bd.resultado.getDouble("costo"));   
+                data.add(oListaTemporal);
+            }
+            //return data;
+            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            data = null;
+        }   
+        bd.desconectarBaseDeDatos();
+        return data;
+    }
     
     public ArrayList<clsDetalle>  consultarDataDetalleCompras(int idCabecera){            
         ArrayList<clsDetalle> data = new ArrayList<clsDetalle>();   

@@ -137,6 +137,10 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
 
+        setClosable(true);
+        setIconifiable(true);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmPendientes.class);
+        setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -150,7 +154,6 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblData);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(stinventario.STInventarioApp.class).getContext().getResourceMap(frmPendientes.class);
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -205,7 +208,7 @@ public class frmPendientes extends javax.swing.JInternalFrame {
                     .addComponent(cmbEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -228,11 +231,15 @@ public class frmPendientes extends javax.swing.JInternalFrame {
         /*frmComprasShow ventana = new frmComprasShow(null, true, idCabecera);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);*/
+        
+        clsComboBox objEmpresaSelect = (clsComboBox)cmbEmpresa.getSelectedItem();
+        String ip = objEmpresa.consultaIPEmpresaSeleccionada(objEmpresaSelect.getCodigo());
+        
         if(tblData.getValueAt(i, 4).equals("CONFIRMADA"))
         {
-           /*frmFactHistoShow ventana = new frmFactHistoShow(null, true, idCabecera);
+            frmFactHistoShow_transferencia_externo ventana = new frmFactHistoShow_transferencia_externo(null, true, idCabecera, ip);
             ventana.setLocationRelativeTo(null);
-            ventana.setVisible(true);*/
+            ventana.setVisible(true);
         }
         else
         {

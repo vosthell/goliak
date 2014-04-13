@@ -904,7 +904,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1= txtFecha.getDate();
         String fechaCompra = df1.format(date1);
-        
+        //SI ES NOTA DE VENTA O FACTURA
         if(this.chkNotaVenta.isSelected())
         {
             documento = "V";               
