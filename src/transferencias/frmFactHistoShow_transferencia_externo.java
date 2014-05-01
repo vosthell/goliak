@@ -894,11 +894,11 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         String documento = "";
         String pvp = "";
         String descuento = "";
-        exito = objCabecera.insertarRegistroCompras(id_empresa, main.idUser, 
+        /*exito = objCabecera.insertarRegistroCompras(id_empresa, main.idUser, 
                 txtTotal.getText(), main.idEmpresa, "0", "0", "0", 
                 "0", txtFacturaReferencia.getText(), "T", 
                 "0", "0", "0", txtFechaVenta.getText(),
-                "", "1");        // TODO add your handling code here:
+                "", "1",);    */    // TODO add your handling code here:
         
         int maxData = 0;
         if(exito)

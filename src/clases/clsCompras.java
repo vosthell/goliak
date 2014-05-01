@@ -37,6 +37,7 @@ public class clsCompras {
     private String tipo; 
     private String autorizacion; 
     private int id_cuenta;
+    private String comentario;
         
     public int getIdCompras()
     {
@@ -256,6 +257,16 @@ public class clsCompras {
     public void setIdCuenta(int id_cuenta)
     {
         this.id_cuenta = id_cuenta;
+    }
+    
+    public String getComentario()
+    {
+        return comentario;
+    }
+    
+    public void setComentario(String comentario)
+    {
+        this.comentario = comentario;
     }
     
     public ArrayList<clsCompras> consultaDataCompras()
@@ -1110,7 +1121,8 @@ public class clsCompras {
                         + "estado_tramite, "
                         + "id_usuario_recibe, "
                         + "d.name nombre_recibe, "
-                        + " irbp, baseice, ice, autorizacion, id_cuenta "
+                        + " irbp, baseice, ice, autorizacion, id_cuenta,"
+                        + " comentario"
                     + " FROM ck_cabecera_movi_compras AS a "
                     + " JOIN ck_proveedor AS b ON a.id_proveedor = b.id_proveedor"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
@@ -1145,6 +1157,7 @@ public class clsCompras {
                     
                     oListaTemporal.setAutorizacion(bd.resultado.getString("autorizacion"));
                     oListaTemporal.setIdCuenta(bd.resultado.getInt("id_cuenta"));
+                    oListaTemporal.setComentario(bd.resultado.getString("comentario"));
                     
                     data.add(oListaTemporal);
                 }
@@ -1255,7 +1268,8 @@ public class clsCompras {
                         + " saldo, efectivo, fecha::date fecha, fact_referencia, comentario, id_cajero, "
                         + " id_empresa, id_caja_operacion, descuento, iva, base_tarifa_0, "
                         + " base_tarifa_iva, tipo_documento, estado_tramite,"
-                        + " irbp, baseice, ice, autorizacion, id_cuenta, fecha_registro "
+                        + " irbp, baseice, ice, autorizacion, id_cuenta, fecha_registro,"
+                        + " comentario"
                     + " FROM ck_cabecera_movi_compras AS a "
                     + " JOIN ck_proveedor AS b ON a.id_proveedor = b.id_proveedor"
                     + " JOIN ck_usuario AS c ON a.id_usuario = c.id_usuario "
@@ -1288,6 +1302,7 @@ public class clsCompras {
                     oListaTemporal.setFechaRegistro(bd.resultado.getString("fecha_registro"));
                     oListaTemporal.setAutorizacion(bd.resultado.getString("autorizacion"));
                     oListaTemporal.setIdCuenta(bd.resultado.getInt("id_cuenta"));
+                    oListaTemporal.setComentario(bd.resultado.getString("comentario"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -1513,6 +1528,7 @@ public class clsCompras {
                 sql = sql + " AND transferencia = 'S'";
             }  */ 
             sql = sql + " ORDER BY fecha DESC";
+            //sql = sql + " ORDER BY fact_referencia DESC";
             System.out.println(sql);
             System.out.println(tipo);
             bd.resultado = bd.sentencia.executeQuery(sql);

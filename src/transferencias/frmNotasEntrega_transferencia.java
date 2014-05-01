@@ -155,21 +155,8 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         //OBTENER IDCAJAOPERACION ACTUAL, OSEA QUE  NO ESTA CERRADA
         //idCajaAbierta = objCaja.obtenerCajaAbierta(main.idUser);
         
-        //CARGAR CUOTAS
-        ArrayList<clsComboBox> dataCuota = objCuota.consultarCuotas();        
-        for(int i=0;i<dataCuota.size();i=i+1)
-        {
-            clsComboBox oItem = new clsComboBox(dataCuota.get(i).getCodigo(), dataCuota.get(i).getDescripcion());
-            cmbCuota.addItem(oItem);            
-        }
         
-        //CARGAR PLAZOS
-        ArrayList<clsComboBox> dataPlazo = objPlazo.consultarPlazo();        
-        for(int i=0;i<dataPlazo.size();i=i+1)
-        {
-            clsComboBox oItem = new clsComboBox(dataPlazo.get(i).getCodigo(), dataPlazo.get(i).getDescripcion());
-            cmbPlazo.addItem(oItem);            
-        }
+        
         
         /*clsComboBox oItem = new clsComboBox("1", "3 MESES");
         cmbPlazo.addItem(oItem); 
@@ -298,26 +285,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtStock = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        chkCredito = new javax.swing.JCheckBox();
-        jLabel12 = new javax.swing.JLabel();
-        cmbCuota = new javax.swing.JComboBox();
-        jLabel13 = new javax.swing.JLabel();
-        txtCuota = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        txtEfectivo = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
-        txtSaldo = new javax.swing.JTextField();
-        jLabel24 = new javax.swing.JLabel();
-        txtFechaCancelacion = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
-        cmbPlazo = new javax.swing.JComboBox();
-        jLabel28 = new javax.swing.JLabel();
-        txtInteresPorcentaje = new javax.swing.JTextField();
-        jLabel29 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
-        txtSaldoDeuda = new javax.swing.JTextField();
-        txtInteresValor = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         txtTarifaCero = new javax.swing.JTextField();
         txtIVA = new javax.swing.JTextField();
@@ -341,7 +308,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         lblCajero = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        chkAnulada = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -572,178 +538,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         txtStock.setText(resourceMap.getString("txtStock.text")); // NOI18N
         txtStock.setName("txtStock"); // NOI18N
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel3.setName("jPanel3"); // NOI18N
-
-        chkCredito.setName("chkCredito"); // NOI18N
-        chkCredito.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                chkCreditoItemStateChanged(evt);
-            }
-        });
-        chkCredito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkCreditoActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setName("jLabel12"); // NOI18N
-
-        cmbCuota.setEnabled(false);
-        cmbCuota.setName("cmbCuota"); // NOI18N
-        cmbCuota.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbCuotaItemStateChanged(evt);
-            }
-        });
-
-        jLabel13.setName("jLabel13"); // NOI18N
-
-        txtCuota.setEditable(false);
-        txtCuota.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtCuota.setName("txtCuota"); // NOI18N
-        txtCuota.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCuotaKeyReleased(evt);
-            }
-        });
-
-        jLabel14.setName("jLabel14"); // NOI18N
-
-        txtEfectivo.setEditable(false);
-        txtEfectivo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtEfectivo.setName("txtEfectivo"); // NOI18N
-        txtEfectivo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtEfectivoKeyReleased(evt);
-            }
-        });
-
-        jLabel15.setName("jLabel15"); // NOI18N
-
-        txtSaldo.setEditable(false);
-        txtSaldo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtSaldo.setName("txtSaldo"); // NOI18N
-
-        jLabel24.setName("jLabel24"); // NOI18N
-
-        txtFechaCancelacion.setEditable(false);
-        txtFechaCancelacion.setName("txtFechaCancelacion"); // NOI18N
-
-        jLabel25.setName("jLabel25"); // NOI18N
-
-        cmbPlazo.setEnabled(false);
-        cmbPlazo.setName("cmbPlazo"); // NOI18N
-        cmbPlazo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbPlazoItemStateChanged(evt);
-            }
-        });
-
-        jLabel28.setName("jLabel28"); // NOI18N
-
-        txtInteresPorcentaje.setEditable(false);
-        txtInteresPorcentaje.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteresPorcentaje.setName("txtInteresPorcentaje"); // NOI18N
-
-        jLabel29.setName("jLabel29"); // NOI18N
-
-        jLabel30.setName("jLabel30"); // NOI18N
-
-        txtSaldoDeuda.setEditable(false);
-        txtSaldoDeuda.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtSaldoDeuda.setName("txtSaldoDeuda"); // NOI18N
-
-        txtInteresValor.setEditable(false);
-        txtInteresValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtInteresValor.setName("txtInteresValor"); // NOI18N
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel25)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbPlazo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(chkCredito)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel12)
-                            .addGap(18, 18, 18)
-                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel24)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel14)
-                        .addComponent(jLabel13))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jLabel28)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtInteresPorcentaje)
-                    .addComponent(txtEfectivo)
-                    .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel30)
-                    .addComponent(jLabel29))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtInteresValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                    .addComponent(txtSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-                    .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chkCredito)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(txtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(txtCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28)
-                            .addComponent(txtInteresPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel25)
-                            .addComponent(cmbPlazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel29)
-                            .addComponent(txtSaldoDeuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(cmbCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel30)
-                            .addComponent(txtInteresValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
-                            .addComponent(txtFechaCancelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-
         jLabel16.setFont(resourceMap.getFont("jLabel16.font")); // NOI18N
         jLabel16.setText(resourceMap.getString("jLabel16.text")); // NOI18N
         jLabel16.setName("jLabel16"); // NOI18N
@@ -892,8 +686,7 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
                             .addComponent(txtCosto)
                             .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(336, 336, 336)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18)
                             .addComponent(jLabel16)
@@ -951,35 +744,32 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTarifaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21)
+                    .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTarifaCero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(txtTarifaCero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescuento1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTarifaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21)
-                            .addComponent(txtTarifaIVA1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTarifaCero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)
-                            .addComponent(txtTarifaCero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDescuento1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIVA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtTotal)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel16)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtIVA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIVA1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTotal)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtTotalFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8))
         );
 
@@ -1018,8 +808,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         lblUsuario.setText(resourceMap.getString("lblUsuario.text")); // NOI18N
         lblUsuario.setName("lblUsuario"); // NOI18N
 
-        chkAnulada.setName("chkAnulada"); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1037,8 +825,6 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
                             .addGap(18, 18, 18)
                             .addComponent(lblUsuario)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkAnulada)
-                            .addGap(18, 18, 18)
                             .addComponent(btnGuardar)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(btnImprimir))
@@ -1064,8 +850,7 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
                     .addComponent(jLabel9)
                     .addComponent(lblCajero)
                     .addComponent(jLabel22)
-                    .addComponent(lblUsuario)
-                    .addComponent(chkAnulada))
+                    .addComponent(lblUsuario))
                 .addContainerGap())
         );
 
@@ -1097,16 +882,13 @@ public class frmNotasEntrega_transferencia extends javax.swing.JInternalFrame {
         txtIVA1.setText("0.00");
         txtTotal.setText("0.00");
         txtTotalFinal.setText("0.00");
-        txtCuota.setText("0.00");
-        txtEfectivo.setText("0.00");
-        txtSaldo.setText("0.00");
-        txtFechaCancelacion.setText("0");
+        
         txtComentario.setText("");
         txtCosto.setText("costo");
         //controlCmbCredito = 1;
-        chkCredito.setSelected(false);
+       
         controlCmbCredito = 0;
-        chkAnulada.setSelected(false);   
+        
         //CARGAR FACTURERO DE NOTAS DE ENTREGA
         controlComboBox = 1;
         ArrayList<clsComboBox> dataFacturero = objFacturero.consultarFacturerosNotaEntrega();
@@ -1280,109 +1062,12 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 try
                 {                          
                     Double saldoIntereses = 0.00;
-                    Double cuota = 0.00;
-                    saldoIntereses = Double.parseDouble(txtSaldo.getText());
-                    cuota = Double.parseDouble(txtCuota.getText());
+                    Double cuota = 0.00;             
                     
                     
                     maxData = dtmData.getRowCount();
                    
-                    //System.out.println("S: " + ultmFactura);
-                    if(this.chkCredito.isSelected())        
-                    {
-                        /**************CABECERA***************************/
-                        exito = objCabecera.insertarRegistroNotaDeEntrega(Integer.parseInt(objEmpresaSelect.getCodigo()), main.idUser, "0", 
-                                    txtTotal.getText(), main.idEmpresa, 
-                                    "0", txtComentario.getText(), 
-                                    saldoIntereses, txtEfectivo.getText(), 
-                                    descuentoF, ivaF, txtNotaEntrega.getText(), 
-                                    txtTarifaIVA.getText(), 
-                                    txtTarifaCero.getText(),
-                                    txtTarifaIVA1.getText(),
-                                    txtIVA1.getText(),
-                                    txtTotalFinal.getText(),
-                                    objVendedorSelect.getCodigo(),
-                                    fechaVenta, 
-                                    "C", 
-                                    txtInteresPorcentaje.getText(),
-                                    txtTarifaCero1.getText(),
-                                    "S");   
-                        /***********************************************/
-                         int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
-                        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-                        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-                        
-                        plazo = objPlazoSelect.getDescripcion();
-                        
-
-                        objCabecera.insertarCtaCobrarNotaEntrega(ultmFactura, txtComentario.getText(), 
-                                                    saldoIntereses, txtFechaCancelacion.getText(),
-                                                    objPlazoSelect.getCodigo());
-                        
-                        objCabecera.insertarValorCuotaNotaEntrega(ultmFactura, objCuotaSelect.getCodigo(), 
-                                                    cuota);
-                        
-                        
-                        ////*AQUI VA EL REGISTRO DE LOS PAGOS**////
-                        Double numeroPagos = saldoIntereses / cuota;
-                        DecimalFormat formateador = new DecimalFormat("####");
-                        Integer numeroPagosRedondeado = Integer.parseInt(formateador.format(numeroPagos)); 
-                        
-                        /*DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date1= txtFechaVenta.getDate();
-                        String fechaVenta = df2.format(date1);*/
-                        
-                       /* Date date1= new Date();
-                        Calendar fecha = Calendar.getInstance();
-                        fecha.setTime(date1); */
-                        
-                        //Date date1= new Date();
-                        Calendar fecha = Calendar.getInstance();
-                        fecha.setTime(date1);
-                        //clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-                        String idCuota = objCuotaSelect.getCodigo();
-    
-    
-                        for(int i=0; i<numeroPagosRedondeado; i++)
-                        {           
-                            if(idCuota.equals("1"))       
-                            {
-                                //DIARIO
-                                fecha.add(Calendar.DAY_OF_MONTH, 1); 
-                            }
-                            else if(idCuota.equals("2"))  
-                            {
-                                //SEMANAL
-                                fecha.add(Calendar.DAY_OF_MONTH, 7);
-                            }
-                            else if(idCuota.equals("3"))  
-                            {
-                                //QUINCENAL
-                                fecha.add(Calendar.DAY_OF_MONTH, 15); 
-                            }
-                            else if(idCuota.equals("4"))  
-                            {
-                                //MENSUAL
-                                fecha.add(Calendar.MONTH, 1);
-                            }
-
-                            Date fecSegCarta = fecha.getTime();
-                            date1 = fecSegCarta;
-                            //DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-                            String fecha2 = df2.format(fecSegCarta);
-
-                            //Object[] nuevaFila = {i, fecha2, valor};
-                            
-                            objAbono.insertarAbono(i+1, fecha2, cuota, ultmFactura);
-                            
-                            
-                            //dtmData.addRow(nuevaFila);
-                            //totalDeuda = totalDeuda + Double.parseDouble(valor);
-                        }
-                        
-                    }
-                    else
-                    {
+                    
                          /**************CABECERA CONTADO******************/
                         exito = objCabecera.insertarRegistroNotaDeEntrega(Integer.parseInt(objEmpresaSelect.getCodigo()), main.idUser, "0", 
                                     txtTotal.getText(), main.idEmpresa, 
@@ -1397,7 +1082,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                     fechaVenta, "D", "0.00", "0.00", "S");   
                         /***********************************************/
                     
-                    }
+                    
                     int ultmFactura = objCabecera.obtenerUltimaNotaDeEntrega();
                     for(int i=0; i<maxData; i++)
                     {                       
@@ -1466,7 +1151,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                             + "<TR><TD>FECHA DE VENTA:</TD><TD>" + fechaVenta + "</TD></TR>"
                             + "<TR><TD>CLIENTE:</TD><TD>" + "TRANSFERENCIA" + "</TD></TR>"                        
                             + "<TR><TD>DESCUENTO:</TD><TD>" + txtDescuento1.getText() + "</TD></TR>";
-                if(this.chkCredito.isSelected())       
+                /*if(this.chkCredito.isSelected())       
                 {
                     texto = texto   + "<TR><TD>CREDITO:</TD><TD>SI</TD></TR>"
                                 + "<TR><TD>TOTAL SIN INTERESES:</TD><TD>" + txtTotal.getText() + "</TD></TR>"
@@ -1476,10 +1161,10 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                 + "<TR><TD>PLAZO:</TD><TD>" + plazo + "</TD></TR>";
                 }
                 else
-                {
+                {*/
                     texto = texto  + "<TR><TD>CREDITO:</TD><TD>NO</TD></TR>"
                             + "<TR><TD>TOTAL:</TD><TD>" + txtTotalFinal.getText() + "</TD></TR>";
-                }
+                //}
 
                 texto = texto + "<TR><TD>VENDEDOR:</TD><TD>" + objVendedorSelect.getDescripcion() + "</TD></TR>"
                         + "</TABLE></BR></BR>"
@@ -1731,7 +1416,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     {
         boolean exito=false;
         int contRows = tblData.getRowCount();
-        if(chkAnulada.isSelected())
+        /*if(chkAnulada.isSelected())
         {
              if(txtComentario.getText().equals(""))
              {     
@@ -1802,7 +1487,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             } //if(txtComentario.getText().equals(""))               
         }
         else
-        {
+        {*
             if(this.chkCredito.isSelected())        
             {
                 if((contRows==0)||
@@ -1821,7 +1506,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 }
             }
             else
-            {
+            {*/
                 if((contRows==0)||txtNotaEntrega.getText().equals("")||txtComentario.getText().equals(""))
                 {
                    JOptionPane.showMessageDialog(this, "Ingrese correctamente la información", "Atención!", JOptionPane.ERROR_MESSAGE);
@@ -1833,8 +1518,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     else
                         exito = false; 
                 }
-            }
-        }        
+            //}
+        //}        
         
         
         return exito;
@@ -1995,7 +1680,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         txtTarifaIVA1.setText("" + objUtils.redondear(baseTarifa));
         
     }
-public String calcular_fecha_cancelacion()
+/*public String calcular_fecha_cancelacion()
 {
     //CALCULAR FECHA DE CANCELACION
     Date date1= new Date();
@@ -2036,11 +1721,11 @@ public String calcular_fecha_cancelacion()
     DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
     String fechaCancelacion = df2.format(fecSegCarta);
     return fechaCancelacion;
-}        
+}  */      
 
 
 
-void calcularCuotas()
+/*void calcularCuotas()
 {
     cuotaInicial = valorContado * valorInteresCuotaInicial/100;
     txtEfectivo.setText("" + cuotaInicial);
@@ -2131,7 +1816,7 @@ void calcularCuotas()
     
     txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
     calcularImpuestos();  
-}
+}*/
 
 private void txtCantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyPressed
 // TODO add your handling code here:
@@ -2173,245 +1858,6 @@ private void cmbFactureroItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-F
     }
 }//GEN-LAST:event_cmbFactureroItemStateChanged
 
-    private void cmbPlazoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPlazoItemStateChanged
-        if(cmbPlazo.isEnabled())
-        calcularCuotas();    // TODO add your handling code here:
-    }//GEN-LAST:event_cmbPlazoItemStateChanged
-
-    private void txtEfectivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEfectivoKeyReleased
-        /*String x = txtEfectivo.getText();
-        if(!objUtils.isDouble(x)){
-            txtEfectivo.setText("0");
-        }
-        Double minuendo = Double.parseDouble(txtTotal.getText().toString());
-        Double sustraendo = Double.parseDouble(txtEfectivo.getText().toString());
-        Double diferencia = minuendo - sustraendo;
-        if(diferencia<0)
-        {
-            txtEfectivo.setText("0");
-            txtSaldo.setText(this.txtTotal.getText());
-        }
-        txtSaldo.setText(""+objUtils.redondear(diferencia));*/
-        //calcularCuotas();
-        //txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-
-        //Double cuotaInicial = valorContado * 30/100;
-        //txtEfectivo.setText(""+cuotaInicial);
-        Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
-        //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
-        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-        String idPlazo = objPlazoSelect.getCodigo();
-        //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
-        Double interes = 0.00;
-        int meses = 0;
-        if(idPlazo.equals("1"))
-        {
-            interes = valorInteresTresMeses;
-            txtInteresPorcentaje.setText("" + interes);
-            meses = 3;
-        }
-        else if(idPlazo.equals("2"))
-        {
-            interes = valorInteresSeisMeses;
-            txtInteresPorcentaje.setText("" + interes);
-            meses = 6;
-        }
-        else if(idPlazo.equals("3"))
-        {
-            interes = valorInteresNueveMeses;
-            txtInteresPorcentaje.setText("" + interes);
-            meses = 9;
-        }
-        else if(idPlazo.equals("4"))
-        {
-            interes = valorInteresDoceMeses;
-            txtInteresPorcentaje.setText("" + interes);
-            meses = 12;
-        }
-        else if(idPlazo.equals("9"))
-        {
-            interes = 0.00;
-            txtInteresPorcentaje.setText("" + interes);
-            meses = 2;
-        }
-        double cantidadAdeudada = valorContado - cuotaInicial;
-        txtSaldoDeuda.setText("" + cantidadAdeudada);
-
-        double cantidadInteres =  cantidadAdeudada * (1 + (interes/100));
-        double valorInteres = cantidadAdeudada * interes / 100;
-        txtInteresValor.setText("" + valorInteres);
-
-        txtSaldo.setText("" + objUtils.redondear(cantidadInteres));
-        //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
-        //MENSUAL QUINCENAL SEMANAL
-        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-        String idCuota = objCuotaSelect.getCodigo();
-        Double cuotaIndividual= 0.00;
-        //2 semanal, 3 quincenal, 4 mensual
-        if(idCuota.equals("2"))//semanal
-        {
-            if(idPlazo.equals("1"))//3 meses tiene 12 semanas, pero le ponen 13
-            {
-                cuotaIndividual = cantidadInteres/13;
-            }
-            else if(idPlazo.equals("2"))//6 meses son 24 semanas, pero le ponen 26
-            {
-                cuotaIndividual = cantidadInteres/26;
-            }
-            else if(idPlazo.equals("3"))//9 meses son 36 semanas, pero le ponen 39
-            {
-                cuotaIndividual = cantidadInteres/39;
-            }
-            else if(idPlazo.equals("4"))//12 meses son 48 semanas, pero le ponen 52
-            {
-                cuotaIndividual = cantidadInteres/52;
-            }
-            else if(idPlazo.equals("9"))//2 MESES son 8 semanas
-            {
-                cuotaIndividual = cantidadInteres/8;
-            }
-        }
-        else if(idCuota.equals("3"))//quincenal
-        {
-            cuotaIndividual = cantidadInteres/(meses*2); // los meses q son lo multiplico por 2 para que me de en quincenas, un mes tiene 2 quincenas
-        }
-        else if(idCuota.equals("4"))//mensual
-        {
-            cuotaIndividual = cantidadInteres/meses; // mes normal
-        }
-        txtCuota.setText(""+objUtils.redondear(cuotaIndividual));
-        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-
-        txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
-        calcularImpuestos();
-    }//GEN-LAST:event_txtEfectivoKeyReleased
-
-    private void txtCuotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuotaKeyReleased
-        String x = txtCuota.getText();
-        if(!objUtils.isDouble(x)){
-            txtCuota.setText("");
-        }
-
-        /******************************************************/
-
-        Double cuotaInicial = Double.parseDouble(txtEfectivo.getText());
-        //CALCULAR EL VALOR DE  DEUDA CON INTERES SEGUN LOS PLAZOS
-        clsComboBox objPlazoSelect = (clsComboBox)cmbPlazo.getSelectedItem();
-        String idPlazo = objPlazoSelect.getCodigo();
-        //plazos 1(3 meses), 2 (6 meses), 3(9 meses), 4(12 meses)
-        //Double interes = 0.00;
-        int meses = 0;
-        if(idPlazo.equals("1"))
-        {
-            meses = 3;
-        }
-        else if(idPlazo.equals("2"))
-        {
-            meses = 6;
-        }
-        else if(idPlazo.equals("3"))
-        {
-            meses = 9;
-        }
-        else if(idPlazo.equals("4"))
-        {
-            meses = 12;
-        }
-        else if(idPlazo.equals("9"))
-        {
-            meses = 2;
-        }
-
-        //AHORA DIVIDO PARA LOS TIEMPOS  Q ME DESEA PAGAR
-        //MENSUAL QUINCENAL SEMANAL
-        clsComboBox objCuotaSelect = (clsComboBox)cmbCuota.getSelectedItem();
-        String idCuota = objCuotaSelect.getCodigo();
-        Double cuotaIndividual= Double.parseDouble(txtCuota.getText());
-        Double cantidadInteres = 0.00;
-        //2 semanal, 3 quincenal, 4 mensual
-        if(idCuota.equals("2"))
-        {
-            if(idPlazo.equals("1"))
-            {
-                cuotaIndividual = cantidadInteres/13;
-            }
-            else if(idPlazo.equals("2"))
-            {
-                cuotaIndividual = cantidadInteres/26;
-            }
-            else if(idPlazo.equals("3"))
-            {
-                cuotaIndividual = cantidadInteres/39;
-            }
-            else if(idPlazo.equals("4"))
-            {
-                cuotaIndividual = cantidadInteres/52;
-            }
-            else if(idPlazo.equals("9"))
-            {
-                cuotaIndividual = cantidadInteres/8;
-            }
-        }
-        else if(idCuota.equals("3"))
-        {
-            cantidadInteres = cuotaIndividual*(meses*2);
-        }
-        else if(idCuota.equals("4"))
-        {
-            cantidadInteres = cuotaIndividual*meses;
-        }
-
-        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-
-        txtTotalFinal.setText("" + objUtils.redondear(cuotaInicial+cantidadInteres));
-        //CALCULAR LOS IMPUESTOS CON LOS INTERESES AUMENTADOS
-        calcularImpuestos();
-
-        /**************************************************/
-        txtFechaCancelacion.setText(calcular_fecha_cancelacion());
-    }//GEN-LAST:event_txtCuotaKeyReleased
-
-    private void cmbCuotaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCuotaItemStateChanged
-        if(cmbCuota.isEnabled())
-        calcularCuotas(); // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCuotaItemStateChanged
-
-    private void chkCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkCreditoActionPerformed
-
-    private void chkCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkCreditoItemStateChanged
-        if(controlCmbCredito==0)
-        {
-            valorContado = Double.parseDouble(txtTotal.getText().toString());
-            btnAgregar.setEnabled(false);
-            txtCuota.setText("");
-            txtEfectivo.setText("0");
-            txtSaldo.setText("");
-
-            calcularCuotas();
-            //txtEfectivo.setText(""+cuotaInicial);
-            // controlCmbCredito = 1;
-            if(this.chkCredito.isSelected())
-            {
-                cmbCuota.setEnabled(true);
-                txtCuota.setEditable(true);
-                txtEfectivo.setEditable(true);
-                cmbPlazo.setEnabled(true);
-                //txtSaldo.setEditable(true);
-            }
-            else
-            {
-                cmbCuota.setEnabled(false);
-                txtCuota.setEditable(false);
-                txtEfectivo.setEditable(false);
-                cmbPlazo.setEnabled(false);
-                //txtSaldo.setEditable(false);
-            }
-            //controlCmbCredito = 0;
-        }
-    }//GEN-LAST:event_chkCreditoItemStateChanged
-
 public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulario)
     {
         Dimension desktopSize = frmPrincipal.jDesktopPane1.getSize();
@@ -2431,21 +1877,13 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnImprimir;
     public static javax.swing.JButton btnMostrarProductos;
-    private javax.swing.JCheckBox chkAnulada;
-    private javax.swing.JCheckBox chkCredito;
-    private javax.swing.JComboBox cmbCuota;
     private javax.swing.JComboBox cmbEmpresa;
     private javax.swing.JComboBox cmbFacturero;
-    private javax.swing.JComboBox cmbPlazo;
     public static javax.swing.JComboBox cmbPrecio;
     private javax.swing.JComboBox cmbVendedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -2454,14 +1892,9 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2470,7 +1903,6 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCajero;
@@ -2480,22 +1912,15 @@ public static void mostrarJInternalCentrado(javax.swing.JInternalFrame formulari
     public static javax.swing.JTextField txtCodigoProducto;
     private javax.swing.JTextArea txtComentario;
     public static javax.swing.JTextField txtCosto;
-    private javax.swing.JTextField txtCuota;
     private javax.swing.JTextField txtDescuento;
     private javax.swing.JTextField txtDescuento1;
     public static javax.swing.JTextField txtDescuentoUnidad;
-    private javax.swing.JTextField txtEfectivo;
-    private javax.swing.JTextField txtFechaCancelacion;
     private com.toedter.calendar.JDateChooser txtFechaVenta;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtIVA1;
-    private javax.swing.JTextField txtInteresPorcentaje;
-    private javax.swing.JTextField txtInteresValor;
     public static javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtNotaEntrega;
     private javax.swing.JTextField txtPrecio;
-    private javax.swing.JTextField txtSaldo;
-    private javax.swing.JTextField txtSaldoDeuda;
     public static javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTarifaCero;
     private javax.swing.JTextField txtTarifaCero1;

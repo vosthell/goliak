@@ -101,7 +101,7 @@ public class frmNotasEntregaConfirmar extends javax.swing.JInternalFrame {
             txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
             txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
             txtTotal1.setText("" + dataCabecera.get(0).getTotal1());
-            
+             txtVendedor.setText(dataCabecera.get(0).getNombreVendedor());
             codigoCliente = dataCabecera.get(0).getCodigo();
             //btnConfirmar.setEnabled(true);
             

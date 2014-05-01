@@ -471,7 +471,7 @@ public class clsCabecera {
     public boolean insertarRegistroCompras(int idProveedor, String idUser, 
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
-            String irbp, String baseIce, String ice, String fechaCompra, String autorizacion, String idGasto)
+            String irbp, String baseIce, String ice, String fechaCompra, String autorizacion, String idGasto, String comentario)
     {       
         boolean exito = false;
         try
@@ -480,11 +480,11 @@ public class clsCabecera {
             sql = "INSERT INTO ck_cabecera_movi_compras(id_proveedor, id_usuario, "
                     + " total, efectivo, fecha, id_empresa, descuento, iva, "
                     + " base_tarifa_0, base_tarifa_iva, fact_referencia, tipo_documento,"
-                    + " irbp, baseice, ice, autorizacion, id_cuenta)"                   
+                    + " irbp, baseice, ice, autorizacion, id_cuenta, comentario)"                   
                     + " VALUES(" + idProveedor + ", " + idUser + ", "
                     + total + ", " + total + ", '" + fechaCompra + "', " + idEmpresa + ", " + descuento + ", " + iva + ", "
                     + tarifa_cero + ", " + tarifa_iva + ", '" + factura_referencia + "', '" + documento + "',"
-                    + irbp + ", " + baseIce + ", " + ice + ", '" + autorizacion + "', " + idGasto + ")";           
+                    + irbp + ", " + baseIce + ", " + ice + ", '" + autorizacion + "', " + idGasto + ", '" + comentario + "')";           
             //System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -502,7 +502,7 @@ public class clsCabecera {
             String total, String idEmpresa, String descuento, String iva, 
             String tarifa_iva, String tarifa_cero, String factura_referencia, String documento,
             String fechaCompra, String irbp, String baseIce, String ice, String autorizacion,
-            String idCuenta)
+            String idCuenta, String comentario)
     {       
         boolean exito = false;
         try
@@ -524,7 +524,8 @@ public class clsCabecera {
                         + " baseice = " + baseIce + ", "
                         + " ice = " + ice + ", "
                         + " autorizacion = '" + autorizacion + "',"
-                        + " id_cuenta = " + idCuenta
+                        + " id_cuenta = " + idCuenta + ", "
+                        + " comentario = '" + comentario +"'"
                     + " WHERE id_cabecera_movi_compras = " + idCabeceraCompra;           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
@@ -1399,7 +1400,8 @@ public class clsCabecera {
                         + " base_tarifa_0, base_tarifa_iva, descuento, iva,"
                         + " fecha_cancelacion_sistema, "                       
                         + " f.descripcion descripcion_plazo, b.name_completo nombre_vendedor"
-                    + " FROM ck_cabecera_movi AS a inner join ck_cliente AS b on a.codigo = b.codigo "
+                    + " FROM ck_cabecera_movi AS a "
+                    + " inner join ck_cliente AS b on a.codigo = b.codigo "
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
                     + " inner join ck_rel_cabecera_cuota_facturas AS d on a.id_cabecera_movi = d.id_cabecera_movi"
                     + " inner join ck_cuota as e on d.id_cuota = e.id_cuota"
@@ -1697,6 +1699,8 @@ public class clsCabecera {
                     + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
             bd.resultado = bd.sentencia.executeQuery(sql);
+            
+            System.out.print("consultarDataCabeceraNotaEntrega: "+idCabecera + ", " + sql);
               
             while(bd.resultado.next()){
                 clsCabecera oListaTemporal = new clsCabecera();
@@ -1713,7 +1717,7 @@ public class clsCabecera {
                 oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
                 oListaTemporal.setIVA(bd.resultado.getDouble("iva"));
                 oListaTemporal.setTarifaCero(bd.resultado.getDouble("base_tarifa_0"));
-                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));      
+                oListaTemporal.setTarifaIVA(bd.resultado.getDouble("base_tarifa_iva"));
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
                 oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
                 oListaTemporal.setIdVendedor(bd.resultado.getInt("vendedor"));
@@ -1747,13 +1751,15 @@ public class clsCabecera {
                             + " a.estado, total, saldo, efectivo,  "
                             + " fecha, fact_referencia, comentario,  "
                             + " id_cajero, a.id_empresa id_emp, id_caja_operacion, "
-                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, vendedor,"
+                            + " descuento, iva, base_tarifa_0, base_tarifa_iva, porcentaje_interes, "
+                            + " g.apellido1 || ' ' || g.nombre1 nombre_vendedor, vendedor,"
                             + " a.fecha_registro fecha_registro, "   
                             + " total_interes, base_tarifa_0_interes, base_tarifa_iva_interes, iva_interes,"
                             + " a.transferencia transf"
                     + " FROM ck_notas_de_entrega AS a "
                     + " inner join ck_empresa AS b on a.codigo = b.id_empresa "
-                    + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario    "               
+                    + " inner join ck_usuario AS c on a.id_usuario = c.id_usuario "
+                    + " inner join ck_personal as g on a.vendedor = g.id_personal"
                     + " WHERE a.id_cabecera_movi=" + idCabecera;
             System.out.println("consultarDataCabeceraNotaEntrega_transferencia: " + sql);
             
@@ -1778,6 +1784,7 @@ public class clsCabecera {
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));       
                 oListaTemporal.setPorcentajeInteres(bd.resultado.getDouble("porcentaje_interes"));              
                 oListaTemporal.setIdVendedor(bd.resultado.getInt("vendedor"));
+                oListaTemporal.setNombreVendedor(bd.resultado.getString("nombre_vendedor"));
                 
                 oListaTemporal.setTarifaCero1(bd.resultado.getDouble("base_tarifa_0_interes"));
                 oListaTemporal.setTarifaIVA1(bd.resultado.getDouble("base_tarifa_iva_interes"));                

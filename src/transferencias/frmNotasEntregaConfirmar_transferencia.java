@@ -71,10 +71,7 @@ public class frmNotasEntregaConfirmar_transferencia extends javax.swing.JInterna
         idCabecera = p_idCabecera; 
         
         ArrayList <clsCabecera> dataCabecera;
-        dataCabecera = objCabecera.consultarDataCabeceraCredito_transferencia(idCabecera);
-        
-        if(dataCabecera.isEmpty())
-        {
+       
             Double cuotaInicialAsignada = 0.00;
             
             //LA NOTA DE ENTREGA FUE A CONTADO
@@ -97,6 +94,7 @@ public class frmNotasEntregaConfirmar_transferencia extends javax.swing.JInterna
             txtIVA.setText("" + dataCabecera.get(0).getIVA());
             txtInteresPorcentaje.setText("" + dataCabecera.get(0).getPorcentajeInteres());
             txtDatoCredito.setText("NO");
+            txtVendedor.setText(dataCabecera.get(0).getNombreVendedor());
             
             txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
             txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
@@ -116,54 +114,8 @@ public class frmNotasEntregaConfirmar_transferencia extends javax.swing.JInterna
                 btnConfirmar.setEnabled(true);
                 btnAsignar.setEnabled(false);
             }  
-        }
-        else
-        {
-            //LA NOTA DE ENTREGA FUE A CREDITO
-            Double cuotaInicial = 0.00;
-            Double cuotaInicialAsignada = 0.00;
-            
-            //txtCedula.setText(dataCabecera.get(0).getCedula());
-            txtNombreCliente.setText(dataCabecera.get(0).getNameCompleto());
-            txtMonica.setText(dataCabecera.get(0).getFactReferencia());
-            txtComentario.setText(dataCabecera.get(0).getComentario());
-            txtTipoCuota.setText(dataCabecera.get(0).getDescripcion());
-            txtCuota.setText(""+dataCabecera.get(0).getValor());
-            txtFechaVenta.setText(dataCabecera.get(0).getFecha().substring(0, 16));
-            txtFechaRegistro.setText(dataCabecera.get(0).getFechaRegistro().substring(0, 16));
-            cuotaInicial = dataCabecera.get(0).getEfectivo();
-            txtEfectivo.setText("" + cuotaInicial);        
-            txtTotal.setText("" + dataCabecera.get(0).getTotal());         
-            txtSaldo.setText(""+objUtils.redondear(dataCabecera.get(0).getSaldo()));
-            txtPlazo.setText(dataCabecera.get(0).getDescripcionPlazo());
-            txtVendedor.setText(dataCabecera.get(0).getNombreVendedor());
-            this.txtDescuento.setText(""+dataCabecera.get(0).getDescuento());
-            this.txtTarifaCero.setText(""+dataCabecera.get(0).getTarifaCero());
-            this.txtTarifaIVA.setText("" + dataCabecera.get(0).getTarifaIVA());
-            txtIVA.setText(""+dataCabecera.get(0).getIVA());
-
-            txtTarifaIVA1.setText(""+dataCabecera.get(0).getTarifaIVA1());
-            txtTarifaCero1.setText(""+dataCabecera.get(0).getTarifaCero1());
-            txtDescuento1.setText(""+dataCabecera.get(0).getDescuento());
-            txtIVA1.setText("" + dataCabecera.get(0).getIVA1());
-            txtTotal1.setText("" + dataCabecera.get(0).getTotal1());
-            txtFechaCancelacion.setText(dataCabecera.get(0).getFechaCancelacionSistema().substring(0, 10));
-            
-            //OBTENER VALOR DE PAGOS ASIGNADOS
-            cuotaInicialAsignada = objUtils.redondear(objPago.obtenerValorAsignado(idCabecera));
-            txtAsignado.setText("" + cuotaInicialAsignada);
-            
-            codigoEmpresa = dataCabecera.get(0).getIdEmpresa();
-            
-            //if(cuotaInicial == cuotaInicialAsignada)
-            if(txtEfectivo.getText().equals(txtAsignado.getText())||dataCabecera.get(0).getTransferencia().equals("S"))
-            {    
-                btnConfirmar.setEnabled(true);
-                btnAsignar.setEnabled(false);
-            }  
-            txtDatoCredito.setText("SI");
-            
-        }
+        
+        
         //COLUMNA OCULTA
         dtmData.addColumn("idProducto");
         //objUtils.setOcultarColumnasJTable(tblData, new int[]{6});
