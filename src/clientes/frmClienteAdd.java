@@ -463,22 +463,36 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         clsComboBox objCiudadSelect = (clsComboBox)cmbCiudad.getSelectedItem();
         clsComboBox objTerminoSelect = (clsComboBox)cmbTermino.getSelectedItem();
         clsComboBox objRecintoSelect = (clsComboBox)cmbRecinto.getSelectedItem();
-        exito = objCliente.insertarRegistro(txtCedula.getText().toString(), txtNombre1.getText().toUpperCase().toString(),
-                                            txtNombre2.getText().toUpperCase().toString(), txtApellido1.getText().toUpperCase().toString(),
-                                            txtApellido2.getText().toUpperCase().toString(), txtConvencional.getText().toString(),
-                                            txtCelular.getText().toString(), txtDireccion.getText().toString(),
-                                            objCiudadSelect.getCodigo(), txtCredito.getText().toString(),
-                                            objProvinciaSelect.getCodigo(), objTerminoSelect.getCodigo(),
-                                            objRecintoSelect.getCodigo(), txtEmail.getText().toString());
+        
+        String cedula       = txtCedula.getText().toString().trim();
+        String nombre1      = txtNombre1.getText().toUpperCase().toString().trim();
+        String nombre2      = txtNombre2.getText().toUpperCase().toString().trim();
+        String apellido1    = txtApellido1.getText().toUpperCase().toString().trim();
+        String apellido2    = txtApellido2.getText().toUpperCase().toString().trim();
+        
+        exito = objCliente.insertarRegistro(cedula, 
+                nombre1,
+                nombre2, 
+                apellido1,
+                apellido2, 
+                txtConvencional.getText().toString(),
+                txtCelular.getText().toString(), 
+                txtDireccion.getText().toString(),
+                objCiudadSelect.getCodigo(), 
+                txtCredito.getText().toString(),
+                objProvinciaSelect.getCodigo(), 
+                objTerminoSelect.getCodigo(),
+                objRecintoSelect.getCodigo(), 
+                txtEmail.getText().toString());
         if (exito)
         {
             JOptionPane.showMessageDialog(this, objUtils.exitoGuardar, objUtils.tituloVentanaMensaje, JOptionPane.INFORMATION_MESSAGE);
             objAuditoria.insertarAuditoria("frmClienteAdd", "INGRESO DEL CLIENTE: "+
-                                            txtCedula.getText().toString()+" - "+
-                                            txtApellido1.getText().toUpperCase().toString()+" "+
-                                            txtApellido2.getText().toUpperCase().toString()+" "+
-                                            txtNombre1.getText().toUpperCase().toString()+" "+
-                                            txtNombre2.getText().toUpperCase().toString(), "3");
+                                            cedula + " - "+
+                                            apellido1 + " "+
+                                            apellido2 + " "+
+                                            nombre1 + " "+
+                                            nombre2, "3");
                 
             //dispose();
             txtCedula.setText("");
@@ -496,11 +510,11 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         {
             JOptionPane.showMessageDialog(this, objUtils.errorGuardar, objUtils.tituloVentanaMensaje, JOptionPane.WARNING_MESSAGE);
             objAuditoria.insertarAuditoria("frmClienteAdd", "INTENTÓ INGRESAR CLIENTE: "+
-                                            txtCedula.getText().toString()+" - "+
-                                            txtApellido1.getText().toUpperCase().toString()+" "+
-                                            txtApellido2.getText().toUpperCase().toString()+" "+
-                                            txtNombre1.getText().toUpperCase().toString()+" "+
-                                            txtNombre2.getText().toUpperCase().toString(), "3");
+                                            cedula + " - "+
+                                            apellido1 + " "+
+                                            apellido2 + " "+
+                                            nombre1 + " "+
+                                            nombre2 , "3");
         }
     }
 }//GEN-LAST:event_btnGuardarActionPerformed

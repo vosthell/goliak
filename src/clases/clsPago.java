@@ -1258,7 +1258,7 @@ public class clsPago {
                         + " c.valor_actual valor_actual, a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente,"
                         + " a.fecha_registro fecha_registro, fecha_cobro, f.name name_cobrador,"
-                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo"
+                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo, e.cedula cedula"
                     + " FROM ck_pagos AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                     + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"                   
@@ -1290,6 +1290,7 @@ public class clsPago {
                     oListaTemporal.setValorActual(bd.resultado.getDouble("valor_actual"));
                     oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
                     oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                    oListaTemporal.setCedula(bd.resultado.getString("cedula"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -1319,7 +1320,7 @@ public class clsPago {
                         + " a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente,"
                         + " a.fecha_pago fecha_registro, fecha_cobro, f.name name_cobrador,"
-                        + " a.codigo codigo"
+                        + " a.codigo codigo, e.cedula cedula"
                     + " FROM ck_pagos_recibo AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                      + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"
@@ -1347,6 +1348,7 @@ public class clsPago {
                     //oListaTemporal.setIdCtaCobrar(bd.resultado.getInt("idCtaCobrar"));
                     oListaTemporal.setFechaCobro(bd.resultado.getString("fecha_cobro"));
                     oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                    oListaTemporal.setCedula(bd.resultado.getString("cedula"));
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 
@@ -1377,7 +1379,7 @@ public class clsPago {
                         + " c.valor_actual valor_actual, a.fecha_pago fecha_pago, a.estado, "
                         + " a.valor valor_pago, a.id_caja_operacion, e.name_completo nombre_cliente, "
                         + " a.fecha_registro fecha_registro, fecha_cobro, f.name name_cobrador, "
-                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo"
+                        + " c.id_cabecera_movi id_cabecera_movi, e.codigo codigo, e.cedula cedula"
                     + " FROM ck_pagos_factura AS a"
                     + " JOIN ck_usuario AS b ON a.id_usuario = b.id_usuario"
                     + " JOIN ck_usuario AS f ON a.id_usuario_cobra = f.id_usuario"
@@ -1409,6 +1411,8 @@ public class clsPago {
                     oListaTemporal.setNombreCobrador(bd.resultado.getString("name_cobrador"));
                     oListaTemporal.setIdCabeceraMovi(bd.resultado.getString("id_cabecera_movi"));
                     oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
+                    oListaTemporal.setCedula(bd.resultado.getString("cedula"));
+                    
                     data.add(oListaTemporal);
                 }
                 while(bd.resultado.next()); 

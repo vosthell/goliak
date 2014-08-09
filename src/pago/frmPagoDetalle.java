@@ -278,7 +278,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         pw.println("");
         pw.println("");
        
-        pw.println("RECIBI DE : " + dataPago.get(0).getNombreCliente());
+        pw.println("RECIBI DE : " + dataPago.get(0).getCedula() + " - " + dataPago.get(0).getNombreCliente());
         pw.println("LA CANTIDAD DE: $" + valor + " ***DOLARES");
         pw.println("POR CONCEPTO DE: " + dataPago.get(0).getReferencia());
         pw.println("CODIGO NE: " + dataPago.get(0).getIdCabeceraMovi());

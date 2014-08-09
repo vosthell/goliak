@@ -277,7 +277,7 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         pw.println("");
         pw.println("");
         
-        pw.println("RECIBI DE : " + dataPago.get(0).getNombreCliente());
+        pw.println("RECIBI DE : " + dataPago.get(0).getCedula() + " - " + dataPago.get(0).getNombreCliente());
         pw.println("LA CANTIDAD DE: $ " + valor + " ***DOLARES");
         pw.println("POR CONCEPTO DE: " + dataPago.get(0).getReferencia());
         pw.println("CODIGO FACTURA: " + dataPago.get(0).getIdCabeceraMovi());
