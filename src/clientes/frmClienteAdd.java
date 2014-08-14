@@ -19,6 +19,7 @@ import clases.clsProvincia;
 import clases.clsRecinto;
 import clases.clsTermino;
 import clases.clsUtils;
+import clases.javaMail;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -37,6 +38,7 @@ public class frmClienteAdd extends javax.swing.JInternalFrame {
     clsUtils objUtils = new clsUtils();
     clsAuditoria objAuditoria = new clsAuditoria();
     clsCiudad objCiudad = new clsCiudad();
+    clsParametros objParametros = new clsParametros();
     
     boolean exito = false;
     /** Creates new form frmClienteAdd */
@@ -469,6 +471,17 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         String nombre2      = txtNombre2.getText().toUpperCase().toString().trim();
         String apellido1    = txtApellido1.getText().toUpperCase().toString().trim();
         String apellido2    = txtApellido2.getText().toUpperCase().toString().trim();
+        String email        = txtEmail.getText().toUpperCase().toString().trim();
+        
+        String nombre_completo = "";
+        if(apellido1.length()>0)
+            nombre_completo = nombre_completo + apellido1;
+        if(apellido2.length()>0)
+            nombre_completo = nombre_completo + " " + apellido2;
+        if(nombre1.length()>0)
+            nombre_completo = nombre_completo + " " + nombre1;
+        if(nombre2.length()>0)
+            nombre_completo = nombre_completo + " " + nombre2;
         
         exito = objCliente.insertarRegistro(cedula, 
                 nombre1,
@@ -483,7 +496,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 objProvinciaSelect.getCodigo(), 
                 objTerminoSelect.getCodigo(),
                 objRecintoSelect.getCodigo(), 
-                txtEmail.getText().toString());
+                email,
+                nombre_completo);
         if (exito)
         {
             JOptionPane.showMessageDialog(this, objUtils.exitoGuardar, objUtils.tituloVentanaMensaje, JOptionPane.INFORMATION_MESSAGE);
@@ -493,6 +507,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                                             apellido2 + " "+
                                             nombre1 + " "+
                                             nombre2, "3");
+            
+            //enviar_correo();
                 
             //dispose();
             txtCedula.setText("");
@@ -505,6 +521,35 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             txtDireccion.setText("");
             txtCredito.setText("0");
             //txtCiudad.setText("BABA");
+            
+            //ENVIAR CORREO AL CLIENTE
+            String email_habilitado = objParametros.consultaValor("email_habilitado");
+            if(email_habilitado.equals("1"))
+            {    
+                try
+                {
+                    javaMail mail = new javaMail();                
+                    if (email != "")
+                    {
+                        String texto = "";
+                        texto = texto + objParametros.consultaValor("email_html_head"); 
+                        texto = texto + "<BR /><BR /><BR />";
+                        texto = "Saludos, " + nombre1 + " " + apellido1 + "<BR />";
+                        texto = texto + "Gracias por preferirnos.";
+                        texto = texto + "<BR /><BR /><BR />";
+                        texto = texto + objParametros.consultaValor("email_html_foot_kolozzus");
+                        texto = texto + "<BR />" + email;
+
+                        mail.send(email, "Gracias por preferirnos", texto);       
+                        mail.send("vosthell@hotmail.com", "Gracias por preferirnos", texto);       
+                    }
+                }
+                catch(Exception e){
+                    //e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+                }     
+            }
+            //FIN - ENVIAR CORREO AL CLIENTE
         }
         else
         {
@@ -518,6 +563,8 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
     }
 }//GEN-LAST:event_btnGuardarActionPerformed
+
+    
 
     private void txtCedulaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyPressed
         int i = txtCedula.getText().length();
