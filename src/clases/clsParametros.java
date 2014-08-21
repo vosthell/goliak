@@ -130,6 +130,36 @@ public class clsParametros {
         return cantidad;
     } 
     
+    public String consultaValor2(String nombre)
+    {       
+         String cantidad = "";
+         try{
+            bd.conectarBaseDeDatos2();
+            sql = "SELECT valor "
+                    + "  FROM ck_parametros"
+                    + " WHERE descripcion='" + nombre + "'"
+                    + " AND estado = 'A'";
+            //System.out.println(sql);
+            bd.resultado = bd.sentencia.executeQuery(sql);
+             
+            if(bd.resultado.next())
+            {               
+                cantidad = bd.resultado.getString("valor");               
+            }
+            else
+            { 
+                cantidad = "";
+            }            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            cantidad = "";
+        }           
+        bd.desconectarBaseDeDatos();
+        return cantidad;
+    } 
+    
     public String consultaValor(String nombre)
     {       
          String cantidad = "";
